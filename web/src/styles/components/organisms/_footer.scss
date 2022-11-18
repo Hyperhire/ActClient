@@ -1,0 +1,51 @@
+.footer-wrapper {
+  border-top: $neutrals-5 1px solid;
+  .footer {
+    .content {
+      height: 80px;
+      @include responsive(foldable) {
+        flex-wrap: wrap;
+      }
+      .menus {
+        display: flex;
+        align-items: center;
+        @include responsive(foldable) {
+          align-items: baseline;
+          flex-direction: column;
+        }
+        .guideline {
+          margin-left: 3rem;
+          @include responsive(foldable) {
+            margin-top: 0.5rem;
+            margin-left: 0;
+          }
+        }
+      }
+
+      .logo {
+        margin-top: 5px;
+      }
+
+      .menu-item + .menu-item::before {
+        color: $neutrals-3;
+        content: '|';
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+      }
+
+      .icon + .icon::before {
+        content: ' ';
+        padding-right: 0.7rem;
+        padding-left: 0.7rem;
+      }
+
+      .icon-group {
+        margin-top: auto;
+        margin-bottom: auto;
+        @include responsive(foldable) {
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+}

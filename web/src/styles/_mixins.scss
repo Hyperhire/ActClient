@@ -1,0 +1,125 @@
+@mixin ellipsis($width: 100%) {
+  max-width: $width;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  vertical-align: middle;
+}
+
+@mixin absoluteCenter() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin absoluteCenterX() {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin absoluteCenterY() {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin placeholderColor($color) {
+  &::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: $color;
+  }
+  &::-moz-placeholder {
+    /* Firefox 19+ */
+    color: $color;
+  }
+  &:-ms-input-placeholder {
+    /* IE 10+ */
+    color: $color;
+  }
+  &:-moz-placeholder {
+    /* Firefox 18- */
+    color: $color;
+  }
+}
+
+@mixin overflowLine($lineHeight, $numLine) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $numLine; /* number of lines to show */
+  line-height: $lineHeight; /* fallback */
+  max-height: $lineHeight * $numLine; /* fallback */
+}
+
+@mixin padded-horizontal-300() {
+  padding-left: calc(300px / 2);
+  padding-right: calc(300px / 2);
+
+  @media only screen and (max-width: $col-2) {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@mixin responsive($media) {
+  @if $media == mobile {
+    @media only screen and (max-width: 396px) {
+      @content;
+    }
+  } @else if $media == foldable {
+    @media only screen and (max-width: 684px) {
+      @content;
+    }
+  } @else if $media == tablet {
+    // 1 column
+    @media only screen and (max-width: 1000px) {
+      @content;
+    }
+  } @else if $media == ipadpro {
+    // 2 columns
+    @media only screen and (max-width: 1380px) {
+      @content;
+    }
+  } @else if $media == bigscreen {
+    // 2 columns
+    @media only screen and (max-width: 1439px) {
+      @content;
+    }
+  } @else if $media == overscreen {
+    // 2 columns
+    @media only screen and (max-width: 1552px) {
+      @content;
+    }
+  } @else {
+    @media only screen and (max-width: $media) {
+      @content;
+    }
+  }
+}
+
+@mixin mobileToggle($breakpoint) {
+  .mobile-hidden {
+    display: flex;
+
+    @include responsive($breakpoint) {
+      display: none;
+    }
+  }
+
+  .mobile-visible {
+    display: none;
+
+    @include responsive($breakpoint) {
+      display: flex;
+    }
+  }
+}
+
+@mixin default-box-shadow {
+  transform: translateY(-5px);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}

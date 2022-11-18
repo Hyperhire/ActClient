@@ -1,0 +1,304 @@
+html,
+body {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  line-height: 1.34;
+  font-size: 16px;
+  word-break: keep-all;
+
+  @include responsive(tablet) {
+    font-size: 14px;
+  }
+}
+
+@include responsive(tablet) {
+  br {
+    content: '';
+    &::after {
+      content: ' ';
+    }
+  }
+}
+
+.maintain-br {
+  br {
+    all: unset !important;
+  }
+}
+
+.title {
+  font-family: 'Poppins';
+}
+
+.poppins {
+  font-family: 'Poppins';
+}
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.heebo {
+  font-family: 'Heebo', sans-serif;
+}
+
+.pacifico {
+  font-family: 'Pacifico', cursive;
+}
+
+.black-han-sans {
+  font-family: 'Black Han Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+b,
+strong {
+  margin: 0;
+  font-weight: 400;
+}
+
+h1 {
+  font-family: 'Poppins';
+  font-size: 3.125rem; //50px;
+}
+
+h2 {
+  font-size: 2.125rem; //34px;
+}
+
+h3 {
+  font-size: 1.5rem; //24px;
+}
+
+h4 {
+  font-size: 1.375rem; //22px;
+}
+
+h5 {
+  font-size: 1.25rem; //20px;
+}
+
+h6 {
+  font-size: 1.125rem; //18px;
+}
+
+p {
+  font-size: 1rem; //14px;
+}
+
+b {
+  font-weight: 500;
+}
+
+a {
+  color: $neutrals-1;
+  text-decoration: none;
+}
+
+small {
+  font-size: 0.75rem;
+}
+
+.bold,
+.bold * {
+  font-weight: 600 !important;
+}
+
+.weight-900 {
+  font-weight: 900;
+}
+
+.primary {
+  color: $primary;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.black {
+  color: $neutrals-1;
+}
+
+.kakao {
+  color: $kakao-label;
+}
+
+.primary-hover {
+  transition: color 150ms ease-in-out;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.neutrals-1-hover {
+  transition: color 150ms ease-in-out;
+
+  &:hover {
+    color: $neutrals-1;
+  }
+}
+
+.to-color-white-hover {
+  transition: color 150ms ease-in-out;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+.black-hover {
+  transition: color 150ms ease-in-out;
+
+  &:hover {
+    color: $neutrals-2;
+  }
+}
+
+.grey {
+  color: $text-grey;
+}
+
+.light-grey {
+  color: $text-light-grey;
+}
+
+.footer-black {
+  color: $footer-black;
+}
+
+.neutrals-2 {
+  color: $neutrals-2;
+}
+
+.neutrals-3 {
+  color: $neutrals-3;
+}
+
+.neutrals-4 {
+  color: $neutrals-4;
+}
+
+.neutrals-5 {
+  color: $neutrals-5;
+}
+
+.neutrals-6 {
+  color: $neutrals-6;
+}
+
+.neutrals-7 {
+  color: $neutrals-7;
+}
+
+.green {
+  color: #05b169;
+}
+
+.red {
+  color: $secondary-red;
+}
+
+.warnning {
+  color: #bb2d3e;
+}
+
+.orange {
+  color: $secondary-orange;
+}
+
+.blue {
+  color: $secondary-blue;
+}
+
+.white {
+  color: $neutrals-7;
+}
+
+.bsc {
+  color: $bsc !important;
+}
+
+.hunt {
+  color: $hunt;
+}
+
+.eth {
+  color: $eth;
+}
+
+.indigo {
+  color: $indigo;
+}
+
+.pancake {
+  color: $pancake;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-end {
+  text-align: end;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+.line-height-1-5 {
+  line-height: 1.5;
+}
+
+.line-height-24 {
+  line-height: 24px;
+}
+
+@for $i from 0 through 900 {
+  .font-weight-#{$i} {
+    font-weight: #{$i};
+  }
+}
+
+@for $i from 0 through 60 {
+  .font-size-#{$i} {
+    font-size: #{$i}px;
+  }
+}
+
+.text-wrap {
+  word-wrap: break-word;
+}
