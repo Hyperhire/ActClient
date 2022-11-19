@@ -1,0 +1,14 @@
+.responsive-background-width {
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  @include responsive(ipadpro) {
+    width: 100%;
+  }
+  @include responsive(tablet) {
+    width: 100%;
+  }
+  @include responsive(foldable) {
+    width: 100%;
+  }
+}

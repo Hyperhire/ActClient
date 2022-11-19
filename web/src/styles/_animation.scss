@@ -1,0 +1,64 @@
+.animation-appear {
+  opacity: 0;
+  animation: appear-up 400ms forwards ease-out;
+}
+
+.animation-appear-up {
+  opacity: 0;
+  animation: appear-up 600ms forwards ease-out;
+}
+
+@keyframes appear-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animation-appear {
+  opacity: 0;
+  animation: appear 400ms forwards ease-out;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.blow-up-modal {
+  animation: blowUpModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes blowUpModal {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hide-modal {
+  animation: hideModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes hideModal {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
