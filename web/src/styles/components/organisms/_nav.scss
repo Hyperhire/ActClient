@@ -1,8 +1,6 @@
 .nav-wrapper {
   height: 4rem;
   width: 100%;
-  z-index: 9;
-  border-bottom: 1px $neutrals-5 solid;
   .nav {
     .logout {
       border: $neutrals-5 1px solid;
@@ -12,16 +10,23 @@
       }
     }
     .hamburger {
-      z-index: 7;
-      right: 5%;
       align-items: center;
-      justify-content: center;
+      justify-content: end;
       border: none;
-      background: none;
     }
   }
 }
-
+.subtitle-wrapper {
+  width: 100%;
+  align-items: start;
+  .subtitle {
+    font-size: 2rem;
+  }
+  .description {
+    font-size: 1rem;
+    color: $neutrals-2;
+  }
+}
 .activate-menu {
   transform: translateX(-100%);
   opacity: 1;
@@ -32,7 +37,6 @@
   display: block;
   position: absolute;
   height: 100%;
-  z-index: 8;
   .menu-wrap-rel {
     position: relative;
     width: 100%;

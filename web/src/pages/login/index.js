@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ActButton from '../../components/atoms/ActButton';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const Login = ({ setOption }) => {
-  const navigate = useNavigate();
   useEffect(() => {
-    setOption({ title: 'Login', back: true });
+    setOption({ title: '', subtitle: '', description: '', back: true, menu: true });
   }, [setOption]);
   return (
     <div>
-      <div>login page</div>
-      <ActButton
-        label="비밀번호 찾기"
-        handleOnClick={() => {
-          navigate('find-password');
-        }}
-      />
+      <Outlet setOption={setOption} />
     </div>
   );
 };

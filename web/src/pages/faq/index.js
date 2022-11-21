@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Faq = ({ setOption }) => {
   useEffect(() => {
-    setOption({ title: 'Faq', back: true });
+    setOption({ title: '', subtitle: 'FAQ', description: '', back: true, menu: true });
   }, [setOption]);
   const faqs = [
     {
@@ -39,9 +39,6 @@ const Faq = ({ setOption }) => {
 
   return (
     <div>
-      <div className="padding-16">
-        <h3 className="bold">FAQ</h3>
-      </div>
       <div className="bottom-2">
         {faqs.map((faq, index) => (
           <Accordion
