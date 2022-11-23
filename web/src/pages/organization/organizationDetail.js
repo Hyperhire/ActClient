@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ActButton from '../../components/atoms/ActButton';
+import ActButton from 'components/atoms/ActButton';
 
 const OrganizationDetail = ({ setOption }) => {
   const navigate = useNavigate();

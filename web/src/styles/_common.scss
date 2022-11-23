@@ -41,6 +41,10 @@ body {
   display: inline-block;
 }
 
+.display-flex {
+  display: flex;
+}
+
 .display-block {
   display: block;
 }
@@ -56,6 +60,9 @@ body {
 
 .top-140x {
   margin-top: 140px;
+}
+html, body, #root, .App {
+  height: 100%;
 }
 
 @for $i from 0 through 1200 {
@@ -129,12 +136,23 @@ body {
     width: #{$i * 0.125}rem;
   }
 
+  .width-vw#{$i} {
+    width: #{$i}vw;
+  }
+
   .height-#{$i * 2} {
     height: #{$i * 0.125}rem;
   }
 
+  .height-vh#{$i} {
+    height: #{$i}vh;
+  }
+
   .font-#{$i * 2} {
     font-size: #{$i * 0.125}rem;
+  }
+  .gap-#{$i * 2} {
+    gap: #{$i * 0.125}rem;
   }
 }
 
@@ -165,6 +183,10 @@ body {
 
 .max-height {
   height: 100%;
+}
+
+.max-height-vh {
+  height: 100vh;
 }
 
 .padded-top {

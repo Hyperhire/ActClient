@@ -11,7 +11,7 @@ const OrganizationDonation = ({ setOption }) => {
   return (
     <div className="col">
       OrganizationDonation
-      <ActButton handleOnClick={() => navigate(`./../payment`)} label="결제하기" />
+      <ActButton handleOnClick={() => navigate(`./../payment`, { state: { type: 0, amount: 0 } })} label="결제하기" />
     </div>
   );
 };

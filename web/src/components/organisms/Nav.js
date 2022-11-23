@@ -21,12 +21,8 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   const auth = useRecoilValue(authAtom);
   const { logout } = useLogin();
   const userInfo = getItem(USER_INFO);
-  console.log('userInfo', userInfo);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log('option', option);
-  const rootRef = useRef();
-  const { width, height } = useResize(rootRef);
 
   const PAGES = [
     { url: '/organization', name: '단체찾기' },
@@ -63,16 +59,31 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
                   <div className="flex-2">4/15건</div>
                 </div>
               </div>
-              <div className="row background-kakao right-16">
-                <div className="col flex-1 justify-center align-center">
+              <div className="row right-16">
+                <div
+                  className="col flex-1 justify-center align-center link"
+                  onClick={() => {
+                    navigate('my/profile');
+                  }}
+                >
                   <div>아이콘</div>
                   <div>프로필정보</div>
                 </div>
-                <div className="col flex-1 justify-center align-center">
+                <div
+                  className="col flex-1 justify-center align-center link"
+                  onClick={() => {
+                    navigate('my/paymentHistory');
+                  }}
+                >
                   <div>아이콘</div>
                   <div>결제내역</div>
                 </div>
-                <div className="col flex-1 justify-center align-center">
+                <div
+                  className="col flex-1 justify-center align-center link"
+                  onClick={() => {
+                    navigate('my/donationHistory');
+                  }}
+                >
                   <div>아이콘</div>
                   <div>후원내역</div>
                 </div>
@@ -118,7 +129,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   };
 
   return (
-    <div ref={rootRef} className="max-width padding-row-8">
+    <div className="max-width padding-row-8">
       <header className="nav-wrapper row align-center flex-auto ">
         <div className="nav max-width flex-auto header-zindex">
           <div className="nav-inside row align-center justify-between ">

@@ -299,6 +299,13 @@ small {
   }
 }
 
+@for $i from 0 through 60 {
+  .font-size-rem-#{$i} {
+    font-size: #{$i}rem;
+  }
+}
+
+
 .text-wrap {
   word-wrap: break-word;
 }
