@@ -136,7 +136,7 @@ html, body, #root, .App {
     width: #{$i * 0.125}rem;
   }
 
-  .width-vw#{$i} {
+  .width-vw-#{$i} {
     width: #{$i}vw;
   }
 
@@ -144,7 +144,7 @@ html, body, #root, .App {
     height: #{$i * 0.125}rem;
   }
 
-  .height-vh#{$i} {
+  .height-vh-#{$i} {
     height: #{$i}vh;
   }
 
@@ -610,4 +610,8 @@ html, body, #root, .App {
 
 .sign-up-hover:hover {
   color: $white !important
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
 }

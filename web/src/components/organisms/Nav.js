@@ -129,7 +129,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   };
 
   return (
-    <div className="max-width padding-row-8">
+    <div className="max-width padding-row-16">
       <header className="nav-wrapper row align-center flex-auto ">
         <div className="nav max-width flex-auto header-zindex">
           <div className="nav-inside row align-center justify-between ">
@@ -147,8 +147,8 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           </div>
         </div>
       </header>
-      <div className="subtitle-wrapper col padding-col-16">
-        <div className="subtitle bold half-width">{option.subtitle}</div>
+      <div className="subtitle-wrapper col padding-col-16 gap-16">
+        <div className="subtitle bold max-width pre-wrap">{option.subtitle}</div>
         <div className="description">{option.description}</div>
       </div>
       <SwipeableDrawer

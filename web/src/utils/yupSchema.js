@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
-// signup, profile update
+// sign up, profile update
 export const signUpYup = yup.object().shape({
-  userId: yup.string().required('').email('이메일 형식이 올바르지 않습니다.'),
+  userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
   userNickName: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
   userPassword: yup
     .string()
@@ -25,7 +25,7 @@ export const signUpYup = yup.object().shape({
 
 // login
 export const loginYup = yup.object().shape({
-  userId: yup.string().required('아이디를 입력해주세요.').max(12, '아이디는 12자리 이하여야 합니다.').min(4, '아이디는 4자리 이상이어야 합니다.'),
+  userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
   userPassword: yup
     .string()
     .required('비밀번호를 입력해주세요.')
@@ -33,4 +33,9 @@ export const loginYup = yup.object().shape({
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
     .matches(/^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/, '특수문자가 포함되어야 합니다.'),
   isSave: yup.boolean(),
+});
+
+// find password
+export const findPasswordYup = yup.object().shape({
+  userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
 });

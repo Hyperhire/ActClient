@@ -3,44 +3,27 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Controller } from 'react-hook-form';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
 import ActButton from './ActButton';
 
 const ActInput = (props, ref) => {
-  const {
-    type = 'text',
-    fontSize = 18,
-    required,
-    info,
-    id,
-    label = 'label',
-    errors,
-    control,
-    placeholder,
-    disabled,
-    eyeHandler,
-    duplicateHandler,
-    options,
-    handleDataPicker,
-    params,
-    handleChange,
-  } = props;
-
+  const { type = 'text', fontSize = 18, required, info, id, label, errors, control, placeholder, disabled, eyeHandler, duplicateHandler, options, handleDataPicker, params, handleChange } = props;
+  const isError = JSON.stringify(errors) !== '{}';
   return (
     <div className="col max-width align-start justify-center padding-col-8">
-      <div className="row align-center">
-        <div>{label}</div>
-        {required ? <div className="red row align-center">*</div> : null}
-        {info && (
-          <div className="left-4 row align-center">
-            <InfoOutlinedIcon fontSize="1rem" />
-          </div>
-        )}
-      </div>
+      {label && (
+        <div className="row align-center">
+          <div>{label}</div>
+          {required ? <div className="red row align-center">*</div> : null}
+          {info && (
+            <div className="left-4 row align-center">
+              <InfoOutlinedIcon fontSize="1rem" />
+            </div>
+          )}
+        </div>
+      )}
       <div className="row max-width align-center">
         <Controller
           control={control}
@@ -54,17 +37,21 @@ const ActInput = (props, ref) => {
                 type={type}
                 variant="outlined"
                 sx={{
-                  '& fieldset': { borderRadius: 0, border: 'none', borderBottom: 'solid 1px black' },
+                  '& fieldset': { borderRadius: 0, border: 'none', borderBottom: isError ? 'solid 1px red' : 'solid 1px black' },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                      borderColor: 'black',
+                      border: 'none',
+                      borderBottom: isError ? 'solid 1px red' : 'solid 1px black',
+                      // borderColor: isError ? 'red' : 'black',
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: 'yellow',
+                      border: 'none',
+                      borderBottom: isError ? 'solid 1px red' : 'solid 1px yellow',
+                      // borderColor: isError ? 'red' : 'black',
                     },
                   },
                   '&.MuiTextField-root': {
-                    borderColor: 'black',
+                    borderColor: isError ? 'red' : 'black',
                   },
                 }}
                 inputProps={{
