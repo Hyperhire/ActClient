@@ -52,7 +52,7 @@ const Faq = ({ setOption }) => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
               <text className="flex-auto font-size-16 font-weight-500 poppins">{faq.title}</text>
             </AccordionSummary>
-            <AccordionDetails className="background-neutrals-2">
+            <AccordionDetails className="background-box">
               <text className="font-size-16 font-weight-500 poppins">{faq.description}</text>
             </AccordionDetails>
           </Accordion>

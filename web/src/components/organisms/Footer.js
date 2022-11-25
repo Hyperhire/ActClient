@@ -15,13 +15,13 @@ const Footer = () => {
         <div className="content col align-start justify-center font-weight-300 padding-16">
           <div className="menus row justify-between bottom-16">
             <li className="menu-item inline-block">
-              <a href="https://cojam.gitbook.io/cojam-nft/terms-of-condition" target="_blank" rel="noreferrer noopener" className="name neutrals-2 neutrals-1-hover link font-size-14">
+              <a href="https://cojam.gitbook.io/cojam-nft/terms-of-condition" target="_blank" rel="noreferrer noopener" className="name  link font-size-14">
                 서비스 이용약관
               </a>
             </li>
             <div className="light-grey left-4 right-4">|</div>
             <li className="menu-item inline-block">
-              <a href="https://cojam.gitbook.io/cojam-nft/privacy" target="_blank" rel="noreferrer noopener" className="name neutrals-2 neutrals-1-hover link font-size-14">
+              <a href="https://cojam.gitbook.io/cojam-nft/privacy" target="_blank" rel="noreferrer noopener" className="name link font-size-14">
                 개인정보처리방침
               </a>
             </li>

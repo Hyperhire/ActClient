@@ -63,7 +63,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
                   <div className="flex-2">4/15건</div>
                 </div>
               </div>
-              <div className="row background-kakao right-16">
+              <div className="row right-16">
                 <div className="col flex-1 justify-center align-center">
                   <div>아이콘</div>
                   <div>프로필정보</div>
@@ -120,7 +120,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   return (
     <div ref={rootRef} className="max-width padding-row-8">
       <header className="nav-wrapper row align-center flex-auto ">
-        <div className="nav max-width flex-auto header-zindex">
+        <div className="nav max-width flex-auto">
           <div className="nav-inside row align-center justify-between ">
             <div className="flex-1">{option.back ? <Back size="1rem" /> : <div>ACT</div>}</div>
             <div className="flex-1">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>

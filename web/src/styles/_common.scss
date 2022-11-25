@@ -17,7 +17,7 @@ body {
 
   overscroll-behavior-y: none;
   scroll-behavior: smooth;
-  color: $neutrals-1;
+  color: $primary;
 }
 
 ::-webkit-scrollbar {
@@ -229,7 +229,7 @@ body {
   &::-webkit-scrollbar-thumb {
     height: 10%;
     border-radius: 10px;
-    background: $neutrals-4;
+    background: $out-line;
   }
 
   &::-webkit-scrollbar-track {
@@ -246,20 +246,9 @@ body {
 }
 
 .bordered {
-  border: solid 2px $primary;
+  border: solid 1px $out-line;
 }
 
-.light-bordered {
-  border: solid 1px $primary;
-}
-
-.bordered-light-grey {
-  border: solid 1px $neutrals-2;
-}
-
-.bordered-line-light-grey {
-  border: solid 1px $neutrals-5;
-}
 
 .bordered-line-placeholder {
   border: solid 1px $placeholder;
@@ -270,15 +259,15 @@ body {
 }
 
 .border-top {
-  border-top: solid 1px $neutrals-5;
+  border-top: solid 1px $out-line;
 }
 
 .border-bottom {
-  border-bottom: solid 1px $neutrals-5;
+  border-bottom: solid 1px $out-line;
 }
 
 .border-bottom-thicker {
-  border-bottom: solid 2px $neutrals-5;
+  border-bottom: solid 2px $out-line;
 }
 
 .border-50 {
@@ -286,11 +275,11 @@ body {
 }
 
 .divider {
-  border-bottom: solid 1px #000000;
+  border-bottom: solid 1px $divider;
 }
 
 .vertical-divider {
-  border-right: solid 2px #000000;
+  border-right: solid 2px $divider;
 }
 
 .object-fit-cover {
@@ -377,82 +366,38 @@ body {
   background-color: #ffffff;
 }
 
-.background-primary {
-  background-color: $primary;
-}
-
 .background-secondary {
   background-color: $secondary;
 }
-
-.background-neutrals-2 {
-  background-color: $neutrals-2;
+.background-tertiary {
+  background-color: $tertiary;
 }
-
-.background-neutrals-4 {
-  background-color: $neutrals-4;
+.background-box {
+  background-color: $out-line;
 }
-
-.background-neutrals-5 {
-  background-color: $neutrals-5;
-}
-
-.background-neutrals-6 {
-  background-color: $neutrals-6;
-}
-
-.background-neutrals-7 {
-  background-color: $neutrals-7;
-}
-
-.background-featured-background {
-  background-color: $featured-background;
-}
-
-.background-kakao {
-  background-color: $kakao-yellow;
-}
-
-.background-user-board-list-title {
-  background-color: $user-board-list-title-bg;
-}
-
 .background-test1 {
-  background-color: $clicked-heart;
+  background-color: yellow;
 }
 
 .background-test2 {
-  background-color: $bsc;
+  background-color: yellowgreen;
 }
 
 .background-test3 {
-  background-color: $hunt;
+  background-color: cadetblue;
 }
 .background-test4 {
-  background-color: $pancake;
+  background-color: indianred;
 }
 .background-test5 {
-  background-color: $eth;
+  background-color: forestgreen;
 }
-
-.list-divider {
-  background-color: $list-divider;
-}
-
 
 .background-primary-hover {
   transition: 150ms background-color ease-in;
 
   &:hover {
-    background-color: $primary-dark;
-  }
-}
-
-.background-white-hover {
-  transition: 150ms background-color ease-in;
-
-  &:hover {
-    background-color: $neutrals-6;
+    background-color: $dimmed-bg;
   }
 }
 
@@ -478,35 +423,21 @@ body {
   height: 1px;
 }
 
-.placeholder-neutrals-4 {
+.placeholder {
   &::placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
     opacity: 1;
   }
 
   &:-ms-input-placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
   }
 
   &::-ms-input-placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
   }
 }
 
-.placeholder-neutrals-1 {
-  &::placeholder {
-    color: $neutrals-1;
-    opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    color: $neutrals-1;
-  }
-
-  &::-ms-input-placeholder {
-    color: $neutrals-1;
-  }
-}
 
 .button-focused-none {
   &:focus {
@@ -514,9 +445,9 @@ body {
   }
 }
 
-.bottun-focused-neutrals-1 {
+.button-focused {
   &:focus {
-    outline: $neutrals-1 2px solid;
+    outline: $placeholder 2px solid;
   }
 }
 
@@ -532,17 +463,6 @@ body {
   &:hover {
     box-shadow: rgba(100, 100, 100, 0.2) 0px 1px 8px 0px;
   }
-}
-
-.full-screen-invisible {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: 'red';
 }
 
 .z-1 {
@@ -576,14 +496,6 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.header-zindex {
-  z-index: $header-zindex;
-}
-
-.modal-zindex {
-  z-index: $modal-zindex;
 }
 
 .sign-up-hover:hover {

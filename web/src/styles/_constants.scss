@@ -1,50 +1,14 @@
-$primary: #45A1DB;
-$primary-dark: #457cdb;
-$primary-2: #29c26b;
-$secondary: #ffb706;
+$primary: #000000;
+$secondary: #efefef;
+$tertiary:#fdd22c;
+$success: #548fcc;
+$danger: #ff5847;
 $white: #ffffff;
-$secondary-orange: #ffb73a;
-$secondary-blue: #30c0f4;
-$secondary-red: #ff312d;
-$secondary: #ffb73a;
-$kakao-yellow: #fee500;
-$kakao-label: #000000 85%;
-$list-divider: #000000 6%;
-$neutrals-1: #222222;
-$neutrals-2: #777777;
-$neutrals-3: #9e9e9e;
-$neutrals-4: #c4c4c4;
-$neutrals-5: #e1e1e1;
-$neutrals-6: #f4f4f4;
-$neutrals-7: #fafafa;
-$icon-black: #3f3b3b;
-$footer-black: #181a1b;
-$text-grey: #848795;
-$wishlist-green: rgba(22, 170, 86, 0.1);
-$featured-background: rgba(69, 161, 219, 0.05);
-$clicked-heart: #f9595f;
-$user-board-list-title-bg: #e9e9e9;
-$bsc: #f0b90b;
-$hunt: #fc6f6f;
-$pancake: #d1884f;
-$eth: #627eea;
-$text-light-grey: #828589;
-$placeholder: #e6e6e6;
-$indigo: #1d2088;
-$bg: #141415;
-$warning: #e02020;
-$discord-zindex: 8;
-$header-zindex: 9;
-$component-zindex: 10;
-$modal-zindex: 10;
-$connected-wallet-zindex: 99999;
-$mobile-menu-zindex: 99998;
-$loading-zindex: 999999;
-$modal-zindex: 9999999;
-$wrong-network-zindex: 99999999;
-$mobile-width: 425px;
-$min-card: 364px;
-//$col-1: 364px;
-//$col-2: 760px;
-//$col-3: 1156px;
-//$col-4: 1552px;
+$divider: #f5f5f5; //구분선
+$out-line: #efefef; //외곽선, BG box
+$disable-bg: #e1e1e1; //비활성 버튼, 라인
+$placeholder: #c8c8c8; //플레이스 홀더 및 중요도가 낮은 버튼(아이콘)
+$caption: #949494; //하단 캡션
+$body-text: #777777; //제목 본문등의 일반텍스트보다 중요다가 낮은 요소
+$title-text: #000000;
+$dimmed-bg: rgba(0, 0, 0, 0.7);

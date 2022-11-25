@@ -3,10 +3,10 @@
   width: 100%;
   .nav {
     .logout {
-      border: $neutrals-5 1px solid;
+      border: $out-line 1px solid;
 
       &:hover {
-        outline: $neutrals-2 1px solid;
+        outline: $out-line 1px solid;
       }
     }
     .hamburger {
@@ -24,7 +24,7 @@
   }
   .description {
     font-size: 1rem;
-    color: $neutrals-2;
+    color: $body-text;
   }
 }
 .activate-menu {

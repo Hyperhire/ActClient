@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Routes from './Routes';
 import useApiError from 'hooks/useApiError';
-import Faq from './pages/faq';
 window.onload = function () {
   localStorage.clear();
 };

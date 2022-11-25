@@ -1,5 +1,5 @@
 .footer-wrapper {
-  border-top: $neutrals-5 1px solid;
+  border-top: $out-line 1px solid;
   .footer {
     .content {
       height: 80px;
@@ -27,7 +27,7 @@
       }
 
       .menu-item + .menu-item::before {
-        color: $neutrals-3;
+        color: $out-line;
         content: '|';
         padding-right: 0.5rem;
         padding-left: 0.5rem;

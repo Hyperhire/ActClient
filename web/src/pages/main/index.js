@@ -4,6 +4,6 @@ const Main = ({ setOption }) => {
   useEffect(() => {
     setOption({ title: '', back: false, menu: true });
   }, [setOption]);
-  return <div className="header-zindex">main page</div>;
+  return <div>main page</div>;
 };
 export default Main;
