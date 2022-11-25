@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const Faq = ({ setOption }) => {
   useEffect(() => {
     setOption({ title: '', subtitle: 'FAQ', description: '', back: true, menu: true });
+    return () => setOption({});
   }, [setOption]);
   const faqs = [
     {

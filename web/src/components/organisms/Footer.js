@@ -1,11 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Facebook, Instagram } from '@mui/icons-material';
-import { ReactComponent as Logo } from 'assets/images/logos/cojam_logo.svg';
-import { ReactComponent as Medium } from 'assets/images/social/medium.svg';
-// import { ReactComponent as Facebook } from 'assets/images/social/facebook.svg';
-// import { ReactComponent as Instagram } from 'assets/images/social/instagram.svg';
-import { ReactComponent as Twitter } from 'assets/images/social/twitter.svg';
 
 const Footer = () => {
   const navigate = useNavigate();

@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
-const Organization = ({ setOption }) => {
-  useEffect(() => {
-    setOption({ title: '', subtitle: '', description: '', back: true, menu: true });
-  }, [setOption]);
+const OrganizationBase = ({ setOption }) => {
   return (
-    <div>
+    <div className="max-width max-height">
       <Outlet setOption={setOption} />
     </div>
   );
 };
-export default Organization;
+export default OrganizationBase;

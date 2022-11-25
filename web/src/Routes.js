@@ -4,10 +4,6 @@ import { useLocation, Routes, Route } from 'react-router-dom';
 import RouteSwitch from './RouteSwitch';
 import Loading from 'components/atoms/Loading';
 
-// import useAuth from 'hooks/useAuth';
-// const SignIn = lazy(() => import('pages/Connect/Login/index'));
-// const SignUp = lazy(() => import('pages/Connect/Register/index'));
-
 const Routers = () => {
   const location = useLocation();
 
@@ -19,8 +15,6 @@ const Routers = () => {
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/*" element={<RouteSwitch />} />
-        {/*<Route path="/connect" element={<SignIn />} />*/}
-        {/*<Route path="/connect/register" element={<SignUp />} />*/}
       </Routes>
     </Suspense>
   );

@@ -7,7 +7,7 @@ const Back = ({ size }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="link row left-16 align-center justify-center" onClick={() => navigate(-1)}>
+    <div className="link row align-center justify-center" onClick={() => navigate(-1)}>
       <ArrowBackIosIcon sx={{ fontSize: size }} />
     </div>
   );

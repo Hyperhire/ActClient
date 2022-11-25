@@ -1,7 +1,14 @@
 import React from 'react';
-const ActButton = ({ label, handleOnClick }) => {
+const ActButton = ({ type = 'button', className, label, handleOnClick, disabled }) => {
   return (
-    <button onClick={handleOnClick} className="height-40 padding-row-12 padding-col-8 bottom-16 border-none border-radius-10 background-primary white background-primary-hover link">
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={handleOnClick}
+      className={`padding-row-12 padding-col-8 border-none border-radius-6 ${disabled ? 'disabled background-neutrals-4 white' : 'background-primary white background-primary-hover link'} ${
+        className && className
+      }`}
+    >
       <div>{label}</div>
     </button>
   );

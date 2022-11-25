@@ -144,3 +144,10 @@ button {
   cursor: pointer;
   outline: inherit;
 }
+
+input[type='text']:focus{
+  outline: none 0 !important;
+}
+input[type='password']:focus{
+  outline: none 0 !important;
+}
