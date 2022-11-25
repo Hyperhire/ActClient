@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
-import { signUpYup } from 'utils/yupSchema';
+import { profileUpdateYup, signUpYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import { getItem, USER_INFO } from 'utils/sessionStorage';
 import ActButton from 'components/atoms/ActButton';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActDatePicker from '../../components/atoms/ActDatePicker';
+import { GENDER } from '../../constants/constant';
+import ActSelect from '../../components/atoms/ActSelect';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
@@ -18,17 +20,17 @@ const Profile = ({ setOption }) => {
     setOption({ title: '프로필 정보', subtitle: '계정 정보', description: '', back: true, menu: false });
   }, [setOption]);
 
-  const signUpDefaultForm = {
+  const profileUpdateDefaultForm = {
     userId: '',
     userNickName: '',
     userPassword: '',
     userPasswordCheck: '',
     userName: '',
-    userBirthday: '',
+    userBirthday: undefined,
     userGender: '',
     userMobile: '',
   };
-  const formOptions = { mode: 'onChange', defaultValues: signUpDefaultForm, resolver: yupResolver(signUpYup) };
+  const formOptions = { mode: 'onChange', defaultValues: profileUpdateDefaultForm, resolver: yupResolver(profileUpdateYup) };
 
   const {
     control,
@@ -54,24 +56,6 @@ const Profile = ({ setOption }) => {
     console.log('onDuplicateNicknameHandler');
   };
 
-  const currencies = [
-    {
-      value: 'USD',
-      label: '$',
-    },
-    {
-      value: 'EUR',
-      label: '€',
-    },
-    {
-      value: 'BTC',
-      label: '฿',
-    },
-    {
-      value: 'JPY',
-      label: '¥',
-    },
-  ];
   return (
     <div className="col max-width padding-8">
       <NavigationGuard
@@ -132,13 +116,11 @@ const Profile = ({ setOption }) => {
               <ActDatePicker register={register} id="userBirthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} />
             </div>
             <div className="row flex-1 ">
-              <ActInput {...register('userGender')} type="select" label="성별" id="userGender" errors={errors} control={control} options={currencies} />
+              <ActSelect register={register} id="userGender" label="성별" errors={errors} control={control} options={GENDER} />
             </div>
           </div>
           <ActInput {...register('userMobile')} type="number" id="userMobile" label="휴대폰번호" required={true} placeholder="- 없이 입력해주세요" errors={errors} control={control} />
-          <div className="row align-center">
-            <ActButton type="submit" label="프로필 수정 완료" />
-          </div>
+          <ActButton className="max-width top-16" disabled={!isValid} type="submit" label="프로필 수정 완료" />
         </form>
       </div>
     </div>

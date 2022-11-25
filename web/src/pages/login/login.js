@@ -12,7 +12,7 @@ import { loginYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 
-const LoginMain = ({ setOption }) => {
+const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const { login } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
@@ -81,7 +81,7 @@ const LoginMain = ({ setOption }) => {
           <div
             className="link"
             onClick={() => {
-              navigate('register');
+              navigate('/register');
             }}
           >
             회원가입
@@ -100,4 +100,4 @@ const LoginMain = ({ setOption }) => {
     </div>
   );
 };
-export default LoginMain;
+export default Login;

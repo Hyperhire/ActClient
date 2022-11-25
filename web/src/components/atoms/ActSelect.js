@@ -1,22 +1,10 @@
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import React, { forwardRef } from 'react';
 
-const ActSelect = ({ register, name, errors, options }) => {
-  return (
-    <div>
-      <TextField select fullWidth defaultValue="" inputProps={{ ...register(name) }} error={errors[name]} helperText={errors[name]?.message}>
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
+import ActInput from './ActInput';
 
-        {options.map(option => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
-    </div>
-  );
+const ActSelect = props => {
+  const { register, id } = props;
+  return <ActInput {...register(id)} type="select" {...props} />;
 };
 
 export default ActSelect;

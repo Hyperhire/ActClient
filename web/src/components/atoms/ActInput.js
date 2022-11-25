@@ -10,7 +10,7 @@ import ActButton from './ActButton';
 
 const ActInput = (props, ref) => {
   const { type = 'text', fontSize = 18, required, info, id, label, errors, control, placeholder, disabled, eyeHandler, duplicateHandler, options, handleDataPicker, params, handleChange } = props;
-  const isError = JSON.stringify(errors) !== '{}';
+  const isError = JSON.stringify(errors) !== '{}' && errors[id];
   return (
     <div className="col max-width align-start justify-center padding-col-8">
       {label && (
@@ -47,7 +47,6 @@ const ActInput = (props, ref) => {
                     '&.Mui-focused fieldset': {
                       border: 'none',
                       borderBottom: isError ? 'solid 1px red' : 'solid 1px yellow',
-                      // borderColor: isError ? 'red' : 'black',
                     },
                   },
                   '&.MuiTextField-root': {
