@@ -1,51 +1,47 @@
 .footer-wrapper {
   border-top: $out-line 1px solid;
-  .footer {
-    .content {
-      height: 80px;
-      @include responsive(foldable) {
-        flex-wrap: wrap;
-      }
-      .menus {
-        display: flex;
-        align-items: center;
-        @include responsive(foldable) {
-          align-items: baseline;
-          flex-direction: column;
-        }
-        .guideline {
-          margin-left: 3rem;
-          @include responsive(foldable) {
-            margin-top: 0.5rem;
-            margin-left: 0;
-          }
-        }
-      }
-
-      .logo {
-        margin-top: 5px;
-      }
-
-      .menu-item + .menu-item::before {
-        color: $out-line;
-        content: '|';
-        padding-right: 0.5rem;
-        padding-left: 0.5rem;
-      }
-
-      .icon + .icon::before {
-        content: ' ';
-        padding-right: 0.7rem;
-        padding-left: 0.7rem;
-      }
-
-      .icon-group {
-        margin-top: auto;
-        margin-bottom: auto;
-        @include responsive(foldable) {
-          margin-top: 0.5rem;
-        }
-      }
+  background: white;
+  display: flex;
+  flex-direction: column;
+  @extend .padding-24;
+  .footer-terms-privacy-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    @extend .bottom-24;
+    @extend .gap-8;
+    .terms-privacy-label {
+      @extend .body-small;
+      color: $caption;
     }
+  }
+  .business-information-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    .business-information-label{
+      @extend .body-small;
+      color: $title-text;
+    }
+  }
+  .copyright-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    @extend .bottom-24;
+    .copyright-label{
+      @extend .body-small;
+      color: $title-text;
+    }
+  }
+  .icon-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    @extend .gap-8
   }
 }

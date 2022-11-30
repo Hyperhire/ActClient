@@ -1,0 +1,50 @@
+.act-image-upload-button-wrapper {
+  display: flex;
+  width: 100%;
+  height: 5rem;
+  align-items: center;
+  padding: 24px;
+  @extend .bordered;
+  border-radius: 8px;
+  .act-image-upload-button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    .button-label {
+      @extend .body-medium;
+      span {
+        @extend .bold;
+      }
+    }
+    .button-thumbnail {
+      position: relative;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      justify-content: end;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      .delete-button {
+        @extend .link;
+        position: absolute;
+        width: 1.5rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url("../../../styles/assets/icons/del.svg");
+      }
+    }
+    .button-upload {
+      @extend .link;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 20px;
+      background: black;
+    }
+  }
+}

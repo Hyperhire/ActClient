@@ -243,15 +243,31 @@ html, body, #root, .App {
   overflow-y: scroll;
 }
 
-.overflow-x-scrollbar {
+.overflow-y-scrollbar {
   &::-webkit-scrollbar {
-    width: 1px;
+    width: 2px;
+    background: white;
   }
 
   &::-webkit-scrollbar-thumb {
     height: 10%;
-    border-radius: 10px;
-    background: $out-line;
+    background: black;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.overflow-x-scrollbar {
+  &::-webkit-scrollbar {
+    height: 4px;
+    background: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 4px;
+    background: black;
   }
 
   &::-webkit-scrollbar-track {
@@ -304,8 +320,12 @@ html, body, #root, .App {
   border-bottom: solid 1px lightgrey;
 }
 
+.divider-light-red {
+  border-bottom: solid 1px red;
+}
+
 .vertical-divider {
-  border-right: solid 2px $divider;
+  border-right: solid 1px $divider;
 }
 
 .object-fit-cover {
@@ -391,7 +411,9 @@ html, body, #root, .App {
 .background-white {
   background-color: #ffffff;
 }
-
+.background-black {
+  background-color: black;
+}
 .background-secondary {
   background-color: $secondary;
 }

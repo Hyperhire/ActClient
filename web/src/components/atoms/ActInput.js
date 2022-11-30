@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState, useEffect } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 import { Controller } from 'react-hook-form';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -7,29 +7,39 @@ import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import ActButton from './ActButton';
-
+import { ReactComponent as RedStar } from 'styles/assets/icons/star/red.svg';
+import { ReactComponent as ToolTip } from 'styles/assets/icons/tooltip.svg';
+import DuplicateButton from './duplicateButton';
 const ActInput = (props, ref) => {
-  const { type = 'text', fontSize = 18, required, info, id, label, errors, control, placeholder, disabled, eyeHandler, duplicateHandler, options, handleDataPicker, params, handleChange } = props;
-  const isError = JSON.stringify(errors) !== '{}' && errors[id];
+  const { type = 'text', fontSize = 18, required, info = true, id, label, errors, isValid, control, placeholder, disabled, eyeHandler, duplicateMessage, options, params, fieldState } = props;
+  const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
+  const [duplicatedResult, setDuplicatedResult] = useState({ message: duplicateMessage, result: undefined });
+
+  useEffect(() => {
+    if (isError) {
+      setDuplicatedResult({ ...duplicatedResult, result: undefined });
+    }
+  }, [isError]);
+
+  const onResultCallBack = result => {
+    setDuplicatedResult(result);
+  };
+
   return (
-    <div className="col max-width align-start justify-center padding-col-8">
+    <div className="act-input-wrapper ">
       {label && (
-        <div className="row align-center">
-          <div>{label}</div>
-          {required ? <div className="red row align-center">*</div> : null}
-          {info && (
-            <div className="left-4 row align-center">
-              <InfoOutlinedIcon fontSize="1rem" />
-            </div>
-          )}
+        <div className="label-wrapper">
+          <div className="label">{label}</div>
+          {required ? <RedStar /> : null}
+          {info && <ToolTip />}
         </div>
       )}
-      <div className="row max-width align-center">
+      <div className="text-field-area-wrapper">
         <Controller
           control={control}
           name={id}
           render={({ field }) => (
-            <div className="row align-center max-width" ref={params && params.inputRef}>
+            <div className="text-field-wrapper" ref={params && params.inputRef}>
               <TextField
                 ref={ref}
                 select={type === 'select'}
@@ -52,8 +62,14 @@ const ActInput = (props, ref) => {
                   '&.MuiTextField-root': {
                     borderColor: isError ? 'red' : 'black',
                   },
+                  padding: 0,
                 }}
                 inputProps={{
+                  style: {
+                    padding: 0,
+                    paddingTop: 8,
+                    paddingBottom: 8,
+                  },
                   ...params?.inputProps,
                 }}
                 placeholder={placeholder}
@@ -68,10 +84,10 @@ const ActInput = (props, ref) => {
                         <VisibilityOutlinedIcon fontSize="1rem" />
                       </div>
                     </InputAdornment>
-                  ) : duplicateHandler ? (
+                  ) : duplicateMessage ? (
                     <InputAdornment position="end">
-                      <div className="row align-center">
-                        <ActButton label="중복확인" disabled={disabled} handleOnClick={duplicateHandler} />
+                      <div className="duplication-button-wrapper">
+                        <DuplicateButton id={id} label="중복" resultCallBack={onResultCallBack} disabled={fieldState.invalid} />
                       </div>
                     </InputAdornment>
                   ) : (
@@ -92,7 +108,11 @@ const ActInput = (props, ref) => {
           )}
         />
       </div>
-      <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />
+      {isError ? (
+        <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
+      ) : (
+        duplicatedResult.result && <div className="success-text">{duplicateMessage}</div>
+      )}
     </div>
   );
 };

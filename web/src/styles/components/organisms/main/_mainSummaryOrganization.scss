@@ -1,0 +1,86 @@
+.main-summary-organization-wrapper {
+  width: 100%;
+  background: rgba(194, 189, 145, 0.2);
+  .list-wrapper {
+    display: flex;
+    flex-direction: column;
+    @extend .left-24;
+    .item-scroll-wrapper {
+      display: flex;
+      width: 100%;
+      @extend .overflow-x-scroll;
+      @extend .overflow-x-scrollbar;
+      @extend .gap-48;
+      .item-wrapper {
+        display: flex;
+        flex-direction: column;
+        @extend .gap-16;
+        @extend .bottom-48;
+        .item-image {
+          width: 50vw;
+          position: relative;
+          img {
+            display: block;
+            width: 100%;
+            height: auto;
+          }
+          .organization-icon-bottom {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            //.anchor-bottom {
+            //  background: #548fcc;
+            //  top: 100px;
+            //}
+          }
+          .organization-icon-top {
+            position: absolute;
+            right: 0;
+            top:0;
+            //.anchor-bottom {
+            //  background: #548fcc;
+            //  top: 100px;
+            //}
+          }
+        }
+        .item-title-wrapper {
+          display: flex;
+          @extend .gap-8;
+          .item-title {
+            @extend .title-small;
+            color: $title-text;
+          }
+          .item-chip {
+            align-items: center;
+            justify-content: center;
+          }
+        }
+        .item-description {
+          @extend .body-medium;
+          color: $body-text;
+        }
+      }
+    }
+  }
+  .view-all-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @extend .top-24;
+    @extend .bottom-24;
+    .view-all-button {
+      display: flex;
+      width: 9.875rem;
+      height: 2.5rem;
+      background: white;
+      border-radius: 20px;
+      align-items: center;
+      justify-content: center;
+      @extend .gap-8;
+      .label {
+        @extend .body-medium;
+        color: $title-text;
+      }
+    }
+  }
+}

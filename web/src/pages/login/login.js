@@ -71,7 +71,7 @@ const Login = ({ setOption }) => {
             <FormControlLabel control={<Checkbox {...register('isSave')} id="isSave" defaultChecked />} label="아이디저장" />
           </FormGroup>
           <div className="row align-center">
-            <ActButton type="submit" disabled={!isValid} label="로그인" />
+            <ActButton type="submit" disabled={!isValid} label="로그인" className="primary-button-x-large" />
           </div>
         </div>
       </form>

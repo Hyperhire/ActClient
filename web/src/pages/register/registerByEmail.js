@@ -8,11 +8,14 @@ import { signUpYup } from 'utils/yupSchema';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActButton from 'components/atoms/ActButton';
 import ActCheckBoxGroup from 'components/atoms/ActCheckBoxGroup';
+import ActToggleButton from '../../components/atoms/ActToggleButton';
+import ActDropDown from '../../components/atoms/ActDropDown';
+import ActImageUploadButton from 'components/atoms/ActImageUploadButton';
 
 const RegisterByEmail = ({ setOption }) => {
   const { type } = useParams();
   const [activeGuard, setActiveGuard] = useState(false);
-
+  const [uploadedImages, setUploadedImages] = useState();
   const [checkBoxItems, setCheckBoxItems] = useState([
     {
       key: 0,
@@ -44,8 +47,10 @@ const RegisterByEmail = ({ setOption }) => {
     control,
     register,
     handleSubmit,
+    getFieldState,
     formState: { isDirty, isValid, isSubmitting, errors },
   } = useForm(formOptions);
+
   const onDuplicateIdHandler = () => {
     console.log('onDuplicateIdHandler');
   };
@@ -103,13 +108,14 @@ const RegisterByEmail = ({ setOption }) => {
           placeholder="아이디를 입력하세요"
           errors={errors}
           control={control}
-          duplicateHandler={onDuplicateIdHandler}
+          duplicateMessage="사용가능한 이메일 입니다."
+          fieldState={getFieldState('userId')}
         />
         <div className="row gap-16 max-width align-center justify-around">
-          <div className="row">
+          <div className="row flex-auto">
             <ActInput {...register('userPassword')} label="비밀번호" type="password" id="userPassword" placeholder="새로운 비밀번호 " errors={errors} control={control} />
           </div>
-          <div className="row">
+          <div className="row flex-auto">
             <ActInput {...register('userPasswordCheck')} label="비밀번호 확인" type="password" id="userPasswordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
           </div>
         </div>
@@ -145,6 +151,9 @@ const RegisterByEmail = ({ setOption }) => {
             control={control}
           />
         </div>
+        <ActToggleButton errors={errors} control={control} items={['예', '아니오']} id="select" />
+        <ActDropDown errors={errors} control={control} label="후원상태" items={['메뉴1', '메뉴2', '메뉴3']} id="dropdown" />
+        <ActImageUploadButton uploadedImages={setUploadedImages} />
         <ActButton type="submit" label="회원가입" disabled={!isValid} className="max-width top-16" />
       </form>
     </div>

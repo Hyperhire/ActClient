@@ -12,3 +12,8 @@ export const GENDER = [
     label: '여',
   },
 ];
+
+export const DONATION_HISTORY_TYPE = {
+  ORGANIZATION: 'organization',
+  CAMPAIGN: 'campaign',
+};

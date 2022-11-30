@@ -1,0 +1,64 @@
+.act-button {
+  border-radius: 4px;
+}
+
+.primary-button-x-large {
+  @extend .act-button;
+  width: 19.5rem;
+  height: 3.5rem;
+  @extend .body-large;
+  color: $white;
+  background: $primary;
+  &:disabled {
+    color: $title-text;
+    background: $disable-bg;
+  }
+}
+.primary-button-large {
+  @extend .act-button;
+  width: 19.5rem;
+  height: 3rem;
+  @extend .body-large;
+  color: $white;
+  background: $primary;
+  &:disabled {
+    color: $title-text;
+    background: $disable-bg;
+  }
+}
+.tertiary-button-large {
+  @extend .act-button;
+  width: 19.5rem;
+  height: 3rem;
+  @extend .body-large;
+  color: $title-text;
+  background: $tertiary;
+  &:disabled {
+    color: $white;
+    background: $disable-bg;
+  }
+}
+.button-medium {
+  @extend .act-button;
+  width: 5rem;
+  height: 2.5rem;
+  @extend .body-large;
+  color: $white;
+  background: $primary;
+  &:disabled {
+    color: $white;
+    background: $disable-bg;
+  }
+}
+.button-small {
+  @extend .act-button;
+  width: 4.5rem;
+  height: 2rem;
+  @extend .body-medium;
+  color: $white;
+  background: $primary;
+  &:disabled {
+    color: $white;
+    background: $disable-bg;
+  }
+}

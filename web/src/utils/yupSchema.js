@@ -14,6 +14,7 @@ export const signUpYup = yup.object().shape({
     .required('')
     .oneOf([yup.ref('userPassword'), null], '동일한 비밀번호를 입력해주세요.'),
   agreement: yup.boolean().oneOf([true], ''),
+  select: yup.string().required('선택하셔야 합니다.'),
 });
 
 // profile update
@@ -55,3 +56,8 @@ export const loginYup = yup.object().shape({
 export const findPasswordYup = yup.object().shape({
   userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
 });
+
+// attachment: mixed().test("fileSize", "The file is too large", (value) => {
+//   if (!value.length) return true // attachment is optional
+//   return value[0].size <= 2000000
+// }),

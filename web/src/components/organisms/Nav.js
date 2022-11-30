@@ -1,16 +1,13 @@
 import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { ReactComponent as Logo } from 'assets/images/logos/cojam_logo.svg';
-import { ReactComponent as Hamburger } from 'assets/images/icons/hamburger.svg';
-import useResize from 'hooks/useResize';
+import { useRecoilValue } from 'recoil';
+import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
+import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
 import Back from 'components/atoms/Back';
 import { authAtom } from 'state';
 import useLogin from '../../hooks/useLogin';
@@ -129,11 +126,11 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   };
 
   return (
-    <div className="max-width padding-row-16">
-      <header className="nav-wrapper row align-center flex-auto ">
+    <div className="max-width padding-row-24">
+      <header className="nav-wrapper row align-center flex-auto">
         <div className="nav max-width flex-auto">
-          <div className="nav-inside row align-center justify-between ">
-            <div className="flex-1">{option.back ? <Back size="1rem" /> : <div>ACT</div>}</div>
+          <div className="nav-inside row align-center justify-between">
+            <div className="flex-1">{option.back ? <Back size="1rem" /> : <Logo width="58" height="28" />}</div>
             <div className="flex-1">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
             <div className="flex-1 row max-width align-center justify-end">
               {option.menu ? (
@@ -147,10 +144,13 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           </div>
         </div>
       </header>
-      <div className="subtitle-wrapper col padding-col-16 gap-16">
-        <div className="subtitle bold max-width pre-wrap">{option.subtitle}</div>
-        <div className="description">{option.description}</div>
-      </div>
+      {option.subtitle && (
+        <div className="subtitle-wrapper col padding-col-16 gap-16">
+          <div className="subtitle bold max-width pre-wrap">{option.subtitle}</div>
+          <div className="description">{option.description}</div>
+        </div>
+      )}
+
       <SwipeableDrawer
         PaperProps={{
           sx: { width: '80%' },

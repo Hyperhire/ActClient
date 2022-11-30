@@ -1,0 +1,10 @@
+.acr-faq-wrapper {
+  .acr-faq-title{
+    @extend .title-small;
+    color: $title-text;
+  }
+  .acr-faq-description {
+    @extend .body-medium;
+    color: $title-text;
+  }
+}

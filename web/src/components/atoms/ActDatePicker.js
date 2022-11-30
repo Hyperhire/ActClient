@@ -27,9 +27,9 @@ const ActDatePicker = ({ register, id, errors, control, label }) => {
         renderInput={params => {
           return (
             <ActInput
-              {...register('userBirthday')}
+              {...register(id)}
               id={id}
-              label="생년월일"
+              label={label}
               required
               placeholder="YYMMDD"
               errors={errors}

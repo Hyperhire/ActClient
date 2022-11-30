@@ -1,0 +1,18 @@
+.act-carousel-wrapper {
+  width: 100%;
+  display: flex;
+}
+.act-carousel-indicator {
+  cursor: pointer;
+  width: 6px;
+  height: 6px;
+  background: url("../../../styles/assets/icons/pagination/dot.svg");
+}
+.act-carousel-image {
+  width: 100%;
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}

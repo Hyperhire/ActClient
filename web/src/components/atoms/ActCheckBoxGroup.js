@@ -1,37 +1,31 @@
 import React, { forwardRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import ActCheckBox from './ActCheckBox';
 
 const ActCheckBoxGroup = (props, ref) => {
   const { control, id, items, label, handleChangeChild, handleChange, errors } = props;
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 0 }}>
       {items.map((item, index) => {
-        return <FormControlLabel key={item.label + index} label={item.label} control={<Checkbox disabled checked={item.checked} onChange={e => handleChangeChild(e, item.key)} />} />;
+        return <ActCheckBox key={item.label + index} checked={item.checked} disabled={true} handleChecked={e => handleChangeChild(e, item.key)} label={item.label} />;
       })}
     </Box>
   );
 
   return (
-    <div className="col max-width align-start justify-center padding-col-8">
+    <div ref={ref} className="act-check-box-group">
       <Controller
         name={id}
         control={control}
         render={({ field: { onChange } }) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                ref={ref}
-                checked={items.every(item => item.checked)}
-                onChange={e => {
-                  handleChange(e);
-                  onChange(e.target.checked);
-                }}
-              />
-            }
+          <ActCheckBox
+            checked={items.every(item => item.checked)}
+            handleChecked={e => {
+              handleChange(e);
+              onChange(e.target.checked);
+            }}
             label={label}
           />
         )}
