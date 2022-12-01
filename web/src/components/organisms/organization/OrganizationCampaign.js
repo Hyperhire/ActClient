@@ -8,7 +8,7 @@ import CampaignImage4 from 'styles/assets/images/campaign/img4.png';
 import CampaignImage5 from 'styles/assets/images/campaign/img5.png';
 import { ReactComponent as TwoPerson } from 'styles/assets/icons/2person.svg';
 import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_lg.svg';
-const MainOnGoingCampaign = () => {
+const OrganizationCampaign = () => {
   const navigate = useNavigate();
   const dummy = [
     {
@@ -76,9 +76,9 @@ const MainOnGoingCampaign = () => {
     console.log('campaign');
   };
   return (
-    <div className="main-on-going-campaign-wrapper">
-      <div className="main-on-going-campaign-title-wrapper link" onClick={onClickHandler}>
-        <div className="main-on-going-campaign-title">진행중인 캠페인</div>
+    <div className="organization-on-going-campaign-wrapper">
+      <div className="organization-on-going-campaign-title-wrapper link" onClick={onClickHandler}>
+        <div className="organization-on-going-campaign-title">진행중인 캠페인</div>
         <ArrowRight />
       </div>
       {dummy.map((item, index) => {
@@ -92,4 +92,4 @@ const MainOnGoingCampaign = () => {
     </div>
   );
 };
-export default MainOnGoingCampaign;
+export default OrganizationCampaign;

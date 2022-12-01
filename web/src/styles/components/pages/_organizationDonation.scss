@@ -1,0 +1,61 @@
+.organization-donation-wrapper {
+  @extend .col;
+  .organization-donation-form-wrapper {
+    @extend .col;
+    @extend .gap-24;
+    @extend .padding-24;
+    .organization-donation-form-toggle-wrapper {
+      @extend .col;
+      @extend .gap-24;
+    }
+    .organization-donation-form-summary-wrapper {
+      @extend .row;
+      @extend .justify-between;
+      .organization-donation-form-summary-chip-wrapper {
+        @extend .row;
+        @extend .align-center;
+      }
+      .organization-donation-form-summary-amount-wrapper {
+        @extend .row;
+        @extend .gap-16;
+        @extend .align-end;
+        .organization-donation-form-summary-recurring-payment {
+          padding-bottom: 0.25rem;
+          @extend .title-small;
+          color: $title-text;
+        }
+        .organization-donation-form-summary-amount {
+          @extend .headline-medium;
+          color: $title-text;
+        }
+      }
+    }
+  }
+  .organization-donation-note-wrapper {
+    @extend .col;
+    @extend .padding-row-24;
+    @extend .gap-4;
+    .organization-donation-note-item {
+      @extend .row;
+      @extend .max-width;
+      @extend .align-start;
+      @extend .gap-4;
+      .organization-donation-note-item-icon-wrapper {
+        width: 1rem;
+        height: 1rem;
+        @extend .relative;
+        .organization-donation-note-item-icon {
+          position: absolute;
+          left: 0.5rem;
+          bottom: 0.1rem;
+        }
+      }
+      .organization-donation-note-item-content {
+
+        @extend .body-medium;
+        color: $body-text;
+      }
+    }
+  }
+
+}

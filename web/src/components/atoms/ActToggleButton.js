@@ -4,16 +4,21 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 
-const ActToggleButton = props => {
-  const { control, id, items, errors } = props;
+const ActToggleButton = (props, ref) => {
+  const { control, id, items, errors, label, columns = 2, selectedItem } = props;
   const [selected, setSelected] = useState(undefined);
+
+  useEffect(() => {
+    if (selectedItem) selectedItem(selected);
+  }, [selected]);
 
   const handleChange = (event, selectedItem) => {
     setSelected(selectedItem);
   };
 
   return (
-    <div className="act-toggle-button-wrapper">
+    <div className="act-toggle-button-wrapper" ref={ref}>
+      <div className="act-toggle-button-label">{label}</div>
       <Controller
         name={id}
         control={control}
@@ -28,25 +33,39 @@ const ActToggleButton = props => {
                 onChange(selectedItem);
               }
             }}
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${columns}, 1fr)`,
+            }}
           >
-            {items?.map(item => {
+            {items?.map((item, index) => {
               return (
                 <ToggleButton
-                  key={item}
-                  value={item}
+                  key={item.value}
+                  value={item.value}
                   sx={{
                     color: 'black',
                     fontFamily: 'Pretendard',
                     fontWeight: 500,
                     fontSize: '0.875rem',
-                    '&.Mui-selected, &.Mui-selected:hover': {
+                    '&.MuiToggleButton-root': {
+                      backgroundColor: '#FAFAFA',
                       color: '#949494',
-                      borderColor: '#efefef',
-                      backgroundColor: '#fafafa',
+                      borderRadius: '0px',
+                    },
+                    '&.Mui-selected, &.Mui-selected:hover': {
+                      color: 'black',
+                      backgroundColor: 'white',
+                      borderRadius: '0px',
+                    },
+                    '&.MuiToggleButtonGroup-grouped': {
+                      borderRadius: '0px',
+                      border: '1px solid #efefef !important',
                     },
                   }}
+                  // style={{ outlineColor: '#efefef', outlineWidth: '1px', outlineStyle: 'solid' }}
                 >
-                  <div>{item}</div>
+                  <div>{item.label}</div>
                 </ToggleButton>
               );
             })}
@@ -57,4 +76,4 @@ const ActToggleButton = props => {
     </div>
   );
 };
-export default ActToggleButton;
+export default forwardRef(ActToggleButton);

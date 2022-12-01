@@ -16,7 +16,8 @@ const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const { login } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
-  const { state } = useLocation();
+  const location = useLocation();
+  const locationState = location.state;
   useEffect(() => {
     setOption({ title: '', subtitle: '로그인', description: '서비스 이용을 위해 로그인 해주세요.', back: true, menu: true });
     return () => setOption({});
@@ -50,7 +51,7 @@ const Login = ({ setOption }) => {
     // }
 
     if (await login({ userName: data.userId, userPassword: data.userPassword })) {
-      navigate(state ? state.from : '/', { replace: true });
+      navigate(locationState ? locationState.from : '/', { state: { ...locationState } }, { replace: true });
     }
   };
   return (

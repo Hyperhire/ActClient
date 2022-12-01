@@ -151,7 +151,15 @@ const RegisterByEmail = ({ setOption }) => {
             control={control}
           />
         </div>
-        <ActToggleButton errors={errors} control={control} items={['예', '아니오']} id="select" />
+        <ActToggleButton
+          errors={errors}
+          control={control}
+          items={[
+            { value: 1, label: '예' },
+            { value: 0, label: '아니요' },
+          ]}
+          id="select"
+        />
         <ActDropDown errors={errors} control={control} label="후원상태" items={['메뉴1', '메뉴2', '메뉴3']} id="dropdown" />
         <ActImageUploadButton uploadedImages={setUploadedImages} />
         <ActButton type="submit" label="회원가입" disabled={!isValid} className="max-width top-16" />

@@ -26,6 +26,10 @@
   transform: translateY(-50%);
 }
 
+@mixin dividerCustom($thickness, $color) {
+  border-bottom: solid #{$thickness}px $color;
+}
+
 @mixin placeholderColor($color) {
   &::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */

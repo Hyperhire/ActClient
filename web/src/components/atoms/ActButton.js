@@ -1,9 +1,17 @@
 import React from 'react';
-const ActButton = ({ type = 'button', className, label, handleOnClick, disabled }) => {
+import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
+const ActButton = ({ type = 'button', className = 'button-medium', label, handleOnClick, disabled, isDonation = false }) => {
   return (
-    <button type={type} disabled={disabled} onClick={handleOnClick} className={`button-medium ${className && className}`}>
-      <div>{label}</div>
-    </button>
+    <div className="act-button">
+      <button type={type} disabled={disabled} onClick={handleOnClick} className={`${className && className}`}>
+        <div>{label}</div>
+      </button>
+      {isDonation && (
+        <div className="act-button-chip">
+          <Give />
+        </div>
+      )}
+    </div>
   );
 };
 export default ActButton;

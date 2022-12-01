@@ -98,9 +98,15 @@ http://scripts.sil.org/OFL
 @import 'components/organisms/campaignItem';
 @import 'components/organisms/actFaq';
 @import 'components/organisms/disclosureItem';
+@import 'components/organisms/organizationNewsItem';
+@import 'src/styles/components/organisms/organization/organizationItem';
+@import 'src/styles/components/organisms/organization/organizationCover';
+@import 'src/styles/components/organisms/organization/organizationOnGoingCampaign';
 @import 'components/organisms/main/mainCarousel';
 @import 'components/organisms/main/mainSummaryOrganization';
 @import 'components/organisms/main/mainOnGoingCampaign';
 @import 'components/organisms/main/mainDisclosure';
 @import 'components/organisms/main/mainFaq';
 
+@import 'components/pages/organizationDetail';
+@import 'components/pages/organizationDonation';

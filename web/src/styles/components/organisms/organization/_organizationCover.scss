@@ -1,0 +1,49 @@
+.organization-cover-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  @extend .left-24;
+  height: 60vh;
+  background: url("../../../../styles/assets/images/organizationCover.png") no-repeat;
+  background-size: cover;
+  .organization-cover-image-wrapper {
+    @extend .max-width;
+    @extend .max-height;
+    background-color: rgba(0,0,0,0.3);
+  }
+  .organization-cover-label-wrapper {
+    @extend .col;
+    @extend .max-height;
+    @extend .padding-24;
+    @extend .justify-between;
+    .organization-cover-common-label-wrapper {
+      @extend .col;
+      @extend .gap-8;
+      .organization-cover-common-label {
+        font: {
+          family: 'Pretendard';
+          weight: 600 !important;
+          size: 0.75rem;
+        }
+        letter-spacing: 4px;
+        color: white;
+      }
+      .organization-cover-common-label-divider {
+        @include dividerCustom(2, #ffffff);
+      }
+    }
+    .organization-cover-info-wrapper {
+      @extend .col;
+      @extend .gap-8;
+      .organization-cover-title {
+        @extend .headline-medium;
+        color: white;
+      }
+      .organization-cover-subtitle {
+        @extend .body-medium;
+        color: white;
+      }
+    }
+  }
+
+}

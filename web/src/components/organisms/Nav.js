@@ -6,6 +6,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useRecoilValue } from 'recoil';
+import dayjs from 'dayjs';
 import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
 import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
 import Back from 'components/atoms/Back';
@@ -145,12 +146,12 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
         </div>
       </header>
       {option.subtitle && (
-        <div className="subtitle-wrapper col padding-col-16 gap-16">
+        <div className="subtitle-wrapper col top-16 gap-16">
           <div className="subtitle bold max-width pre-wrap">{option.subtitle}</div>
-          <div className="description">{option.description}</div>
+          {option.description && <div className="description">{option.description}</div>}
         </div>
       )}
-
+      {option.date && <div>{dayjs(new Date()).format('YYYY-MM-DD')}</div>}
       <SwipeableDrawer
         PaperProps={{
           sx: { width: '80%' },

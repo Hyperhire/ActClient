@@ -222,6 +222,17 @@ html, body, #root, .App {
   white-space: nowrap;
 }
 
+@for $i from 0 through 10 {
+  .overflow-ellipsis-line-#{$i} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: #{$i};
+    -webkit-box-orient: vertical
+  }
+}
+
 .overflow-visible {
   overflow: visible;
 }
@@ -314,6 +325,18 @@ html, body, #root, .App {
 
 .divider {
   border-bottom: solid 1px $divider;
+}
+
+@for $i from 0 through 100 {
+  .divider-thick-#{$i} {
+    border-bottom: solid #{$i}px $divider;
+  }
+}
+
+@for $i from 0 through 100 {
+  .divider-thick-primary-#{$i} {
+    border-bottom: solid #{$i}px $primary;
+  }
 }
 
 .divider-light-grey {

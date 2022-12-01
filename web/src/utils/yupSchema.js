@@ -57,6 +57,12 @@ export const findPasswordYup = yup.object().shape({
   userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
 });
 
+// donation organization
+export const donationOrganization = yup.object().shape({
+  donationType: yup.string().required('선택하셔야 합니다.'),
+  donationAmount: yup.string().required('선택하셔야 합니다.'),
+  donationDate: yup.string().required('선택하셔야 합니다.'),
+});
 // attachment: mixed().test("fileSize", "The file is too large", (value) => {
 //   if (!value.length) return true // attachment is optional
 //   return value[0].size <= 2000000

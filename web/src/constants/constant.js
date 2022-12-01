@@ -17,3 +17,16 @@ export const DONATION_HISTORY_TYPE = {
   ORGANIZATION: 'organization',
   CAMPAIGN: 'campaign',
 };
+
+export const ORGANIZATION_NEWS_TYPE = {
+  NEWS: 'new',
+  DISCLOSURE: 'disclosure',
+};
+
+export const ORGANIZATION_ID = {
+  HOLT: 'holt',
+  WORLD_VISION: 'world-vision',
+  WE_BRIDGE: 'we-bridge',
+  KSFP: 'ksfp',
+  GOOD_NEIGHBORS: 'good-neighbors',
+};

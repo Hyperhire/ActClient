@@ -1,0 +1,38 @@
+.organization-detail-wrapper {
+  @extend .col;
+  .organization-detail-intro-wrapper {
+    @extend .col;
+    .organization-detail-content-wrapper {
+      @extend .col;
+      @extend .gap-24;
+      @extend .padding-24;
+      .organization-detail-description {
+        @extend .pre-wrap;
+        @extend .body-large;
+        color: $title-text;
+      }
+      .organization-detail-shortcut-wrapper {
+        @extend .row;
+        @extend .align-center;
+        @extend .justify-end;
+        .organization-detail-shortcut-label {
+          @extend .title-small;
+          color: $title-text;
+        }
+      }
+      .organization-detail-button-wrapper {
+        @extend .relative;
+        .organization-detail-button-donation-icon-wrapper {
+          @extend .absolute;
+          left: 0;
+        }
+      }
+    }
+  }
+  .organization-detail-divider {
+    @include dividerCustom(12, $divider);
+  }
+  .organization-detail-campaign-wrapper {
+
+  }
+}

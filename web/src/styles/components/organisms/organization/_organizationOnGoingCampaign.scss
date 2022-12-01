@@ -1,14 +1,14 @@
-.main-on-going-campaign-wrapper {
+.organization-on-going-campaign-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
-  .main-on-going-campaign-title-wrapper {
+  .organization-on-going-campaign-title-wrapper {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     @extend .padding-col-24;
-    .main-on-going-campaign-title {
+    .organization-on-going-campaign-title {
       @extend .title-large;
       color: $title-text;
     }
