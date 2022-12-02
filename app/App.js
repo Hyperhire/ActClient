@@ -15,7 +15,6 @@ const ContentContainer = styled(SafeAreaView)`
 
 const App = () => {
   useEffect(() => {
-    console.log('SplashScreen');
     SplashScreen.hide();
   }, []);
 
