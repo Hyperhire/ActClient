@@ -138,7 +138,7 @@ const Donation = ({ setOption }) => {
           <div className="donation-form-summary-wrapper">
             <div className="donation-form-summary-chip-wrapper">{type === DONATION_TYPE.CAMPAIGN ? <TempIcon /> : donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />}</div>
             <div className="donation-form-summary-amount-wrapper">
-              <div className="donation-form-summary-recurring-payment">{donationType === DONATION_PAYMENT_TYPE.REGULAR && '매월'}</div>
+              <div className="donation-form-summary-regular-payment">{donationType === DONATION_PAYMENT_TYPE.REGULAR && '매월'}</div>
               <div className="donation-form-summary-amount">{donationAmount?.toLocaleString()}원</div>
             </div>
           </div>

@@ -8,7 +8,7 @@ import { donationCampaignYup, donationOrganizationYup, donationPaymentYup } from
 import ActInput from 'components/atoms/ActInput';
 import ActCheckBox from 'components/atoms/ActCheckBox';
 import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
-import { ReactComponent as RecurringPaymentIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
+import { ReactComponent as RegularIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
 import { ReactComponent as TempIcon } from 'styles/assets/icons/label/temp.svg';
 
 const DonationPayment = ({ setOption }) => {
@@ -29,7 +29,7 @@ const DonationPayment = ({ setOption }) => {
       description: '',
       back: true,
       menu: false,
-      chip: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RecurringPaymentIcon /> : <TempIcon />,
+      chip: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />,
     });
   }, [setOption]);
 

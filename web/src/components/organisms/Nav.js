@@ -11,13 +11,12 @@ import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
 import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
 import Back from 'components/atoms/Back';
 import { authAtom } from 'state';
-import useLogin from '../../hooks/useLogin';
+
 import { getItem, USER_INFO } from '../../utils/sessionStorage';
 
 const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
   const auth = useRecoilValue(authAtom);
-  const { logout } = useLogin();
   const userInfo = getItem(USER_INFO);
   const navigate = useNavigate();
   const location = useLocation();
@@ -108,7 +107,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           <ListItem disablePadding>
             <div>
               <ListItemButton>
-                <div onClick={() => logout()} className="grey small underline">
+                <div onClick={() => console.log('로그아웃')} className="grey small underline">
                   로그아웃
                 </div>
               </ListItemButton>

@@ -6,8 +6,3 @@ export const authAtom = atom({
   // default: JSON.parse(localStorage.getItem('user')),
   default: false,
 });
-
-export const isFirstLoad = atom({
-  key: 'isFirstLoad',
-  default: true,
-});

@@ -2,7 +2,7 @@ import React from 'react';
 import ActButton from 'components/atoms/ActButton';
 import { DONATION_TYPE } from 'constants/constant';
 
-const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClickNFT }) => {
+const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickNFT }) => {
   return (
     <div className="donation-list-item-wrapper">
       <div className="item-list-wrapper">
@@ -38,7 +38,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
         {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">정기결제일</div>
-            <div className="content">{item.recurringPaymentDate}</div>
+            <div className="content">{item.regularPaymentDate}</div>
           </div>
         )}
       </div>
@@ -47,7 +47,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
           <ActButton
             className="donation-list-item-button"
             label={item.donationStatus === 'cancel' ? '후원 해지 완료' : '후원 해지하기'}
-            handleOnClick={() => handleCancelRecurringPayment(item.id)}
+            handleOnClick={() => handleCancelRegularPayment(item.id)}
             disabled={item.donationStatus === 'cancel'}
           />
         )}

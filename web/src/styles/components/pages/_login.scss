@@ -1,0 +1,56 @@
+.login-wrapper {
+  @extend .col;
+  @extend .padding-24;
+  @extend .gap-24;
+  .login-form-wrapper {
+    @extend .col;
+    @extend .gap-24;
+    .login-form-submit-wrapper {
+      @extend .row;
+      @extend .top-16;
+      @extend .align-center;
+      @extend .justify-between;
+      .login-form-password {
+        @extend .row;
+      }
+    }
+  }
+  .login-form-sns-login-wrapper {
+    @extend .col;
+    @extend .bordered;
+    @extend .border-radius-8;
+    @extend .padding-24;
+    @extend .gap-24;
+    .login-form-sns-login-label {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .body-medium;
+      color: $title-text;
+    }
+    .login-form-sns-login-logos {
+      @extend .row;
+      @extend .gap-24;
+      @extend .align-center;
+      @extend .justify-center;
+    }
+  }
+  .login-form-text-button-wrapper {
+    @extend .row;
+    @extend .gap-16;
+    @extend .align-center;
+    .login-form-signup-button-wrapper {
+      @extend .row;
+      @extend .gap-10;
+      @extend .align-center;
+    }
+    .login-form-signup-button-divider {
+      @extend .body-medium;
+      color: $disable-bg;
+    }
+    .login-form-text-button-label {
+      @extend .body-medium;
+      color: $title-text;
+    }
+  }
+}

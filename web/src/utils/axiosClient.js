@@ -25,7 +25,7 @@ const onResponseRejected = error => {
 client.interceptors.request.use(onRequest);
 client.interceptors.response.use(onResponseSuccess, onResponseRejected);
 export const request = ({ ...options }) => {
-  client.defaults.headers.common.Authorization = REACT_APP_AUTHORIZATION;
+  // client.defaults.headers.common.Authorization = REACT_APP_AUTHORIZATION;
   const onSuccess = response => response;
   const onError = error => error;
   return client(options).then(onSuccess).catch(onError);

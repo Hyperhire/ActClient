@@ -38,12 +38,12 @@ const RouteSwitch = () => {
             <Route path="/" element={<Main setOption={setOption} />} />
             <Route path="/login" element={<LoginBase setOption={setOption} />}>
               <Route path="" element={<Login setOption={setOption} />} />
-              <Route path="find-password" element={<FindPassword setOption={setOption} />} />
             </Route>
             <Route path="/register" element={<RegisterBase setOption={setOption} />}>
               <Route path="" element={<Register setOption={setOption} />} />
               <Route path=":type" element={<RegisterByEmail setOption={setOption} />} />
             </Route>
+            <Route path="/find-password" element={<FindPassword setOption={setOption} />} />
             <Route path="/organization" element={<OrganizationBase setOption={setOption} />}>
               <Route path="" element={<OrganizationList setOption={setOption} />} />
               <Route path=":id" element={<OrganizationDetail setOption={setOption} />} />

@@ -13,8 +13,8 @@ const DonationHistory = ({ setOption }) => {
     return () => setOption({});
   }, [setOption]);
 
-  const onHandleCancelRecurringPayment = id => {
-    console.log('onHandleCancelRecurringPayment', id);
+  const onHandleCancelRegularPayment = id => {
+    console.log('onHandleCancelRegularPayment', id);
   };
 
   const onHandleClickNFT = id => {
@@ -33,7 +33,7 @@ const DonationHistory = ({ setOption }) => {
               endDate: `endDate ${i}`,
               amount: `amount ${i}`,
               donationType: `donationType ${i}`,
-              recurringPaymentDate: `recurringPaymentDate ${i}`,
+              regularPaymentDate: `regularPaymentDate ${i}`,
               donationStatus: `${i % 5 && 'cancel'}`,
             }
           : {
@@ -60,7 +60,7 @@ const DonationHistory = ({ setOption }) => {
               type={DONATION_TYPE.ORGANIZATION}
               key={index}
               item={item}
-              handleCancelRecurringPayment={id => onHandleCancelRecurringPayment(id)}
+              handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
               handleClickNFT={id => onHandleClickNFT(id)}
             />
             {index !== makeDummy(DONATION_TYPE.ORGANIZATION).length && <div className="divider" />}
@@ -74,13 +74,7 @@ const DonationHistory = ({ setOption }) => {
       list: makeDummy(DONATION_TYPE.CAMPAIGN).map((item, index) => {
         return (
           <div key={index}>
-            <DonationListItem
-              type={DONATION_TYPE.CAMPAIGN}
-              key={index}
-              item={item}
-              handleCancelRecurringPayment={id => onHandleCancelRecurringPayment(id)}
-              handleClickNFT={id => onHandleClickNFT(id)}
-            />
+            <DonationListItem type={DONATION_TYPE.CAMPAIGN} key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
             {index !== makeDummy(DONATION_TYPE.CAMPAIGN).length && <div className="divider" />}
           </div>
         );

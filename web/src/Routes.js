@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, lazy } from 'react';
 import { useLocation, Routes, Route } from 'react-router-dom';
 
 import RouteSwitch from './RouteSwitch';
-import Loading from 'components/atoms/Loading';
+import ActSpinner from 'components/atoms/ActSpinner';
 
 const Routers = () => {
   const location = useLocation();
@@ -12,7 +12,7 @@ const Routers = () => {
   }, [location]);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<ActSpinner />}>
       <Routes>
         <Route path="/*" element={<RouteSwitch />} />
       </Routes>

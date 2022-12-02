@@ -594,11 +594,10 @@ html, body, #root, .App {
   background-color: white;
   color: white;
   z-index: 9999;
-
 }
 
 .fade-out {
-  animation: fadeOut 1s ease-in forwards;
+  animation: fadeOut 200ms ease-in forwards;
   opacity: 1;
 }
 

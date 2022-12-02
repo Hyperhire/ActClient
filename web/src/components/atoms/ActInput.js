@@ -24,6 +24,7 @@ const ActInput = (props, ref) => {
     placeholder,
     disabled,
     eyeHandler,
+    eyeIcon,
     duplicateMessage,
     options,
     params,
@@ -33,6 +34,7 @@ const ActInput = (props, ref) => {
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
   const [duplicatedResult, setDuplicatedResult] = useState({ message: duplicateMessage, result: undefined });
 
+  // console.log('fieldState', fieldState);
   useEffect(() => {
     if (isError) {
       setDuplicatedResult({ ...duplicatedResult, result: undefined });
@@ -106,7 +108,7 @@ const ActInput = (props, ref) => {
                   endAdornment: eyeHandler ? (
                     <InputAdornment position="end">
                       <div className="row link align-center" onClick={() => eyeHandler()}>
-                        <VisibilityOutlinedIcon fontSize="1rem" />
+                        {eyeIcon}
                       </div>
                     </InputAdornment>
                   ) : duplicateMessage ? (
