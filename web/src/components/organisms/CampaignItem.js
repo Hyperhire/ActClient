@@ -1,10 +1,10 @@
 import React from 'react';
 
 const CampaignItem = props => {
-  const { item } = props;
+  const { item, clickHandler } = props;
   const { image, OrganizationIcon, organizationLabel, title, rate, amount, remainingPeriod } = item;
   return (
-    <div className="on-going-campaign-item-wrapper">
+    <div className="on-going-campaign-item-wrapper link" onClick={() => clickHandler(item)}>
       <div className="item-image">
         <img src={image} alt="" />
       </div>
@@ -21,7 +21,7 @@ const CampaignItem = props => {
         <div className="etc-wrapper">
           <div className="rate-amount-wrapper">
             <div className="rate">{rate}%</div>
-            <div className="amount">{amount}원</div>
+            <div className="amount">{amount.toLocaleString()}원</div>
           </div>
           <div className="remaining-period">{remainingPeriod}일 남음</div>
         </div>

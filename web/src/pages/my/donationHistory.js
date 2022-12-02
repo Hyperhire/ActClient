@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getItem, USER_INFO } from 'utils/sessionStorage';
 import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
-import { DONATION_HISTORY_TYPE } from 'constants/constant';
+import { DONATION_TYPE } from 'constants/constant';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const DonationHistory = ({ setOption }) => {
     let tmp = [];
     for (let i = 0; i < 20; i++) {
       tmp.push(
-        type === DONATION_HISTORY_TYPE.ORGANIZATION
+        type === DONATION_TYPE.ORGANIZATION
           ? {
               id: i,
               organization: `organization ${i}`,
@@ -53,36 +53,36 @@ const DonationHistory = ({ setOption }) => {
     {
       index: 0,
       label: '단체후원',
-      list: makeDummy(DONATION_HISTORY_TYPE.ORGANIZATION).map((item, index) => {
+      list: makeDummy(DONATION_TYPE.ORGANIZATION).map((item, index) => {
         return (
-          <>
+          <div key={index}>
             <DonationListItem
-              type={DONATION_HISTORY_TYPE.ORGANIZATION}
+              type={DONATION_TYPE.ORGANIZATION}
               key={index}
               item={item}
               handleCancelRecurringPayment={id => onHandleCancelRecurringPayment(id)}
               handleClickNFT={id => onHandleClickNFT(id)}
             />
-            {index !== makeDummy(DONATION_HISTORY_TYPE.ORGANIZATION).length && <div className="divider" />}
-          </>
+            {index !== makeDummy(DONATION_TYPE.ORGANIZATION).length && <div className="divider" />}
+          </div>
         );
       }),
     },
     {
       index: 1,
       label: '캠페인후원',
-      list: makeDummy(DONATION_HISTORY_TYPE.CAMPAIGN).map((item, index) => {
+      list: makeDummy(DONATION_TYPE.CAMPAIGN).map((item, index) => {
         return (
-          <>
+          <div key={index}>
             <DonationListItem
-              type={DONATION_HISTORY_TYPE.CAMPAIGN}
+              type={DONATION_TYPE.CAMPAIGN}
               key={index}
               item={item}
               handleCancelRecurringPayment={id => onHandleCancelRecurringPayment(id)}
               handleClickNFT={id => onHandleClickNFT(id)}
             />
-            {index !== makeDummy(DONATION_HISTORY_TYPE.CAMPAIGN).length && <div className="divider" />}
-          </>
+            {index !== makeDummy(DONATION_TYPE.CAMPAIGN).length && <div className="divider" />}
+          </div>
         );
       }),
     },

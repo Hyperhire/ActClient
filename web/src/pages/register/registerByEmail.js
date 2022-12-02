@@ -19,11 +19,13 @@ const RegisterByEmail = ({ setOption }) => {
   const [checkBoxItems, setCheckBoxItems] = useState([
     {
       key: 0,
+      id: 'terms',
       label: '서비스 이용약관(필수)',
       checked: false,
     },
     {
       key: 1,
+      id: 'privacy',
       label: '개인정보수집 및 이용 동의(필수)',
       checked: false,
     },
@@ -91,7 +93,7 @@ const RegisterByEmail = ({ setOption }) => {
     setCheckBoxItems(newArr);
   };
   return (
-    <div className="col padding-row-8">
+    <div className="col padding-row-24">
       <NavigationGuard
         when={activeGuard}
         message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?"
@@ -99,7 +101,7 @@ const RegisterByEmail = ({ setOption }) => {
           console.log('onClickYes');
         }}
       />
-      <form className="col padding-col-16 gap-8" onSubmit={handleSubmit(onSubmit)}>
+      <form className="col gap-16 top-16" onSubmit={handleSubmit(onSubmit)}>
         <ActInput
           {...register('userId')}
           id="userId"
@@ -134,35 +136,32 @@ const RegisterByEmail = ({ setOption }) => {
             <div>아이콘</div>
             <div>연말정산 간소화 서비스에서 기부금 영수증을 발급하시겠습니까?</div>
           </div>
-          <div className="row">
-            <div>아니요</div>
-            <div>네</div>
-          </div>
+          <ActToggleButton
+            errors={errors}
+            control={control}
+            items={[
+              { value: 1, label: '예' },
+              { value: 0, label: '아니요' },
+            ]}
+            id="select"
+          />
         </div>
         <div className="col align-start justify-center">
           <ActCheckBoxGroup
-            {...register('agreement')}
-            id="agreement"
+            parentId="agreement"
             items={checkBoxItems}
             label="전체동의"
+            labelStyle={{ fontFamily: 'Pretendard', fontWeight: 500, fontSize: '0.875rem', color: 'black' }}
             handleChange={onCheckBoxChangeHandler}
             handleChangeChild={onCheckBoxChildChangeHandler}
             errors={errors}
             control={control}
+            register={register}
           />
         </div>
-        <ActToggleButton
-          errors={errors}
-          control={control}
-          items={[
-            { value: 1, label: '예' },
-            { value: 0, label: '아니요' },
-          ]}
-          id="select"
-        />
-        <ActDropDown errors={errors} control={control} label="후원상태" items={['메뉴1', '메뉴2', '메뉴3']} id="dropdown" />
-        <ActImageUploadButton uploadedImages={setUploadedImages} />
-        <ActButton type="submit" label="회원가입" disabled={!isValid} className="max-width top-16" />
+        {/*<ActImageUploadButton uploadedImages={setUploadedImages} />*/}
+
+        <ActButton type="submit" label="회원가입" disabled={!isValid} className="tertiary-button-x-large" />
       </form>
     </div>
   );

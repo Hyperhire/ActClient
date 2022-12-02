@@ -2,25 +2,14 @@ import React, { useEffect, useCallback } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import CircleIcon from '@mui/icons-material/Circle';
 
-const Item = props => {
-  const { item } = props;
-  const { image } = item;
-  return (
-    <div className="act-carousel-image">
-      <img src={image} alt="main-image" />
-    </div>
-  );
-};
-
 const ActCarousel = props => {
-  const { items, autoPlay, animation = 'slide', setParentData } = props;
-
+  const { items, autoPlay, animation = 'slide', initHandler, changeHandler, dotAnchor = 'right' } = props;
   return (
     <Carousel
       sx={{ width: '100%', height: '100%' }}
       navButtonsAlwaysInvisible
-      onChange={(now, previous) => setParentData(items[now])}
-      changeOnFirstRender={() => setParentData(items[0])}
+      onChange={now => changeHandler && changeHandler(now)}
+      changeOnFirstRender={() => initHandler && initHandler}
       autoPlay={autoPlay}
       animation={animation}
       timeout={{ appear: 0, enter: 500, exit: 500 }}
@@ -40,13 +29,17 @@ const ActCarousel = props => {
       }}
       indicatorContainerProps={{
         style: {
-          textAlign: 'right',
+          textAlign: dotAnchor,
         },
       }}
     >
-      {items.map((item, i) => (
-        <Item key={i} item={item} />
-      ))}
+      {items?.map((item, i) => {
+        return (
+          <div key={i} className="act-carousel-image">
+            <img src={item} alt="main-image" />
+          </div>
+        );
+      })}
     </Carousel>
   );
 };

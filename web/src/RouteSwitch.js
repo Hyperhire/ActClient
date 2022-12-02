@@ -17,8 +17,13 @@ const DonationHistory = lazy(() => import('pages/my/donationHistory'));
 const OrganizationBase = lazy(() => import('pages/organization'));
 const OrganizationList = lazy(() => import('pages/organization/organizationList'));
 const OrganizationDetail = lazy(() => import('pages/organization/organizationDetail'));
-const OrganizationDonation = lazy(() => import('pages/organization/organizationDonation'));
 const OrganizationPayment = lazy(() => import('pages/organization/organizationPayment'));
+const CampaignBase = lazy(() => import('pages/campaign'));
+const CampaignDetail = lazy(() => import('pages/campaign/campaignDetail'));
+const DonationBase = lazy(() => import('pages/donation'));
+const Donation = lazy(() => import('pages/donation/donation'));
+const DonationPayment = lazy(() => import('pages/donation/donationPayment'));
+
 const Disclosure = lazy(() => import('pages/disclosure'));
 const Faq = lazy(() => import('pages/faq'));
 
@@ -43,11 +48,18 @@ const RouteSwitch = () => {
               <Route path="" element={<OrganizationList setOption={setOption} />} />
               <Route path=":id" element={<OrganizationDetail setOption={setOption} />} />
               {/*<Route path=":id/donation" element={<PrivateRoute outlet={<OrganizationDonation setOption={setOption} />} path="/login" />} />*/}
-              <Route path=":id/donation" element={<OrganizationDonation setOption={setOption} />} />} />
               <Route path=":id/payment" element={<OrganizationPayment setOption={setOption} />} />
             </Route>
+            <Route path="/campaign" element={<CampaignBase setOption={setOption} />}>
+              <Route path=":name" element={<CampaignDetail setOption={setOption} />} />
+            </Route>
+            <Route path="/donation" element={<DonationBase setOption={setOption} />}>
+              <Route path="" element={<PrivateRoute outlet={<Donation setOption={setOption} />} path="/login" />} />
+              <Route path="payment" element={<DonationPayment setOption={setOption} />} />
+            </Route>
             <Route path="/disclosure" element={<Disclosure setOption={setOption} />} />
-            <Route path="/faq" element={<PrivateRoute outlet={<Faq setOption={setOption} />} path="/login" />} />
+            {/*<Route path="/faq" element={<PrivateRoute outlet={<Faq setOption={setOption} />} path="/login" />} />*/}
+            <Route path="/faq" element={<Faq setOption={setOption} />} />
             <Route path="/my" element={<MyBase setOption={setOption} />}>
               <Route path="profile" element={<Profile setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />

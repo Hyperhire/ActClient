@@ -11,11 +11,16 @@ import useLogin from 'hooks/useLogin';
 import { loginYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import NavigationGuard from 'components/organisms/NavigationGuard';
+import ActCheckBox from '../../components/atoms/ActCheckBox';
 
 const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const { login } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSaveAccount, setIsSaveAccount] = useState(false);
+  const onHandleChange = (e, id) => {
+    setIsSaveAccount(e.target.checked);
+  };
   const location = useLocation();
   const locationState = location.state;
   useEffect(() => {
@@ -26,8 +31,9 @@ const Login = ({ setOption }) => {
   const loginDefaultForm = {
     userId: '',
     userPassword: '',
+    isSaveAccount: false,
   };
-  const formOptions = { defaultValues: loginDefaultForm, resolver: yupResolver(loginYup) };
+  const formOptions = { mode: 'onChange', defaultValues: loginDefaultForm, resolver: yupResolver(loginYup) };
 
   const {
     control,
@@ -55,8 +61,8 @@ const Login = ({ setOption }) => {
     }
   };
   return (
-    <div className="col max-height padding-row-8">
-      <form className="padding-col-16" onSubmit={handleSubmit(onSubmit)}>
+    <div className="col max-height padding-24 ">
+      <form className="col gap-24" onSubmit={handleSubmit(onSubmit)}>
         <ActInput {...register('userId')} id="userId" placeholder="아이디를 입력하세요" errors={errors} control={control} />
         <ActInput
           {...register('userPassword')}
@@ -68,11 +74,11 @@ const Login = ({ setOption }) => {
           eyeHandler={onClickEyeHandler}
         />
         <div className="row top-16 align-center justify-between">
-          <FormGroup>
-            <FormControlLabel control={<Checkbox {...register('isSave')} id="isSave" defaultChecked />} label="아이디저장" />
-          </FormGroup>
-          <div className="row align-center">
-            <ActButton type="submit" disabled={!isValid} label="로그인" className="primary-button-x-large" />
+          <div className="row">
+            <ActCheckBox {...register('isSaveCardInformation')} id="isSaveAccount" label="아이디 저장" errors={errors} control={control} checked={isSaveAccount} handleChange={onHandleChange} />
+          </div>
+          <div className="row">
+            <ActButton type="submit" disabled={!isValid} label="로그인" className="button-medium" />
           </div>
         </div>
       </form>

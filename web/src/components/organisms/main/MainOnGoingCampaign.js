@@ -17,7 +17,7 @@ const MainOnGoingCampaign = () => {
       organizationLabel: '굿네이버스',
       title: 'Basic for Girls 면생리대 캠페인 블라블라',
       rate: 320,
-      amount: 545000,
+      amount: 545_000,
       remainingPeriod: 24,
     },
     {
@@ -26,7 +26,7 @@ const MainOnGoingCampaign = () => {
       organizationLabel: '월드비전',
       title: '2022 크리스마스 선물보내기',
       rate: 320,
-      amount: 545000,
+      amount: 545_000,
       remainingPeriod: 24,
     },
     {
@@ -35,7 +35,7 @@ const MainOnGoingCampaign = () => {
       organizationLabel: '홀트아동복지회',
       title: '해외후원아동 꿈응원 캠페인 금쪽같은 블라블라 해외후원아동 꿈응원 캠페인 금쪽같은 블라블라',
       rate: 320,
-      amount: 545000,
+      amount: 545_000,
       remainingPeriod: 24,
     },
     {
@@ -44,7 +44,7 @@ const MainOnGoingCampaign = () => {
       organizationLabel: '굿네이버스',
       title: '해외여자 지원 캠페인 소녀의 여름',
       rate: 320,
-      amount: 545000,
+      amount: 545_000,
       remainingPeriod: 24,
     },
     {
@@ -53,7 +53,7 @@ const MainOnGoingCampaign = () => {
       organizationLabel: '월드비전',
       title: 'Basic for Girls 면생리대 캠페인 블라블라',
       rate: 320,
-      amount: 545000,
+      amount: 545_000,
       remainingPeriod: 24,
     },
   ];
@@ -72,19 +72,25 @@ const MainOnGoingCampaign = () => {
     }
     return tmp;
   };
-  const onClickHandler = () => {
-    console.log('campaign');
+
+  const onClickNavigateHandler = () => {
+    navigate(`campaign`);
   };
+
+  const onClickHandler = item => {
+    navigate(`/campaign/${item.title}`);
+  };
+
   return (
     <div className="main-on-going-campaign-wrapper">
-      <div className="main-on-going-campaign-title-wrapper link" onClick={onClickHandler}>
+      <div className="main-on-going-campaign-title-wrapper link" onClick={onClickNavigateHandler}>
         <div className="main-on-going-campaign-title">진행중인 캠페인</div>
         <ArrowRight />
       </div>
       {dummy.map((item, index) => {
         return (
           <div key={index}>
-            <CampaignItem item={item} />
+            <CampaignItem item={item} clickHandler={onClickHandler} />
             <div className="divider" />
           </div>
         );

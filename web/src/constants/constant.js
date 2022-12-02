@@ -13,6 +13,16 @@ export const GENDER = [
   },
 ];
 
+export const DONATION_TYPE = {
+  ORGANIZATION: 'organization',
+  CAMPAIGN: 'campaign',
+};
+
+export const DONATION_PAYMENT_TYPE = {
+  REGULAR: 'regular',
+  TEMP: 'temp',
+};
+
 export const DONATION_HISTORY_TYPE = {
   ORGANIZATION: 'organization',
   CAMPAIGN: 'campaign',

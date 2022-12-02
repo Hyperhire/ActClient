@@ -109,10 +109,10 @@ const OrganizationNews = () => {
       label: '단체 소식',
       list: dummy.map((item, index) => {
         return (
-          <>
-            <OrganizationNewsItem type={ORGANIZATION_NEWS_TYPE.NEWS} key={index} item={item} />
+          <div key={index}>
+            <OrganizationNewsItem type={ORGANIZATION_NEWS_TYPE.NEWS} item={item} />
             {index !== dummy.length && <div className="divider" />}
-          </>
+          </div>
         );
       }),
     },
@@ -121,10 +121,10 @@ const OrganizationNews = () => {
       label: '단체 공시',
       list: dummyDisclosure.map((item, index) => {
         return (
-          <>
+          <div key={index}>
             <DisclosureItem key={index} item={item} />
             {index !== dummyDisclosure.length && <div className="divider" />}
-          </>
+          </div>
         );
       }),
     },

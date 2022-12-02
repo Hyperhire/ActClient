@@ -1,6 +1,6 @@
 import React from 'react';
 import ActButton from 'components/atoms/ActButton';
-import { DONATION_HISTORY_TYPE } from 'constants/constant';
+import { DONATION_TYPE } from 'constants/constant';
 
 const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClickNFT }) => {
   return (
@@ -10,7 +10,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
           <div className="title">단체명</div>
           <div className="content">{item.organization}</div>
         </div>
-        {type === DONATION_HISTORY_TYPE.CAMPAIGN && (
+        {type === DONATION_TYPE.CAMPAIGN && (
           <div className="item-wrapper">
             <div className="title">캠페인명</div>
             <div className="content">{item.campaignTitle}</div>
@@ -20,7 +20,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
           <div className="title">시작일</div>
           <div className="content">{item.startDate}</div>
         </div>
-        {type === DONATION_HISTORY_TYPE.ORGANIZATION && (
+        {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">종료일</div>
             <div className="content">{item.endDate}</div>
@@ -35,7 +35,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
           <div className="title">후원방식</div>
           <div className="content">{item.donationType}</div>
         </div>
-        {type === DONATION_HISTORY_TYPE.ORGANIZATION && (
+        {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">정기결제일</div>
             <div className="content">{item.recurringPaymentDate}</div>
@@ -43,7 +43,7 @@ const DonationListItem = ({ type, item, handleCancelRecurringPayment, handleClic
         )}
       </div>
       <div className="button-wrapper">
-        {type === DONATION_HISTORY_TYPE.ORGANIZATION && (
+        {type === DONATION_TYPE.ORGANIZATION && (
           <ActButton
             className="donation-list-item-button"
             label={item.donationStatus === 'cancel' ? '후원 해지 완료' : '후원 해지하기'}

@@ -11,7 +11,25 @@ import { ReactComponent as RedStar } from 'styles/assets/icons/star/red.svg';
 import { ReactComponent as ToolTip } from 'styles/assets/icons/tooltip.svg';
 import DuplicateButton from './duplicateButton';
 const ActInput = (props, ref) => {
-  const { type = 'text', fontSize = 18, required, info = true, id, label, errors, isValid, control, placeholder, disabled, eyeHandler, duplicateMessage, options, params, fieldState } = props;
+  const {
+    type = 'text',
+    fontSize = '1rem',
+    required,
+    info = false,
+    id,
+    label,
+    errors,
+    isValid,
+    control,
+    placeholder,
+    disabled,
+    eyeHandler,
+    duplicateMessage,
+    options,
+    params,
+    fieldState,
+    maxLength,
+  } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
   const [duplicatedResult, setDuplicatedResult] = useState({ message: duplicateMessage, result: undefined });
 
@@ -51,17 +69,23 @@ const ActInput = (props, ref) => {
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       border: 'none',
-                      borderBottom: isError ? 'solid 1px red' : 'solid 1px black',
-                      // borderColor: isError ? 'red' : 'black',
+                      borderBottom: 'solid 1px black',
                     },
                     '&.Mui-focused fieldset': {
                       border: 'none',
-                      borderBottom: isError ? 'solid 1px red' : 'solid 1px yellow',
+                      borderBottom: 'solid 1px black',
                     },
                   },
                   '&.MuiTextField-root': {
-                    borderColor: isError ? 'red' : 'black',
+                    borderColor: 'black',
                   },
+                  '& input::placeholder': {
+                    fontFamily: 'Pretendard',
+                    fontWeight: 400,
+                    fontSize: '1rem',
+                    color: '#c8c8c8',
+                  },
+
                   padding: 0,
                 }}
                 inputProps={{
@@ -71,6 +95,7 @@ const ActInput = (props, ref) => {
                     paddingBottom: 8,
                   },
                   ...params?.inputProps,
+                  maxLength: maxLength,
                 }}
                 placeholder={placeholder}
                 InputProps={{
@@ -95,6 +120,7 @@ const ActInput = (props, ref) => {
                   ),
                 }}
                 {...field}
+                value={field.value || ''}
               >
                 {type === 'select' &&
                   options &&
@@ -108,11 +134,13 @@ const ActInput = (props, ref) => {
           )}
         />
       </div>
-      {isError ? (
-        <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
-      ) : (
-        duplicatedResult.result && <div className="success-text">{duplicateMessage}</div>
-      )}
+      <div className="height-24">
+        {isError ? (
+          <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
+        ) : (
+          duplicatedResult.result && <div className="success-text">{duplicateMessage}</div>
+        )}
+      </div>
     </div>
   );
 };

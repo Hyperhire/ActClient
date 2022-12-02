@@ -12,10 +12,25 @@ const MainCarousel = () => {
     return tmp;
   };
   const [data, setData] = useState(makeDummy()[0]);
+  const onInitHandler = () => {
+    setData(makeDummy()[0]);
+  };
+
+  const onChangeHandler = index => {
+    setData(makeDummy()[index]);
+  };
+
   return (
     <div className="main-carousel-wrapper">
       <div className="carousel">
-        <ActCarousel items={makeDummy()} autoPlay={false} setParentData={setData} />
+        <ActCarousel
+          items={makeDummy().map(item => {
+            return item.image;
+          })}
+          autoPlay={false}
+          initHandler={onInitHandler}
+          changeHandler={onChangeHandler}
+        />
         <div className="sub-image-wrapper">
           <div className="sub-image">
             <img src={data?.subImage} alt="sub-image" />

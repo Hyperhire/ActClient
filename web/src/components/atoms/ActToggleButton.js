@@ -5,12 +5,16 @@ import { Controller } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 
 const ActToggleButton = (props, ref) => {
-  const { control, id, items, errors, label, columns = 2, selectedItem } = props;
+  const { control, id, items, errors, label, columns = 2, selectedItem, disabled = false } = props;
   const [selected, setSelected] = useState(undefined);
 
   useEffect(() => {
+    setSelected(undefined);
+  }, [disabled]);
+
+  useEffect(() => {
     if (selectedItem) selectedItem(selected);
-  }, [selected]);
+  }, [selected, selectedItem]);
 
   const handleChange = (event, selectedItem) => {
     setSelected(selectedItem);
@@ -25,10 +29,12 @@ const ActToggleButton = (props, ref) => {
         render={({ field: { onChange } }) => (
           <ToggleButtonGroup
             fullWidth
+            disabled={disabled}
             value={selected}
             exclusive
             onChange={(e, selectedItem) => {
               if (selectedItem !== null) {
+                console.log('selectedItem', selectedItem);
                 handleChange(e, selectedItem);
                 onChange(selectedItem);
               }

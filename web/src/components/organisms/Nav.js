@@ -147,11 +147,15 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
       </header>
       {option.subtitle && (
         <div className="subtitle-wrapper col top-16 gap-16">
-          <div className="subtitle bold max-width pre-wrap">{option.subtitle}</div>
+          <div className="subtitle bold max-width pre-wrap">
+            {option.subtitle}
+            {option.chip && <span className="align-center">{option.chip}</span>}
+          </div>
           {option.description && <div className="description">{option.description}</div>}
         </div>
       )}
       {option.date && <div>{dayjs(new Date()).format('YYYY-MM-DD')}</div>}
+
       <SwipeableDrawer
         PaperProps={{
           sx: { width: '80%' },

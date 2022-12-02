@@ -10,8 +10,9 @@ import { ReactComponent as Home } from 'styles/assets/icons/home.svg';
 import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
 import OrganizationCover from 'components/organisms/organization/OrganizationCover';
 import OrganizationCampaign from 'components/organisms/organization/OrganizationCampaign';
-import { ORGANIZATION_ID } from 'constants/constant';
-import OrganizationNews from '../../components/organisms/organization/OrganizationNews';
+import { DONATION_TYPE, ORGANIZATION_ID } from 'constants/constant';
+import OrganizationNews from 'components/organisms/organization/OrganizationNews';
+
 const OrganizationDetail = ({ setOption }) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,7 +23,6 @@ const OrganizationDetail = ({ setOption }) => {
   }, [setOption]);
 
   const getData = id => {
-    console.log('getData', id);
     switch (id) {
       case ORGANIZATION_ID.HOLT:
         return {
@@ -65,6 +65,8 @@ const OrganizationDetail = ({ setOption }) => {
             '월드비전은 70년 전, 한국전쟁의 폐허 속에서 태어났습니다. 1991년 한국월드비전은 도움을 받던 나라에서 주는 나라로 역사적인 전환을 이루었습니다.\n\n 2006년 한국월드비전은 구호사업의 전문성을 인정 받아 WFP(유엔세계식량계획) 공식협력기관이 되었습니다.',
           Icon: GoodNeighbors,
         };
+      default:
+        return {};
     }
   };
   useEffect(() => {
@@ -74,7 +76,7 @@ const OrganizationDetail = ({ setOption }) => {
   }, [id]);
 
   const onClickHandler = () => {
-    navigate(`donation`, { state: { organization: data.title } });
+    navigate(`/donation`, { state: { organization: data.title, type: DONATION_TYPE.ORGANIZATION } });
   };
 
   return (

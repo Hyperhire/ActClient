@@ -18,6 +18,7 @@
     @extend .gap-4;
     .label {
       @extend .label-large;
+      color: $title-text;
     }
   }
   .text-field-area-wrapper {
@@ -36,6 +37,8 @@
     }
   }
   .error-text {
+    @extend .top-4;
+    @extend .body-small;
     @include result(true);
   }
   .success-text {

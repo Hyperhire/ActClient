@@ -18,9 +18,13 @@
 }
 .subtitle-wrapper {
   width: 100%;
+  @extend .row;
   align-items: flex-start;
   .subtitle {
     font-size: 2rem;
+    span {
+      @extend .left-8;
+    }
   }
   .description {
     font-size: 1rem;

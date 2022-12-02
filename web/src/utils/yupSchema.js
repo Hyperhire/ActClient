@@ -14,6 +14,8 @@ export const signUpYup = yup.object().shape({
     .required('')
     .oneOf([yup.ref('userPassword'), null], '동일한 비밀번호를 입력해주세요.'),
   agreement: yup.boolean().oneOf([true], ''),
+  terms: yup.boolean().oneOf([true], ''),
+  privacy: yup.boolean().oneOf([true], ''),
   select: yup.string().required('선택하셔야 합니다.'),
 });
 
@@ -49,7 +51,7 @@ export const loginYup = yup.object().shape({
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
     .matches(/^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/, '특수문자가 포함되어야 합니다.'),
-  isSave: yup.boolean(),
+  isSaveAccount: yup.boolean(),
 });
 
 // find password
@@ -58,12 +60,28 @@ export const findPasswordYup = yup.object().shape({
 });
 
 // donation organization
-export const donationOrganization = yup.object().shape({
-  donationType: yup.string().required('선택하셔야 합니다.'),
-  donationAmount: yup.string().required('선택하셔야 합니다.'),
-  donationDate: yup.string().required('선택하셔야 합니다.'),
+export const donationOrganizationYup = yup.object().shape({
+  donationType: yup.string().required(''),
+  donationAmount: yup.number().required(''),
+  donationDate: yup.number().when('donationType', {
+    is: donationType => donationType === 1,
+    then: yup.number().required(''),
+    otherwise: yup.number().notRequired(''),
+  }),
 });
-// attachment: mixed().test("fileSize", "The file is too large", (value) => {
-//   if (!value.length) return true // attachment is optional
-//   return value[0].size <= 2000000
-// }),
+
+// donation campaign
+export const donationCampaignYup = yup.object().shape({
+  donationType: yup.string().required(''),
+  donationAmount: yup.number().required(''),
+});
+
+// donation campaign
+export const donationPaymentYup = yup.object().shape({
+  cardNumber: yup.string().required('').min(14, '').max(16, ''),
+  cardValidDate: yup.string().required('').length(4, ''),
+  cardBirthday: yup.string().required('').length(6, ''),
+  cardPassword: yup.string().required('').length(2, ''),
+  cardCVV: yup.string().required('').length(3, ''),
+  isSaveCardInformation: yup.boolean(),
+});
