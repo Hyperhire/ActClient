@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "act 1.svg",
+      "filename" : "cojam.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "act 2.svg",
+      "filename" : "cojam 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "act.svg",
+      "filename" : "cojam 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
