@@ -72,7 +72,7 @@ const OrganizationDetail = ({ setOption }) => {
   useEffect(() => {
     setTimeout(() => {
       setData(getData(id));
-    }, 500);
+    }, 1);
   }, [id]);
 
   const onClickHandler = () => {

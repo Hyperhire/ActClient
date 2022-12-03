@@ -1,7 +1,7 @@
 export const api = {
-  membership: {
-    login: '',
-    register: '',
+  auth: {
+    login: '/auth/user/login',
+    register: '/auth/user/register',
     findPassword: '',
     logout: '',
   },

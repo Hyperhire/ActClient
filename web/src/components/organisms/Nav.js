@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import dayjs from 'dayjs';
 import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
 import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
@@ -20,12 +20,16 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   const userInfo = getItem(USER_INFO);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const setAuth = useSetRecoilState(authAtom);
   const PAGES = [
     { url: '/organization', name: '단체찾기' },
     { url: '/disclosure', name: '공시보기' },
     { url: '/faq', name: 'FAQ' },
   ];
+
+  const logout = () => {
+    setAuth(false);
+  };
   const list = () => (
     <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <List>
@@ -36,7 +40,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
                 <div className="row align-center justify-center">아이콘</div>
                 <div className="col">
                   <div className="row">
-                    <div>{userInfo.userName}</div>
+                    <div>{userInfo?.userName || 'nickname'}</div>
                     <div>개인</div>
                   </div>
                   <div>abc@naver.com</div>
@@ -107,7 +111,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           <ListItem disablePadding>
             <div>
               <ListItemButton>
-                <div onClick={() => console.log('로그아웃')} className="grey small underline">
+                <div onClick={logout} className="grey small underline">
                   로그아웃
                 </div>
               </ListItemButton>

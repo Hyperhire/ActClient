@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from 'react';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import { ErrorMessage } from '@hookform/error-message';
 import ActCheckBox from 'components/atoms/ActCheckBox';
@@ -19,7 +19,6 @@ const ActCheckBoxGroup = (props, ref) => {
           return { ...item, checked: e.target.checked };
         }),
       );
-      setCheckBoxParent(e.target.checked);
     } else {
       const newArr = [...checkBoxItems];
       let newItem;
@@ -44,7 +43,10 @@ const ActCheckBoxGroup = (props, ref) => {
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 0 }}>
       {checkBoxItems.map((item, index) => {
-        return <ActCheckBox {...register(item.id)} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />;
+        return (
+          // <ActCheckBox {...register(item.id)} disabled={true} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />
+          <ActCheckBox {...register(item.id)} disabled={true} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />
+        );
       })}
     </Box>
   );

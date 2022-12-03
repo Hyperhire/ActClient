@@ -34,7 +34,6 @@ const ActToggleButton = (props, ref) => {
             exclusive
             onChange={(e, selectedItem) => {
               if (selectedItem !== null) {
-                console.log('selectedItem', selectedItem);
                 handleChange(e, selectedItem);
                 onChange(selectedItem);
               }

@@ -30,3 +30,7 @@ export const request = ({ ...options }) => {
   const onError = error => error;
   return client(options).then(onSuccess).catch(onError);
 };
+
+export const setAuthorization = token => {
+  client.defaults.headers.common.Authorization = token;
+};

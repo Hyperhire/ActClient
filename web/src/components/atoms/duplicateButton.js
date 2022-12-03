@@ -7,7 +7,7 @@ const DuplicateButton = ({ id, label, resultCallBack, disabled = true }) => {
     setTimeout(() => {
       setValid(true);
       resultCallBack({ result: true, message: '사용가능!' });
-    }, 1000);
+    }, 1);
   };
   return <ActButton className="button-small" label={label} disabled={disabled} handleOnClick={checkDuplicated} />;
 };

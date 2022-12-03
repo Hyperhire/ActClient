@@ -38,14 +38,9 @@ const CampaignDetail = ({ setOption }) => {
   };
 
   useEffect(() => {
-    if (data) console.log('set data', data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log('call get data');
     setTimeout(() => {
       setData(getData(name));
-    }, 500);
+    }, 1);
   }, [name]);
 
   const dDay = () => {

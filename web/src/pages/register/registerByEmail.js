@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { MEMBER_TYPE } from 'constants/constant';
 import ActInput from 'components/atoms/ActInput';
 import { signUpYup } from 'utils/yupSchema';
@@ -11,9 +11,24 @@ import ActCheckBoxGroup from 'components/atoms/ActCheckBoxGroup';
 import ActToggleButton from '../../components/atoms/ActToggleButton';
 import ActDropDown from '../../components/atoms/ActDropDown';
 import ActImageUploadButton from 'components/atoms/ActImageUploadButton';
+import { useRegisterByEmail } from '../../hooks/useReactMutation';
 
 const RegisterByEmail = ({ setOption }) => {
   const { type } = useParams();
+  const navigate = useNavigate();
+  const { data, mutate: doRegister, isLoading, isError, error, isSuccess } = useRegisterByEmail('register');
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      navigate('/', { replace: true });
+    }
+  }, [data, isLoading, isError, error, isSuccess, navigate]);
+
+  useEffect(() => {
+    setOption({ title: '이메일로 회원가입', subtitle: `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`, description: '', back: true, menu: false });
+    return () => setOption({});
+  }, [setOption]);
+
   const [activeGuard, setActiveGuard] = useState(false);
   const [uploadedImages, setUploadedImages] = useState();
   const [checkBoxItems, setCheckBoxItems] = useState([
@@ -37,11 +52,14 @@ const RegisterByEmail = ({ setOption }) => {
   }, [setOption]);
 
   const signUpDefaultForm = {
-    userId: '',
-    userPassword: '',
-    userPasswordCheck: '',
-    userNickName: '',
-    agreement: true,
+    email: '',
+    password: '',
+    passwordCheck: '',
+    nickname: '',
+    receiveReceipt: undefined,
+    agreement: undefined,
+    // terms: undefined,
+    // privacy: undefined,
   };
   const formOptions = { mode: 'onChange', defaultValues: signUpDefaultForm, resolver: yupResolver(signUpYup) };
 
@@ -66,7 +84,9 @@ const RegisterByEmail = ({ setOption }) => {
   }, [isDirty]);
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
+    console.log('onSubmit');
+    const { email, password, nickname, receiveReceipt } = data;
+    doRegister({ email, password, nickname, receiveReceipt });
     setActiveGuard(false);
   };
   const onCheckBoxChangeHandler = event => {
@@ -94,17 +114,11 @@ const RegisterByEmail = ({ setOption }) => {
   };
   return (
     <div className="col padding-row-24">
-      <NavigationGuard
-        when={activeGuard}
-        message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?"
-        onClickYes={async () => {
-          console.log('onClickYes');
-        }}
-      />
+      <NavigationGuard when={activeGuard} message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?" />
       <form className="col gap-16 top-16" onSubmit={handleSubmit(onSubmit)}>
         <ActInput
-          {...register('userId')}
-          id="userId"
+          {...register('email')}
+          id="email"
           label="아이디(이메일)"
           required={true}
           placeholder="아이디를 입력하세요"
@@ -115,15 +129,15 @@ const RegisterByEmail = ({ setOption }) => {
         />
         <div className="row gap-16 max-width align-center justify-around">
           <div className="row flex-auto">
-            <ActInput {...register('userPassword')} label="비밀번호" type="password" id="userPassword" placeholder="새로운 비밀번호 " errors={errors} control={control} />
+            <ActInput {...register('password')} label="비밀번호" type="password" id="password" placeholder="새로운 비밀번호 " errors={errors} control={control} />
           </div>
           <div className="row flex-auto">
-            <ActInput {...register('userPasswordCheck')} label="비밀번호 확인" type="password" id="userPasswordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
+            <ActInput {...register('passwordCheck')} label="비밀번호 확인" type="password" id="passwordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
           </div>
         </div>
         <ActInput
-          {...register('userNickName')}
-          id="userNickName"
+          {...register('nickname')}
+          id="nickname"
           label="닉네임"
           required={true}
           placeholder="닉네임을 입력하세요"
@@ -137,13 +151,14 @@ const RegisterByEmail = ({ setOption }) => {
             <div>연말정산 간소화 서비스에서 기부금 영수증을 발급하시겠습니까?</div>
           </div>
           <ActToggleButton
+            {...register('receiveReceipt')}
             errors={errors}
             control={control}
             items={[
-              { value: 1, label: '예' },
-              { value: 0, label: '아니요' },
+              { value: true, label: '예' },
+              { value: false, label: '아니요' },
             ]}
-            id="select"
+            id="receiveReceipt"
           />
         </div>
         <div className="col align-start justify-center">
