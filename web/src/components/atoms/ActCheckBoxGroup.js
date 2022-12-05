@@ -4,12 +4,17 @@ import { ErrorMessage } from '@hookform/error-message';
 import ActCheckBox from 'components/atoms/ActCheckBox';
 
 const ActCheckBoxGroup = (props, ref) => {
-  const { register, control, parentId, items, label, labelStyle, errors } = props;
+  const { register, control, parentId, items, label, labelStyle, errors, setValue } = props;
   const [checkBoxParent, setCheckBoxParent] = useState(false);
   const [checkBoxItems, setCheckBoxItems] = useState(items);
 
   useEffect(() => {
     setCheckBoxParent(checkBoxItems.every(item => item.checked));
+    setValue(
+      parentId,
+      checkBoxItems.every(item => item.checked),
+      { shouldValidate: true },
+    );
   }, [checkBoxItems]);
 
   const onHandleChange = (e, id) => {
@@ -43,10 +48,7 @@ const ActCheckBoxGroup = (props, ref) => {
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 0 }}>
       {checkBoxItems.map((item, index) => {
-        return (
-          // <ActCheckBox {...register(item.id)} disabled={true} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />
-          <ActCheckBox {...register(item.id)} disabled={true} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />
-        );
+        return <ActCheckBox {...register(item.id)} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />;
       })}
     </Box>
   );
@@ -54,6 +56,7 @@ const ActCheckBoxGroup = (props, ref) => {
   return (
     <div ref={ref} className="act-check-box-group">
       <ActCheckBox {...register(parentId)} id={parentId} checked={checkBoxParent} label={label} labelStyle={labelStyle} errors={errors} control={control} handleChange={onHandleChange} />
+      <div className="act-check-box-group-divider top-12 bottom-12" />
       {children}
       <ErrorMessage errors={errors} name={parentId} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />
     </div>

@@ -19,22 +19,23 @@ const ActInput = (props, ref) => {
     id,
     label,
     errors,
-    isValid,
     control,
     placeholder,
-    disabled,
     eyeHandler,
     eyeIcon,
-    duplicateMessage,
+    duplicateLabel,
     options,
     params,
-    fieldState,
     maxLength,
+    fieldInvalid,
+    handleChange,
+    style,
+    hideErrorMessage = false,
   } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
-  const [duplicatedResult, setDuplicatedResult] = useState({ message: duplicateMessage, result: undefined });
 
-  // console.log('fieldState', fieldState);
+  const [duplicatedResult, setDuplicatedResult] = useState({ resultData: { status: undefined, message: '' }, result: undefined });
+
   useEffect(() => {
     if (isError) {
       setDuplicatedResult({ ...duplicatedResult, result: undefined });
@@ -87,8 +88,8 @@ const ActInput = (props, ref) => {
                     fontSize: '1rem',
                     color: '#c8c8c8',
                   },
-
                   padding: 0,
+                  ...style,
                 }}
                 inputProps={{
                   style: {
@@ -111,10 +112,10 @@ const ActInput = (props, ref) => {
                         {eyeIcon}
                       </div>
                     </InputAdornment>
-                  ) : duplicateMessage ? (
+                  ) : duplicateLabel ? (
                     <InputAdornment position="end">
                       <div className="duplication-button-wrapper">
-                        <DuplicateButton id={id} label="중복" resultCallBack={onResultCallBack} disabled={fieldState.invalid} />
+                        <DuplicateButton id={id} label={duplicateLabel} resultCallBack={onResultCallBack} disabled={duplicatedResult.result === true || fieldInvalid || !field.value} />
                       </div>
                     </InputAdornment>
                   ) : (
@@ -122,6 +123,11 @@ const ActInput = (props, ref) => {
                   ),
                 }}
                 {...field}
+                onChange={e => {
+                  field.onChange(e);
+                  setDuplicatedResult({ ...duplicatedResult, result: undefined });
+                  if (handleChange) handleChange(e);
+                }}
                 value={field.value || ''}
               >
                 {type === 'select' &&
@@ -136,13 +142,15 @@ const ActInput = (props, ref) => {
           )}
         />
       </div>
-      <div className="height-24">
-        {isError ? (
-          <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
-        ) : (
-          duplicatedResult.result && <div className="success-text">{duplicateMessage}</div>
-        )}
-      </div>
+      {!hideErrorMessage && (
+        <div className="height-24">
+          {isError ? (
+            <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
+          ) : (
+            duplicatedResult.result === true && <div className={`${duplicatedResult.data === 200 ? 'success-text' : 'error-text'}`}>{duplicatedResult.data.message}</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

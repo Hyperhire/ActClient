@@ -1,9 +1,16 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { request } from 'utils/axiosClient';
+import { useSetRecoilState } from 'recoil';
+import { request, setAuthorization } from 'utils/axiosClient';
 import { api } from 'repository';
+import { authAtom } from 'state';
+import useModal from './useModal';
+import { MODAL_TYPES } from 'constants/constant';
+import { setItem, USER_INFO } from 'utils/sessionStorage';
 
 export const useLogin = queryKey => {
   const queryClient = useQueryClient();
+  const { showModal } = useModal();
+  const setAuth = useSetRecoilState(authAtom);
 
   const login = async loginInfo => {
     return request({ url: api.auth.login, method: 'post', data: loginInfo });
@@ -12,10 +19,16 @@ export const useLogin = queryKey => {
   return useMutation(login, {
     onSuccess: async data => {
       if (data.status === 200) {
-        console.log('success', data.data);
+        setAuthorization(data.data.token);
+        setAuth(true);
+        //todo server에서 데이터 받아와야 됨
+        setItem(USER_INFO, { userName: 'lucas' });
         await queryClient.invalidateQueries(queryKey);
       } else {
-        console.log('fail', data.data);
+        showModal({
+          open: true,
+          message: `로그인에 실패하였습니다.\n${data.message}`,
+        });
       }
     },
     onError: (error, variable, context) => {
@@ -29,7 +42,7 @@ export const useLogin = queryKey => {
 
 export const useRegisterByEmail = queryKey => {
   const queryClient = useQueryClient();
-
+  const { showModal } = useModal();
   const register = async userInfo => {
     return request({ url: api.auth.register, method: 'post', data: userInfo });
   };
@@ -40,7 +53,12 @@ export const useRegisterByEmail = queryKey => {
         console.log('success', data.data);
         await queryClient.invalidateQueries(queryKey);
       } else {
-        console.log('fail', data.data);
+        showModal({
+          modalType: MODAL_TYPES.ALERT_MODAL,
+          modalProps: {
+            message: `회원가입에 실패하였습니다.\n${data.message}`,
+          },
+        });
       }
     },
     onError: (error, variable, context) => {

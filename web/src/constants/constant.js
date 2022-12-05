@@ -40,3 +40,11 @@ export const ORGANIZATION_ID = {
   KSFP: 'ksfp',
   GOOD_NEIGHBORS: 'good-neighbors',
 };
+
+export const MODAL_TYPES = {
+  CONFIRM_MODAL: 'conform-modal',
+  ALERT_MODAL: 'alert-modal',
+};
+export const SEARCH_TYPE = {
+  CAMPAIGN: 'campaign',
+};

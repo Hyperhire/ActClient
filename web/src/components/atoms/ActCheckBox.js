@@ -9,7 +9,7 @@ const ActCheckBox = (props, ref) => {
   const { control, id, label, labelStyle = { fontFamily: 'Pretendard', fontWeight: 400, fontSize: '0.875rem', color: 'black' }, errors, disabled, checked, handleChange } = props;
 
   return (
-    <div ref={ref} className="act-check-box-group">
+    <div ref={ref} className="act-check-box-wrapper">
       <Controller
         name={id}
         control={control}
@@ -29,6 +29,7 @@ const ActCheckBox = (props, ref) => {
                   handleChange && handleChange(e, id);
                 }}
                 disabled={disabled}
+                sx={{ padding: 0.5 }}
               />
             }
             label={label && label}

@@ -4,7 +4,7 @@
   height: 5rem;
   align-items: center;
   padding: 24px;
-  @extend .bordered;
+  @extend .bordered-dashed;
   border-radius: 8px;
   .act-image-upload-button {
     display: flex;

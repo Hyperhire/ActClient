@@ -1,8 +1,10 @@
 .act-check-box-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  @extend .col;
+  @extend .align-start;
+  @extend .justify-center;
+  @extend .max-width;
+  .act-check-box-group-divider {
+    @extend .max-width;
+    @include dividerCustom(1, $out-line);
+  }
 }

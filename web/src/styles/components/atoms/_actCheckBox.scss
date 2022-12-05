@@ -1,15 +1,19 @@
-.act-check-box-icon {
-  width: 24px;
-  height: 24px;
-  background: white;
-  @extend .bordered;
-  border-radius: 4px;
-}
-.act-check-box-checked-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @extend .act-check-box-icon;
-  @extend .bordered;
-  background: black;
+.act-check-box-wrapper {
+  @extend .row;
+  @extend .padding-row-24;
+  .act-check-box-icon {
+    width: 24px;
+    height: 24px;
+    background: white;
+    @extend .bordered;
+    border-radius: 4px;
+  }
+  .act-check-box-checked-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @extend .act-check-box-icon;
+    @extend .bordered;
+    background: black;
+  }
 }

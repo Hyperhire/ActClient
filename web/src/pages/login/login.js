@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useSetRecoilState } from 'recoil';
 import ActButton from 'components/atoms/ActButton';
 import { loginYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
@@ -15,23 +14,20 @@ import { ReactComponent as Signup } from 'styles/assets/icons/signup.svg';
 import { ReactComponent as Eye } from 'styles/assets/icons/eye/eye.svg';
 import { ReactComponent as EyeClose } from 'styles/assets/icons/eye/eye-off.svg';
 import { useLogin } from 'hooks/useReactMutation';
-import { setAuthorization } from 'utils/axiosClient';
-import { authAtom } from 'state';
 
 const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state;
-  const setAuth = useSetRecoilState(authAtom);
+
   const { data, mutate: login, isLoading, isError, error, isSuccess } = useLogin('login');
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setAuthorization(data.data.token);
-      setAuth(true);
+    if (isSuccess && data?.status === 200) {
       navigate(locationState ? locationState.from : '/', { state: { ...locationState } }, { replace: true });
     }
   }, [data, isLoading, isError, error, isSuccess, navigate, locationState]);
+
   const [showPassword, setShowPassword] = useState(false);
   const onClickEyeHandler = () => {
     setShowPassword(!showPassword);

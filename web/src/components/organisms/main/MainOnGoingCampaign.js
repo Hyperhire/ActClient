@@ -82,9 +82,9 @@ const MainOnGoingCampaign = () => {
   };
 
   return (
-    <div className="main-on-going-campaign-wrapper">
-      <div className="main-on-going-campaign-title-wrapper link" onClick={onClickNavigateHandler}>
-        <div className="main-on-going-campaign-title">진행중인 캠페인</div>
+    <div className="campaign-list-wrapper">
+      <div className="campaign-list-title-wrapper link" onClick={onClickNavigateHandler}>
+        <div className="campaign-list-title">진행중인 캠페인</div>
         <ArrowRight />
       </div>
       {dummy.map((item, index) => {

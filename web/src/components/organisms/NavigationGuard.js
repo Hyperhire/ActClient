@@ -1,10 +1,19 @@
-import React from 'react';
-import Modal from 'components/organisms/Modal/ConfirmModal';
+import { useEffect } from 'react';
 import usePrompt from 'hooks/usePrompt';
+import useModal from '../../hooks/useModal';
 
 const NavigationGuard = ({ when, onClickYes, message = 'Are you sure to leave this page?' }) => {
   const { showPrompt, confirmNavigation, cancelNavigation } = usePrompt(when);
+  const { showModal } = useModal();
 
+  useEffect(() => {
+    showModal({
+      open: showPrompt,
+      message: message,
+      handleConfirm: handleClickYes,
+      handleCancel: handleClickNo,
+    });
+  }, [showPrompt]);
   const handleClickNo = () => {
     cancelNavigation();
   };
@@ -16,11 +25,7 @@ const NavigationGuard = ({ when, onClickYes, message = 'Are you sure to leave th
     confirmNavigation();
   };
 
-  return (
-    <Modal visible={showPrompt} onCancel={handleClickNo} onConfirm={handleClickYes}>
-      <span className="font-size-20 font-weight-600 poppins">{message}</span>
-    </Modal>
-  );
+  return null;
 };
 
 export default NavigationGuard;

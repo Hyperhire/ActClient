@@ -2,6 +2,7 @@ import React, { lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from '@mui/material';
 import PrivateRoute from './components/organisms/PrivateRoute';
+
 const Nav = lazy(() => import('components/organisms/Nav'));
 const Main = lazy(() => import('pages/main'));
 const LoginBase = lazy(() => import('pages/login'));
@@ -18,6 +19,7 @@ const OrganizationBase = lazy(() => import('pages/organization'));
 const OrganizationList = lazy(() => import('pages/organization/organizationList'));
 const OrganizationDetail = lazy(() => import('pages/organization/organizationDetail'));
 const OrganizationPayment = lazy(() => import('pages/organization/organizationPayment'));
+const CampaignList = lazy(() => import('pages/campaign/campaignList'));
 const CampaignBase = lazy(() => import('pages/campaign'));
 const CampaignDetail = lazy(() => import('pages/campaign/campaignDetail'));
 const DonationBase = lazy(() => import('pages/donation'));
@@ -51,6 +53,7 @@ const RouteSwitch = () => {
               <Route path=":id/payment" element={<OrganizationPayment setOption={setOption} />} />
             </Route>
             <Route path="/campaign" element={<CampaignBase setOption={setOption} />}>
+              <Route path="" element={<CampaignList setOption={setOption} />} />
               <Route path=":name" element={<CampaignDetail setOption={setOption} />} />
             </Route>
             <Route path="/donation" element={<DonationBase setOption={setOption} />}>

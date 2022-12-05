@@ -298,6 +298,13 @@ html, body, #root, .App {
   border: solid 1px $out-line;
 }
 
+.bordered-dotted {
+  border: dotted 1px $out-line;
+}
+
+.bordered-dashed {
+  border: dashed 1px $out-line;
+}
 
 .bordered-line-placeholder {
   border: solid 1px $placeholder;
@@ -321,6 +328,11 @@ html, body, #root, .App {
 
 .border-50 {
   border-radius: 50%;
+}
+
+.border-row {
+  border-left: solid 1px $divider;
+  border-right: solid 1px $divider;
 }
 
 .divider {

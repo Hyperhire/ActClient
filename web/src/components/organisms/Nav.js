@@ -9,10 +9,17 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import dayjs from 'dayjs';
 import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
 import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
+import { ReactComponent as ProfileIcon } from 'styles/assets/icons/profile/default.svg';
+import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
+import { ReactComponent as EmailIcon } from 'styles/assets/icons/email.svg';
+import { ReactComponent as UserCheckIcon } from 'styles/assets/icons/user_check.svg';
+import { ReactComponent as CardIcon } from 'styles/assets/icons/card.svg';
+import { ReactComponent as HeartIcon } from 'styles/assets/icons/heart.svg';
+
 import Back from 'components/atoms/Back';
 import { authAtom } from 'state';
 
-import { getItem, USER_INFO } from '../../utils/sessionStorage';
+import { getItem, removeItem, USER_INFO } from '../../utils/sessionStorage';
 
 const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
@@ -29,96 +36,90 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
 
   const logout = () => {
     setAuth(false);
+    removeItem(USER_INFO);
   };
   const list = () => (
     <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      <List>
-        <ListItem disablePadding>
-          {auth ? (
-            <div className="col max-width left-16">
-              <div className="row padding-col-16 divider ">
-                <div className="row align-center justify-center">아이콘</div>
-                <div className="col">
-                  <div className="row">
-                    <div>{userInfo?.userName || 'nickname'}</div>
-                    <div>개인</div>
-                  </div>
-                  <div>abc@naver.com</div>
+      <div className="side-menu-wrap">
+        {auth ? (
+          <div className="side-menu-login-menu-wrap">
+            <div className="side-menu-wrap-profile-wrap">
+              <ProfileIcon />
+              <div className="side-menu-wrap-profile-info-wrap">
+                <div className="side-menu-wrap-profile-name-wrap">
+                  <div className="side-menu-wrap-profile-name">{userInfo?.userName || 'nickname'}</div>
+                  <ActIcon />
+                  <div className="side-menu-wrap-profile-type">개인</div>
                 </div>
-              </div>
-              <div className="col padding-col-16">
-                <div className="row align-center">
-                  <div className="flex-1">누적후원금액</div>
-                  <div className="flex-2">154,000원</div>
-                </div>
-                <div className="row align-center">
-                  <div className="flex-1">정기후원금액</div>
-                  <div className="flex-2">40,000원</div>
-                </div>
-                <div className="row align-center">
-                  <div className="flex-1">후원건수</div>
-                  <div className="flex-2">4/15건</div>
-                </div>
-              </div>
-              <div className="row right-16">
-                <div
-                  className="col flex-1 justify-center align-center link"
-                  onClick={() => {
-                    navigate('my/profile');
-                  }}
-                >
-                  <div>아이콘</div>
-                  <div>프로필정보</div>
-                </div>
-                <div
-                  className="col flex-1 justify-center align-center link"
-                  onClick={() => {
-                    navigate('my/paymentHistory');
-                  }}
-                >
-                  <div>아이콘</div>
-                  <div>결제내역</div>
-                </div>
-                <div
-                  className="col flex-1 justify-center align-center link"
-                  onClick={() => {
-                    navigate('my/donationHistory');
-                  }}
-                >
-                  <div>아이콘</div>
-                  <div>후원내역</div>
+                <div className="side-menu-wrap-profile-email-wrap">
+                  <EmailIcon />
+                  <div className="side-menu-wrap-profile-email">abc@naver.com</div>
                 </div>
               </div>
             </div>
-          ) : (
-            <ListItemButton>
-              <Link to="/login" className="title grey font-24 font-weight-700">
-                Login
-              </Link>
-            </ListItemButton>
-          )}
-        </ListItem>
+            <div className="left-24 divider" />
+            <div className="side-menu-donation-history-wrap">
+              <div className="side-menu-donation-history">
+                <div className="side-menu-donation-history-label">누적후원금액</div>
+                <div className="side-menu-donation-history-content">154,000원</div>
+              </div>
+              <div className="side-menu-donation-history">
+                <div className="side-menu-donation-history-label">정기후원금액</div>
+                <div className="side-menu-donation-history-content">40,000원</div>
+              </div>
+              <div className="side-menu-donation-history">
+                <div className="side-menu-donation-history-label">후원건수</div>
+                <div className="side-menu-donation-history-content">4/15건</div>
+              </div>
+            </div>
+            <div className="side-menu-donation-icon-menu-wrapper">
+              <div
+                className="side-menu-donation-icon-menu link"
+                onClick={() => {
+                  navigate('my/profile');
+                }}
+              >
+                <UserCheckIcon />
+                <div className="side-menu-donation-icon-menu-label">프로필정보</div>
+              </div>
+              <div
+                className="side-menu-donation-icon-menu link border-row"
+                onClick={() => {
+                  navigate('my/paymentHistory');
+                }}
+              >
+                <CardIcon />
+                <div className="side-menu-donation-icon-menu-label ">결제내역</div>
+              </div>
+              <div
+                className="side-menu-donation-icon-menu link"
+                onClick={() => {
+                  navigate('my/donationHistory');
+                }}
+              >
+                <HeartIcon />
+                <div className="side-menu-donation-icon-menu-label">후원내역</div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Link to="/login" className="side-menu-label">
+            Login
+          </Link>
+        )}
         {PAGES.map((page, index) => (
-          <ListItem key={`page.name${index}`} disablePadding>
-            <ListItemButton>
-              <Link to={page.url} className="title grey font-24 font-weight-700">
-                {page.name}
-              </Link>
-            </ListItemButton>
-          </ListItem>
+          <Link key={index} to={page.url} className="side-menu-label">
+            {page.name}
+          </Link>
         ))}
         {auth ? (
-          <ListItem disablePadding>
-            <div>
-              <ListItemButton>
-                <div onClick={logout} className="grey small underline">
-                  로그아웃
-                </div>
-              </ListItemButton>
+          <div className="flex-1 align-end">
+            <div onClick={logout} className="side-menu-logout-label">
+              로그아웃
             </div>
-          </ListItem>
+          </div>
         ) : null}
-      </List>
+      </div>
     </Box>
   );
 
@@ -135,7 +136,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
         <div className="nav max-width flex-auto">
           <div className="nav-inside row align-center justify-between">
             <div className="flex-1">{option.back ? <Back size="1rem" /> : <Logo width="58" height="28" />}</div>
-            <div className="flex-1">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
+            <div className="flex-2">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
             <div className="flex-1 row max-width align-center justify-end">
               {option.menu ? (
                 <div className="row max-width align-center justify-end">
@@ -149,7 +150,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
         </div>
       </header>
       {option.subtitle && (
-        <div className="subtitle-wrapper col top-16 gap-16">
+        <div className="subtitle-wrapper col gap-16">
           <div className="subtitle bold max-width pre-wrap">
             {option.subtitle}
             {option.chip && <span className="align-center">{option.chip}</span>}

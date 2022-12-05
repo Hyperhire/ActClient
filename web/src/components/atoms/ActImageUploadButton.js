@@ -1,15 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ReactComponent as PlusIcon } from 'styles/assets/icons/plus.svg';
+import { TextField } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import { Controller } from 'react-hook-form';
+import DuplicateButton from './duplicateButton';
 import { ReactComponent as DeleteIcon } from 'styles/assets/icons/del/oval.svg';
+import { ReactComponent as PlusIcon } from 'styles/assets/icons/plus.svg';
 
 const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
 
 const UPLOAD_LIMIT = 1;
 
-const ActImageUploadButton = ({ uploadedImages }) => {
+const ActImageUploadButton = ({ register, id, control, uploadedImages }) => {
+  const { ref, ...rest } = register;
   const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
-  const inputRef = useRef();
+  const inputRef = useRef(null);
 
   useEffect(() => {
     uploadedImages(images);
@@ -130,7 +136,27 @@ const ActImageUploadButton = ({ uploadedImages }) => {
           </>
         )}
       </div>
-      <input ref={inputRef} hidden type="file" id="file" onChange={changeHandler} accept="image/png, image/jpg, image/jpeg" />
+
+      <Controller
+        control={control}
+        name={id}
+        render={({ field: { onChange } }) => (
+          <input
+            {...rest}
+            ref={event => {
+              ref(event);
+              inputRef.current = event;
+            }}
+            hidden
+            type="file"
+            onChange={e => {
+              changeHandler(e);
+              onChange(e);
+            }}
+            accept="image/png, image/jpg, image/jpeg"
+          />
+        )}
+      />
     </div>
   );
 };

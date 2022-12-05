@@ -37,26 +37,100 @@
 
 }
 
-.menu-wrap {
-  display: block;
-  position: absolute;
-  height: 100%;
-  .menu-wrap-rel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    right: -100%;
-    transition: transform 0.5s ease 0s, opacity 0.5s ease 0.5s;
-    background-color: #1f1e1ce6;
+.side-menu-wrap {
+  @extend .col;
+  @extend .max-width;
+  @extend .height-vh-100;
+  @extend .gap-24;
+  @extend .padding-col-24;
+  .side-menu-login-menu-wrap {
+    @extend .col;
+    @extend .max-width;
+    @extend .gap-24;
+    .side-menu-wrap-profile-wrap {
+      @extend .row;
+      @extend .align-center;
+      @extend .padding-row-24;
+      @extend .gap-12;
+      .side-menu-wrap-profile-info-wrap {
+        @extend .col;
+        @extend .gap-2;
+        .side-menu-wrap-profile-name-wrap {
+          @extend .row;
+          @extend .align-center;
+          @extend .gap-8;
+          .side-menu-wrap-profile-name {
+            @extend .title-large;
+            color: $title-text;
+          }
+          .side-menu-wrap-profile-type {
+            @extend .bordered;
+            @extend .border-radius-4;
+            @extend .body-small;
+            padding: 0.1rem 0.4rem;
+            color: $title-text;
+            background-color: $out-line;
+          }
+        }
+        .side-menu-wrap-profile-email-wrap {
+          @extend .row;
+          @extend .align-center;
+          @extend .gap-4;
+          .side-menu-wrap-profile-email {
+            @extend .body-medium;
+            color: $body-text;
+          }
+        }
+      }
+    }
+    .side-menu-donation-history-wrap {
+      @extend .col;
+      @extend .padding-row-24;
+      @extend .gap-6;
+      .side-menu-donation-history {
+        @extend .row;
+        @extend .align-center;
+        .side-menu-donation-history-label {
+          @extend .flex-1;
+          @extend .body-medium;
+          color: $body-text;
+        }
+        .side-menu-donation-history-content {
+          @extend .flex-2;
+          @extend .body-medium;
+          color: $title-text;
+        }
+      }
+    }
+    .side-menu-donation-icon-menu-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-around;
+      @extend .bordered;
+      @extend .border-radius-8;
+      @extend .margin-row-24;
+      .side-menu-donation-icon-menu {
+        @extend .col;
+        @extend .align-center;
+        @extend .justify-center;
+        @extend .padding-16;
+        .side-menu-donation-icon-menu-label {
+          @extend .body-small;
+          color: $title-text;
+        }
+      }
+    }
   }
-  .menu-list-wrapper {
-    // height: 120vh;
-    // padding-top: 70px;
-    .menu-list {
-      font-size: 20px;
-    }
-    :hover {
-      color: $primary;
-    }
+
+  .side-menu-label {
+    @extend .margin-row-24;
+    @extend .title-medium;
+    color: $title-text;
+  }
+  .side-menu-logout-label {
+    @extend .margin-row-24;
+    @extend .body-medium;
+    color: $title-text;
+    @extend .underline;
   }
 }
