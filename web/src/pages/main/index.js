@@ -11,6 +11,7 @@ const Main = ({ setOption }) => {
     setOption({ title: '', back: false, menu: true });
     return () => setOption({});
   }, [setOption]);
+
   return (
     <div className="max-width max-height col">
       <MainCarousel />

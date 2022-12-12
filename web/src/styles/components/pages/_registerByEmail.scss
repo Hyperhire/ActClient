@@ -46,4 +46,8 @@
   .register-by-email-divider {
     @include dividerCustom(12, $divider);
   }
+  .register-by-email-form-checkbox-label {
+    @extend .title-small;
+    color: $title-text;
+  }
 }

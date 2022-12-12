@@ -2,40 +2,66 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
-import { profileUpdateYup, signUpYup } from 'utils/yupSchema';
+import dayjs from 'dayjs';
+import { profileUpdateYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import { getItem, USER_INFO } from 'utils/sessionStorage';
 import ActButton from 'components/atoms/ActButton';
 import NavigationGuard from 'components/organisms/NavigationGuard';
-import ActDatePicker from '../../components/atoms/ActDatePicker';
-import { GENDER } from '../../constants/constant';
-import ActSelect from '../../components/atoms/ActSelect';
+import ActDatePicker from 'components/atoms/ActDatePicker';
+import { GENDER } from 'constants/constant';
+import ActSelect from 'components/atoms/ActSelect';
+import { ReactComponent as NaverIcon } from 'styles/assets/images/icons/naver.svg';
+import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line_right_sm.svg';
+import ActUploadProfileButton from 'components/organisms/ActUploadProfileButton';
 
+import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
+import ActDatePicker2 from '../../components/atoms/ActDatePicker2';
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
   const userInfo = getItem(USER_INFO);
   const [activeGuard, setActiveGuard] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState();
 
   useEffect(() => {
-    setOption({ title: '프로필 정보', subtitle: '계정 정보', description: '', back: true, menu: false });
+    setOption({
+      title: '프로필 정보',
+      subtitle: '계정 정보',
+      description: '',
+      back: true,
+      menu: false,
+      button: (
+        <div className="profile-form-resign-membership-wrapper link" onClick={onClickResignMembership}>
+          <div className="profile-form-resign-membership-label">회원탈퇴</div>
+          <ArrowRightIcon />
+        </div>
+      ),
+    });
   }, [setOption]);
 
-  const profileUpdateDefaultForm = {
-    userId: '',
-    userNickName: '',
-    userPassword: '',
-    userPasswordCheck: '',
-    userName: '',
-    userBirthday: undefined,
-    userGender: '',
-    userMobile: '',
+  const onClickResignMembership = () => {
+    setActiveGuard(false);
+    navigate('/my/resign-membership');
   };
+  const profileUpdateDefaultForm = {
+    email: '',
+    nickname: '',
+    password: '',
+    passwordCheck: '',
+    name: '',
+    birthday: '',
+    gender: '',
+    mobile: '',
+  };
+
   const formOptions = { mode: 'onChange', defaultValues: profileUpdateDefaultForm, resolver: yupResolver(profileUpdateYup) };
 
   const {
     control,
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { isDirty, isValid, isSubmitting, errors },
   } = useForm(formOptions);
 
@@ -57,7 +83,7 @@ const Profile = ({ setOption }) => {
   };
 
   return (
-    <div className="col max-width padding-8">
+    <div className="profile-wrapper">
       <NavigationGuard
         when={activeGuard}
         message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?"
@@ -65,18 +91,22 @@ const Profile = ({ setOption }) => {
           console.log('onClickYes');
         }}
       />
-      <div className="col max-width border-radius-8 background-neutrals-4 padding-8 bottom-8">
-        <div>회원가입 ID</div>
-        <div className="row align-center justify-start">
-          <div>아이콘</div>
-          <div className="bold">{userInfo.userName}</div>
+      <div className="profile-image-wrapper">
+        <ActUploadProfileButton register={register('profileImage')} id="profileImage" errors={errors} control={control} uploadedImages={setUploadedImages} />
+        <ActIcon />
+      </div>
+      <div className="profile-login-info-wrapper">
+        <div className="profile-login-info-label">회원가입 ID</div>
+        <div className="profile-login-info-content-wrapper">
+          <NaverIcon width={24} height={24} />
+          <div className="profile-login-info-content-email">{userInfo.userName} @gmail.com</div>
         </div>
       </div>
-      <div className="col">
-        <form className="padding-col-16" onSubmit={handleSubmit(onSubmit)}>
+      <form className="profile_form-wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <div className="profile-form-default-info-wrapper">
           <ActInput
-            {...register('userId')}
-            id="userId"
+            {...register('email')}
+            id="email"
             label="이메일주소"
             required={true}
             info={true}
@@ -86,8 +116,8 @@ const Profile = ({ setOption }) => {
             duplicateHandler={onDuplicateIdHandler}
           />
           <ActInput
-            {...register('userNickName')}
-            id="userNickName"
+            {...register('nickname')}
+            id="nickname"
             label="닉네임"
             required={true}
             placeholder="닉네임을 입력하세요"
@@ -95,34 +125,40 @@ const Profile = ({ setOption }) => {
             control={control}
             duplicateHandler={onDuplicateNicknameHandler}
           />
-          <div className="row gap-16 max-width align-center justify-around">
-            <div className="row">
-              <ActInput {...register('userPassword')} label="비밀번호" type="password" id="userPassword" placeholder="새로운 비밀번호 " errors={errors} control={control} />
-            </div>
-            <div className="row">
-              <ActInput {...register('userPasswordCheck')} label="비밀번호 확인" type="password" id="userPasswordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
-            </div>
-          </div>
-          <div className="col padding-col-36">
-            <div className="font-size-rem-2 bold">개인 정보</div>
-            <div>
-              기부금 영수증을 발급받기 위해서는 개인정보 입력이 필수 입니다. 수집된 개인정보는 국세청 연말정산 간소화 서비스 등록외에는 사용하지 않습니다.
-              <span className="bold">실명, 생년월일, 연락처</span> 가 본인이 아니거나 부정확할 경우 기부금 영수증 발급이 거부 될 수 있습니다.
-            </div>
-          </div>
-          <ActInput {...register('userName')} id="userName" label="실명" required={true} placeholder="실명을 입력하세요" errors={errors} control={control} />
-          <div className="row align-center gap-16 justify-center">
+          <div className="profile-form-half-wrapper">
             <div className="row flex-1">
-              <ActDatePicker register={register} id="userBirthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} />
+              <ActInput {...register('password')} label="비밀번호" type="password" id="password" placeholder="새로운 비밀번호 " errors={errors} control={control} />
+            </div>
+            <div className="row flex-1">
+              <ActInput {...register('passwordCheck')} label="비밀번호 확인" type="password" id="passwordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
+            </div>
+          </div>
+        </div>
+        <div className="profile-form-divider" />
+        <div className="profile-form-notice-wrapper">
+          <div className="profile-form-notice-title">개인 정보</div>
+          <div className="profile-form-notice-description">
+            {`기부금 영수증을 발급받기 위해서는 개인정보 입력이 필수 입니다. 수집된 개인정보는 국세청 연말정산 간소화 서비스 등록외에는 사용하지 않습니다.\n\n`}
+            <span>실명, 생년월일, 연락처</span>가 본인이 아니거나 부정확할 경우 기부금 영수증 발급이 거부 될 수 있습니다.
+          </div>
+        </div>
+        <div className="profile-form-private-info-wrapper">
+          <ActInput {...register('name')} id="name" label="실명" required={true} placeholder="실명을 입력하세요" errors={errors} control={control} />
+          <div className="profile-form-half-wrapper">
+            <div className="row flex-1">
+              <ActDatePicker register={register} id="birthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} value={getValues('birthday')} setValue={setValue} />
+              {/*<ActDatePicker2 register={register} id="birthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} />*/}
             </div>
             <div className="row flex-1 ">
-              <ActSelect register={register} id="userGender" label="성별" errors={errors} control={control} options={GENDER} />
+              <ActSelect register={register} id="gender" label="성별" errors={errors} control={control} options={GENDER} />
             </div>
           </div>
-          <ActInput {...register('userMobile')} type="number" id="userMobile" label="휴대폰번호" required={true} placeholder="- 없이 입력해주세요" errors={errors} control={control} />
-          <ActButton className="max-width top-16" disabled={!isValid} type="submit" label="프로필 수정 완료" />
-        </form>
-      </div>
+          <ActInput {...register('mobile')} type="number" id="mobile" label="휴대폰번호" required={true} placeholder="- 없이 입력해주세요" errors={errors} control={control} />
+        </div>
+        <div className="profile-form-submit-wrapper">
+          <ActButton className="tertiary-button-x-large" disabled={!isValid} type="submit" label="프로필 수정 완료" />
+        </div>
+      </form>
     </div>
   );
 };

@@ -2,54 +2,37 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DisclosureItem from 'components/organisms/DisclosureItem';
 import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_lg.svg';
+import { ORGANIZATION_NEWS_TYPE } from '../../../constants/constant';
+import { useReactQuery } from '../../../hooks/useReactQuery';
+import { api } from '../../../repository';
 
 const MainDisclosure = () => {
+  const { isSuccess, data } = useReactQuery('main-notice-list', api.notice.list);
   const navigate = useNavigate();
-  const dummy = [
-    {
-      title: '홑트아동복지회',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '월드비전',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '굿네이버스',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-  ];
-  const makeDummy = () => {
-    let tmp = [];
-    for (let i = 0; i < 20; i++) {
-      tmp.push({
-        title: `title ${i}`,
-        description: `description ${i}`,
-        date: `date ${i}`,
-      });
-    }
-    return tmp;
-  };
+
   const onClickHandler = () => {
-    navigate('disclosure');
+    navigate('/news/list', { state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE } });
   };
+
+  const onClickItemHandler = (type, item) => {
+    navigate(`/news/${item._id}`, { state: { type } });
+  };
+
   return (
     <div className="main-disclosure-wrapper">
       <div className="main-disclosure-title-wrapper link" onClick={onClickHandler}>
         <div className="main-disclosure-title">단체 최신 공지</div>
         <ArrowRight />
       </div>
-      {dummy.map((item, index) => {
-        return (
-          <div key={index}>
-            <DisclosureItem item={item} />
-            <div className="divider" />
-          </div>
-        );
-      })}
+      {isSuccess &&
+        data.map((item, index) => {
+          return (
+            <div key={index}>
+              <DisclosureItem item={item} clickHandler={item => onClickItemHandler(ORGANIZATION_NEWS_TYPE.DISCLOSURE, item)} />
+              <div className="divider" />
+            </div>
+          );
+        })}
     </div>
   );
 };

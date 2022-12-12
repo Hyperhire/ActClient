@@ -44,7 +44,7 @@
     .etc-wrapper {
       display: flex;
       flex: 1;
-      align-items: end;
+      align-items: flex-end;
       width: 100%;
       .rate-amount-wrapper {
         display: flex;
@@ -61,7 +61,7 @@
       .remaining-period {
         display: flex;
         flex: 1;
-        justify-content: end;
+        justify-content: flex-end;
         @extend .body-small;
         color: $caption
       }

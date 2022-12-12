@@ -20,6 +20,7 @@ import Back from 'components/atoms/Back';
 import { authAtom } from 'state';
 
 import { getItem, removeItem, USER_INFO } from '../../utils/sessionStorage';
+import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
 
 const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +31,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   const setAuth = useSetRecoilState(authAtom);
   const PAGES = [
     { url: '/organization', name: '단체찾기' },
-    { url: '/disclosure', name: '공시보기' },
+    { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '공시보기' },
     { url: '/faq', name: 'FAQ' },
   ];
 
@@ -108,7 +109,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           </Link>
         )}
         {PAGES.map((page, index) => (
-          <Link key={index} to={page.url} className="side-menu-label">
+          <Link key={index} to={page.url} state={page.state} className="side-menu-label">
             {page.name}
           </Link>
         ))}
@@ -154,6 +155,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           <div className="subtitle bold max-width pre-wrap">
             {option.subtitle}
             {option.chip && <span className="align-center">{option.chip}</span>}
+            {option.button && <div className="subtitle-optional-button">{option.button}</div>}
           </div>
           {option.description && <div className="description">{option.description}</div>}
         </div>

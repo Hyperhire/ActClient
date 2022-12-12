@@ -47,4 +47,6 @@ export const MODAL_TYPES = {
 };
 export const SEARCH_TYPE = {
   CAMPAIGN: 'campaign',
+  NEWS: 'new',
+  DISCLOSURE: 'disclosure',
 };

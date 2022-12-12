@@ -4,10 +4,12 @@
   @extend .align-center;
   @extend .padding-24;
   @extend .gap-20;
+
   .organization-news-item-content-wrapper {
     @extend .col;
     flex: 1;
     overflow: hidden;
+
     .organization-news-item-title {
       @extend .title-small;
       color: $title-text;
@@ -24,12 +26,13 @@
   }
   .organization-news-item-image-wrapper {
     width: 4.5rem;
+    height: 4rem;
     border-radius: 4px;
     background: #548fcc;
     img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
     }
   }
 }

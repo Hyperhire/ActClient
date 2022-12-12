@@ -11,107 +11,27 @@ import OrganizationNewsImage3 from 'styles/assets/images/news/img_2.png';
 import OrganizationNewsImage4 from 'styles/assets/images/news/img_3.png';
 import OrganizationNewsImage5 from 'styles/assets/images/news/img_4.png';
 import DisclosureItem from '../DisclosureItem';
+import { useReactQuery } from '../../../hooks/useReactQuery';
+import { api } from '../../../repository';
 
-const OrganizationNews = () => {
+const OrganizationNews = ({ id }) => {
   const navigate = useNavigate();
+  const { isSuccess: newsSuccess, data: newsData } = useReactQuery(`org-news-list-${id}`, api.news.listByOrg(id));
+  const { isSuccess: noticeSuccess, data: noticeData } = useReactQuery(`org-notice-list-${id}`, api.notice.listByOrg(id));
 
-  const dummy = [
-    {
-      id: 0,
-      image: OrganizationNewsImage1,
-      title: '나눔은 동행이에요. 후원 30주년 최연소 후원자 인터뷰',
-      description:
-        '어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이',
-    },
-    {
-      id: 1,
-      image: OrganizationNewsImage2,
-      title: '나눔은 동행이에요. 후원 30주년 최연소 후원자 인터뷰',
-      description:
-        '어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이',
-    },
-    {
-      id: 2,
-      image: OrganizationNewsImage3,
-      title: '나눔은 동행이에요. 후원 30주년 최연소 후원자 인터뷰',
-      description:
-        '어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이',
-    },
-    {
-      id: 3,
-      image: OrganizationNewsImage4,
-      title: '나눔은 동행이에요. 후원 30주년 최연소 후원자 인터뷰',
-      description:
-        '어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이',
-    },
-    {
-      id: 4,
-      image: OrganizationNewsImage5,
-      title: '나눔은 동행이에요. 후원 30주년 최연소 후원자 인터뷰',
-      description:
-        '어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이 어려운 환경에서도 어머니의 마음을 이',
-    },
-  ];
-
-  const dummyDisclosure = [
-    {
-      title: '홑트아동복지회',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '월드비전',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '굿네이버스',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '홑트아동복지회',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-    {
-      title: '월드비전',
-      description: '기부금품모집완료 및 사용내역 보고',
-      date: '20221224',
-    },
-  ];
-
-  const makeDummy = type => {
-    let tmp = [];
-    for (let i = 0; i < 20; i++) {
-      tmp.push(
-        type === ORGANIZATION_NEWS_TYPE.NEWS
-          ? {
-              id: i,
-              image: `image ${i}`,
-              title: `title ${i}`,
-              description: `description ${i}`,
-            }
-          : {
-              id: i,
-              image: `image ${i}`,
-              title: `title ${i}`,
-              description: `description ${i}`,
-            },
-      );
-    }
-    return tmp;
+  const onClickHandler = (type, item) => {
+    navigate(`/news/${item._id}`, { state: { type } });
   };
 
   const data = [
     {
       index: 0,
       label: '단체 소식',
-      list: dummy.map((item, index) => {
+      list: newsData.map((item, index) => {
         return (
           <div key={index}>
-            <OrganizationNewsItem type={ORGANIZATION_NEWS_TYPE.NEWS} item={item} />
-            {index !== dummy.length && <div className="divider" />}
+            <OrganizationNewsItem item={item} clickHandler={item => onClickHandler(ORGANIZATION_NEWS_TYPE.NEWS, item)} />
+            {index !== newsData.length && <div className="divider" />}
           </div>
         );
       }),
@@ -119,21 +39,17 @@ const OrganizationNews = () => {
     {
       index: 1,
       label: '단체 공시',
-      list: dummyDisclosure.map((item, index) => {
+      list: noticeData.map((item, index) => {
         return (
           <div key={index}>
-            <DisclosureItem key={index} item={item} />
-            {index !== dummyDisclosure.length && <div className="divider" />}
+            <DisclosureItem key={index} item={item} clickHandler={item => onClickHandler(ORGANIZATION_NEWS_TYPE.DISCLOSURE, item)} />
+            {index !== noticeData.length && <div className="divider" />}
           </div>
         );
       }),
     },
   ];
 
-  return (
-    <div className="col">
-      <ActTab data={data} />
-    </div>
-  );
+  return <div className="col">{newsSuccess && noticeSuccess && <ActTab data={data} />}</div>;
 };
 export default OrganizationNews;

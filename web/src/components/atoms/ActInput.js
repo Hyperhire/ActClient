@@ -82,6 +82,9 @@ const ActInput = (props, ref) => {
                   '&.MuiTextField-root': {
                     borderColor: 'black',
                   },
+                  '& input': {
+                    padding: 0,
+                  },
                   '& input::placeholder': {
                     fontFamily: 'Pretendard',
                     fontWeight: 400,

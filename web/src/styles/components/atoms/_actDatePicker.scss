@@ -6,34 +6,29 @@
     color: $success;
   }
 }
-.act-input-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: flex-start;
-  justify-content: center;
-  .label-wrapper {
+.act-date-picker-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .align-start;
+  @extend .justify-center;
+  .act-date-picker-label-wrapper {
     display: flex;
     align-items: center;
     @extend .gap-4;
-    .label {
+    .act-date-picker-label {
       @extend .label-large;
       color: $title-text;
     }
   }
-  .text-field-area-wrapper {
+  .act-date-picker-text-field-area-wrapper {
     display: flex;
     align-items: center;
     width: 100%;
     height: 3rem;
-    .text-field-wrapper {
+    .act-date-picker-text-field-wrapper {
       display: flex;
       align-items: center;
       width: 100%;
-    }
-    .duplication-button-wrapper {
-      display: flex;
-      align-items: center;
     }
   }
   .error-text {

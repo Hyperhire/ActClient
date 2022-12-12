@@ -75,7 +75,7 @@
 .button-medium {
   @extend .act-button;
   width: max-content;
-  @extend .padding-row-16;
+  @extend .padding-row-12;
   height: 2.5rem;
   @extend .body-large;
   color: $white;
@@ -88,7 +88,7 @@
 .button-small {
   @extend .act-button;
   width: max-content;
-  @extend .padding-row-16;
+  @extend .padding-row-8;
   height: 2rem;
   @extend .body-medium;
   color: $white;

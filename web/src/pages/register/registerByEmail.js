@@ -9,9 +9,9 @@ import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActButton from 'components/atoms/ActButton';
 import ActCheckBoxGroup from 'components/atoms/ActCheckBoxGroup';
 import ActToggleButton from 'components/atoms/ActToggleButton';
-import ActImageUploadButton from 'components/atoms/ActImageUploadButton';
 import { useRegisterByEmail } from 'hooks/useReactMutation';
 import { ReactComponent as ReceiptIcon } from 'styles/assets/icons/receipt.svg';
+import ActUploadLicenseButton from 'components/organisms/ActUploadLicenseButton';
 
 const RegisterByEmail = ({ setOption }) => {
   const { type } = useParams();
@@ -116,7 +116,7 @@ const RegisterByEmail = ({ setOption }) => {
             placeholder="닉네임을 입력하세요"
             errors={errors}
             control={control}
-            duplicateLabel="닉네임중복"
+            duplicateLabel="중복확인"
             fieldInvalid={!!getFieldState('nickname').error}
             regExp={/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g}
           />
@@ -142,7 +142,7 @@ const RegisterByEmail = ({ setOption }) => {
         {type === MEMBER_TYPE.ORGANIZATION && <div className="register-by-email-divider" />}
         {type === MEMBER_TYPE.ORGANIZATION && (
           <div className="register-by-email-form-common-wrapper">
-            <ActImageUploadButton register={register('image')} id="image" errors={errors} control={control} uploadedImages={setUploadedImages} />
+            <ActUploadLicenseButton register={register('image')} id="image" errors={errors} control={control} uploadedImages={setUploadedImages} />
           </div>
         )}
         {type === MEMBER_TYPE.ORGANIZATION && (
@@ -179,18 +179,18 @@ const RegisterByEmail = ({ setOption }) => {
             <ActInput {...register('organizationWebsite')} id="organizationWebsite" label="대표 홈페이지" placeholder="운영중인 홈페이지의 URL을 등록해주세요." errors={errors} control={control} />
           </div>
         )}
-        <div>
-          <ActCheckBoxGroup
-            parentId="agreement"
-            items={checkBoxItems}
-            label="전체동의"
-            labelStyle={{ fontFamily: 'Pretendard', fontWeight: 500, fontSize: '0.875rem', color: 'black' }}
-            errors={errors}
-            control={control}
-            register={register}
-            setValue={setValue}
-          />
-        </div>
+
+        <ActCheckBoxGroup
+          parentId="agreement"
+          items={checkBoxItems}
+          label="전체동의"
+          labelStyle="register-by-email-form-checkbox-label"
+          errors={errors}
+          control={control}
+          register={register}
+          setValue={setValue}
+        />
+
         <div className="register-by-email-form-submit-wrapper">
           <ActButton className="tertiary-button-x-large" type="submit" label="회원가입" disabled={!isValid} />
         </div>

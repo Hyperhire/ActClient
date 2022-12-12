@@ -89,10 +89,10 @@ http://scripts.sil.org/OFL
 @import 'components/atoms/actDropDown';
 @import 'components/atoms/actCheckBox';
 @import 'components/atoms/actCheckBoxGroup';
-@import 'components/atoms/actImageUploadButton';
 @import 'components/atoms/actCarousel';
 @import 'components/atoms/actSpinner';
 @import 'components/atoms/actSearchBar';
+@import 'components/atoms/actDatePicker';
 
 @import 'components/organisms/nav';
 @import 'components/organisms/footer';
@@ -103,6 +103,8 @@ http://scripts.sil.org/OFL
 @import 'components/organisms/actFaq';
 @import 'components/organisms/disclosureItem';
 @import 'components/organisms/actModal';
+@import 'components/organisms/actUploadProfileButton';
+@import 'components/organisms/actUploadLicenseButton';
 @import 'components/organisms/organizationNewsItem';
 @import 'components/organisms/organization/organizationItem';
 @import 'components/organisms/organization/organizationCover';
@@ -116,6 +118,9 @@ http://scripts.sil.org/OFL
 @import 'components/pages/donation';
 @import 'components/pages/donationPayment';
 @import 'components/pages/campaignDetail';
+@import 'components/pages/newsDetail';
 @import 'components/pages/register';
 @import 'components/pages/registerByEmail';
 @import 'components/pages/findPassword';
+@import 'components/pages/profile';
+@import 'components/pages/resignMembership';

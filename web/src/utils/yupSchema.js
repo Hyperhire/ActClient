@@ -13,7 +13,7 @@ const signUpYup = {
     .required('필수 입력값 입니다.')
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
-    .matches(/^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/, '특수문자가 포함되어야 합니다.'),
+    .matches(/^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/, '특수문자가 포함되어야 합니다.'),
   passwordCheck: yup
     .string()
     .required('필수 입력값 입니다.')
@@ -36,22 +36,26 @@ export const organizationSignUpYup = yup.object().shape({
 
 // profile update
 export const profileUpdateYup = yup.object().shape({
-  userId: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
-  userNickName: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
-  userPassword: yup
+  email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  nickname: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
+  password: yup
     .string()
     .required('')
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
-    .matches(/^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/, '특수문자가 포함되어야 합니다.'),
-  userPasswordCheck: yup
+    .matches(/^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/, '특수문자가 포함되어야 합니다.'),
+  passwordCheck: yup
     .string()
     .required('')
-    .oneOf([yup.ref('userPassword'), null], '동일한 비밀번호를 입력해주세요.'),
-  userGender: yup.string().required('성별을 선택해주세요'),
-  userName: yup.string().required('실명을 입력해주세요.'),
-  userBirthday: yup.date().required('생년월일을 입력해주세요'),
-  userMobile: yup
+    .oneOf([yup.ref('password'), null], '동일한 비밀번호를 입력해주세요.'),
+  gender: yup.string().required('성별을 선택해주세요'),
+  name: yup.string().required('실명을 입력해주세요.'),
+  birthday: yup
+    .date()
+    .nullable()
+    .transform((curr, orig) => (orig === '' ? null : curr))
+    .required('생년월일을 입력해주세요'),
+  mobile: yup
     .string()
     .required('')
     .matches(/^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/, 'Phone number is not valid'),
@@ -65,7 +69,7 @@ export const loginYup = yup.object().shape({
     .required('')
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
-    .matches(/^.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*$/, '특수문자가 포함되어야 합니다.'),
+    .matches(/^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/, '특수문자가 포함되어야 합니다.'),
   isSaveAccount: yup.boolean(),
 });
 
@@ -103,4 +107,9 @@ export const donationPaymentYup = yup.object().shape({
 // search
 export const searchYup = yup.object().shape({
   search: yup.string().required(''),
+});
+
+//resign membership
+export const resignMembershipYup = yup.object().shape({
+  isConfirm: yup.boolean().oneOf([true], ''),
 });

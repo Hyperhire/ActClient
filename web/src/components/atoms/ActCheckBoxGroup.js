@@ -55,9 +55,12 @@ const ActCheckBoxGroup = (props, ref) => {
 
   return (
     <div ref={ref} className="act-check-box-group">
-      <ActCheckBox {...register(parentId)} id={parentId} checked={checkBoxParent} label={label} labelStyle={labelStyle} errors={errors} control={control} handleChange={onHandleChange} />
+      <div className="act-check-boxes-wrapper">
+        <ActCheckBox {...register(parentId)} id={parentId} checked={checkBoxParent} label={label} labelStyle={labelStyle} errors={errors} control={control} handleChange={onHandleChange} />
+      </div>
+
       <div className="act-check-box-group-divider top-12 bottom-12" />
-      {children}
+      <div className="act-check-boxes-wrapper">{children}</div>
       <ErrorMessage errors={errors} name={parentId} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />
     </div>
   );

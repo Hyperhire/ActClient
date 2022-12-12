@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Controller } from 'react-hook-form';
@@ -6,8 +6,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { ReactComponent as CheckedIcon } from 'styles/assets/icons/checked.svg';
 
 const ActCheckBox = (props, ref) => {
-  const { control, id, label, labelStyle = { fontFamily: 'Pretendard', fontWeight: 400, fontSize: '0.875rem', color: 'black' }, errors, disabled, checked, handleChange } = props;
-
+  const { control, id, label, labelStyle = { fontFamily: 'Pretendard', fontWeight: 400, fontSize: '0.875rem', color: 'black' }, errors, disabled, checked = false, handleChange } = props;
   return (
     <div ref={ref} className="act-check-box-wrapper">
       <Controller
@@ -23,13 +22,13 @@ const ActCheckBox = (props, ref) => {
                     <CheckedIcon />
                   </div>
                 }
-                checked={checked}
+                checked={!!checked}
                 onChange={e => {
                   onChange(e.target.checked);
                   handleChange && handleChange(e, id);
                 }}
                 disabled={disabled}
-                sx={{ padding: 0.5 }}
+                sx={{ padding: 0.5, paddingLeft: 2 }}
               />
             }
             label={label && label}

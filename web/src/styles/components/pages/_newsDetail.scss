@@ -1,0 +1,21 @@
+.news-detail-wrapper {
+  @extend .col;
+  @extend .max-width;
+  .news-detail-content-wrapper {
+    @extend .col;
+    .news-detail-content-carousel-wrapper {
+      @extend .row;
+      @extend .left-24;
+      @extend .padding-col-8;
+    }
+    .news-detail-content-description-wrapper {
+      @extend .padding-24;
+      @extend .pre-wrap;
+      .news-detail-content-description {
+        @extend .body-large;
+        color: $title-text;
+      }
+    }
+  }
+
+}

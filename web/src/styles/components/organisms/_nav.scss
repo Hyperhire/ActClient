@@ -11,23 +11,29 @@
     }
     .hamburger {
       align-items: center;
-      justify-content: end;
+      justify-content: flex-end;
       border: none;
     }
   }
 }
 .subtitle-wrapper {
   width: 100%;
-  @extend .row;
   align-items: flex-start;
   .subtitle {
-    font-size: 2rem;
+    @extend .row;
+    @extend .headline-medium;
+    color: $title-text;
     span {
       @extend .left-8;
     }
+    .subtitle-optional-button {
+      @extend .flex-1;
+      @extend .align-center;
+      @extend .justify-end;
+    }
   }
   .description {
-    font-size: 1rem;
+    @extend .body-medium;
     color: $body-text;
   }
 }

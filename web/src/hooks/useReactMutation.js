@@ -35,7 +35,7 @@ export const useLogin = queryKey => {
       console.log('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled');
+      console.log('onSettled login');
     },
   });
 };
@@ -50,7 +50,6 @@ export const useRegisterByEmail = queryKey => {
   return useMutation(register, {
     onSuccess: async data => {
       if (data.status === 200) {
-        console.log('success', data.data);
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({
@@ -65,7 +64,7 @@ export const useRegisterByEmail = queryKey => {
       console.log('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled');
+      console.log('onSettled useRegisterByEmail');
     },
   });
 };

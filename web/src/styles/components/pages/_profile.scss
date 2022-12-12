@@ -1,0 +1,84 @@
+.profile-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .padding-col-24;
+  .profile-image-wrapper {
+    @extend .col;
+    @extend .align-center;
+    @extend .max-width;
+    @extend .justify-center;
+    @extend .gap-16;
+  }
+  .profile-login-info-wrapper {
+    @extend .col;
+    @extend .border-radius-8;
+    margin: 1.5rem;
+    @extend .padding-16;
+    @extend .gap-4;
+    background-color: #EDEEF2;
+    .profile-login-info-label {
+      @extend .body-small;
+      color: $caption;
+    }
+    .profile-login-info-content-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .max-width;
+      @extend .justify-between;
+      .profile-login-info-content-email {
+        @extend .headline-small;
+        color: $title-text;
+
+      }
+    }
+  }
+  .profile_form-wrapper {
+    @extend .col;
+    @extend .gap-24;
+    .profile-form-default-info-wrapper {
+      @extend .padding-row-24;
+
+    }
+    .profile-form-divider {
+      @include dividerCustom(12, $divider);
+    }
+    .profile-form-notice-wrapper {
+      @extend .col;
+      @extend .padding-row-24;
+      @extend .gap-24;
+      @extend .top-16;
+      .profile-form-notice-title {
+        @extend .headline-medium;
+        color: $title-text;
+      }
+      .profile-form-notice-description {
+        @extend .pre-wrap;
+        @extend .body-medium;
+        color: $body-text;
+        span {
+          color: $title-text;
+        }
+      }
+    }
+    .profile-form-half-wrapper {
+      @extend .row;
+      @extend .gap-16;
+      @extend .max-width;
+      @extend .align-center;
+    }
+    .profile-form-private-info-wrapper {
+      @extend .padding-row-24;
+    }
+    .profile-form-submit-wrapper {
+      @extend .padding-row-24;
+    }
+  }
+}
+.profile-form-resign-membership-wrapper {
+  @extend .row;
+  @extend .align-center;
+  .profile-form-resign-membership-label{
+    @extend .title-small;
+    color: $title-text;
+  }
+}

@@ -1,48 +1,86 @@
 .main-summary-organization-wrapper {
   width: 100%;
   background: rgba(194, 189, 145, 0.2);
+
   .list-wrapper {
     display: flex;
     flex-direction: column;
     @extend .left-24;
+
     .item-scroll-wrapper {
       display: flex;
       width: 100%;
+      align-items: flex-end;
       @extend .overflow-x-scroll;
       @extend .overflow-x-scrollbar;
       @extend .gap-48;
+
       .item-wrapper {
         display: flex;
         flex-direction: column;
+        height: 100%;
         @extend .gap-16;
         @extend .bottom-48;
-        .item-image {
-          width: 50vw;
+
+        .item-image-bottom {
+          width: 40vw;
+          height: 12rem;
           position: relative;
+          object-fit: cover;
+          @extend .top-24;
           img {
+            border-top-left-radius: 50vw;
+            border-top-right-radius: 50vw;
             display: block;
             width: 100%;
-            height: auto;
+            height: 100%;
+          }
+
+          .organization-icon-top {
+            position: absolute;
+            right: 0;
+            top:0;
+            width: 4rem;
+            height: 4rem;
+            background-color: white;
+            border-radius: 50%;
+            img {
+              display: block;
+              width: 100%;
+              height: auto;
+            }
+          }
+        }
+
+        .item-image-top {
+          width: 40vw;
+          height: 12rem;
+          position: relative;
+          object-fit: cover;
+          @extend .bottom-24;
+          img {
+            border-bottom-left-radius: 50vw;
+            border-bottom-right-radius: 50vw;
+            display: block;
+            width: 100%;
+            height: 100%;
           }
           .organization-icon-bottom {
             position: absolute;
             right: 0;
             bottom: 0;
-            //.anchor-bottom {
-            //  background: #548fcc;
-            //  top: 100px;
-            //}
-          }
-          .organization-icon-top {
-            position: absolute;
-            right: 0;
-            top:0;
-            //.anchor-bottom {
-            //  background: #548fcc;
-            //  top: 100px;
-            //}
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background-color: white;
+            img {
+              display: block;
+              width: 100%;
+              height: auto;
+            }
           }
         }
+
         .item-title-wrapper {
           display: flex;
           @extend .gap-8;

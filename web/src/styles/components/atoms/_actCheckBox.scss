@@ -1,9 +1,9 @@
 .act-check-box-wrapper {
-  @extend .row;
-  @extend .padding-row-24;
+  @extend .col;
+  @extend .justify-center;
   .act-check-box-icon {
-    width: 24px;
-    height: 24px;
+    @extend .width-24;
+    @extend .height-24;
     background: white;
     @extend .bordered;
     border-radius: 4px;

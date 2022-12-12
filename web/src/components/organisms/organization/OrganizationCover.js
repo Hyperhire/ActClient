@@ -2,9 +2,9 @@ import React from 'react';
 
 const OrganizationCover = props => {
   const { item } = props;
-  const { Icon, title, subTitle } = item;
+  const { icon, name, shortDescription } = item;
   return (
-    <div className="organization-cover-wrapper background-test1">
+    <div className="organization-cover-wrapper">
       <div className="organization-cover-image-wrapper">
         <div className="organization-cover-label-wrapper">
           <div className="organization-cover-common-label-wrapper">
@@ -12,9 +12,11 @@ const OrganizationCover = props => {
             <div className="organization-cover-common-label-divider" />
           </div>
           <div className="organization-cover-info-wrapper ">
-            <Icon />
-            <div className="organization-cover-title">{title}</div>
-            <div className="organization-cover-subtitle">{subTitle}</div>
+            <div className="organization-cover-icon">
+              <img src={icon} alt="" />
+            </div>
+            <div className="organization-cover-title">{name}</div>
+            <div className="organization-cover-subtitle">{shortDescription}</div>
           </div>
         </div>
       </div>

@@ -1,22 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { TextField } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
-import MenuItem from '@mui/material/MenuItem';
+import React, { useEffect } from 'react';
+
 import { Controller } from 'react-hook-form';
-import DuplicateButton from './duplicateButton';
-import { ReactComponent as DeleteIcon } from 'styles/assets/icons/del/oval.svg';
-import { ReactComponent as PlusIcon } from 'styles/assets/icons/plus.svg';
 
 const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
 
 const UPLOAD_LIMIT = 1;
 
-const ActImageUploadButton = ({ register, id, control, uploadedImages }) => {
+const ActImageUploadButton = ({ children, register, id, control, uploadedImages, inputRef, imageFiles, setImageFiles, images, setImages }) => {
   const { ref, ...rest } = register;
-  const [imageFiles, setImageFiles] = useState([]);
-  const [images, setImages] = useState([]);
-  const inputRef = useRef(null);
-
   useEffect(() => {
     uploadedImages(images);
     return () => {
@@ -88,55 +79,9 @@ const ActImageUploadButton = ({ register, id, control, uploadedImages }) => {
       setImageFiles(uploadedImageFiles);
     }
   };
-  const handleOnClick = e => {
-    e.preventDefault();
-    inputRef.current?.click();
-  };
-
-  const deleteImage = targetImage => {
-    const tmpArr = [...imageFiles];
-    tmpArr.splice(
-      tmpArr.findIndex(image => image.name === targetImage),
-      1,
-    );
-    setImageFiles(tmpArr);
-  };
 
   return (
-    <div className="act-image-upload-button-wrapper">
-      <div className="act-image-upload-button">
-        {images.length > 0 ? (
-          <>
-            <div className="button-label">
-              <span>사업자등록증</span> 업로드 완료
-            </div>
-            {images.map((image, idx) => {
-              return (
-                <div className="button-thumbnail" key={idx}>
-                  <img src={image.object} alt="logo" />
-                  <div
-                    className="delete-button"
-                    onClick={e => {
-                      e.stopPropagation();
-                      deleteImage(image.name);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <>
-            <div className="button-label">
-              <span>사업자등록증</span>을 업로드 해주세요
-            </div>
-            <div className="button-upload" onClick={handleOnClick}>
-              <PlusIcon />
-            </div>
-          </>
-        )}
-      </div>
-
+    <div>
       <Controller
         control={control}
         name={id}
@@ -157,6 +102,7 @@ const ActImageUploadButton = ({ register, id, control, uploadedImages }) => {
           />
         )}
       />
+      {children}
     </div>
   );
 };

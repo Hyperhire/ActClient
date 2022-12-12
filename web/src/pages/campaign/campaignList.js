@@ -123,10 +123,6 @@ const CampaignList = ({ setOption }) => {
     return tmp;
   };
 
-  const onHandleChange = () => {
-    navigate(`campaign`);
-  };
-
   const onClickHandler = item => {
     navigate(`/campaign/${item.title}`);
   };
