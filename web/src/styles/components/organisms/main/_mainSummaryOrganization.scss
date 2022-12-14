@@ -26,9 +26,10 @@
           width: 40vw;
           height: 12rem;
           position: relative;
-          object-fit: cover;
+
           @extend .top-24;
           img {
+            object-fit: cover;
             border-top-left-radius: 50vw;
             border-top-right-radius: 50vw;
             display: block;
@@ -56,9 +57,9 @@
           width: 40vw;
           height: 12rem;
           position: relative;
-          object-fit: cover;
           @extend .bottom-24;
           img {
+            object-fit: cover;
             border-bottom-left-radius: 50vw;
             border-bottom-right-radius: 50vw;
             display: block;
