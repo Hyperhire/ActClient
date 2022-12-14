@@ -6,23 +6,23 @@ import { authAtom } from 'state';
 import useModal from './useModal';
 import { MODAL_TYPES } from 'constants/constant';
 import { setItem, USER_INFO } from 'utils/sessionStorage';
+import { AUTH_INFO, setLocalItem } from 'utils/localStorage';
 
 export const useLogin = queryKey => {
   const queryClient = useQueryClient();
   const { showModal } = useModal();
-  const setAuth = useSetRecoilState(authAtom);
-
   const login = async loginInfo => {
     return request({ url: api.auth.login, method: 'post', data: loginInfo });
   };
 
   return useMutation(login, {
     onSuccess: async data => {
-      if (data.status === 200) {
-        setAuthorization(data.data.token);
-        setAuth(true);
+      console.log('login', data);
+      if (data.status === 200 || data.status === 201) {
+        setAuthorization(data.data.data.token);
         //todo server에서 데이터 받아와야 됨
         setItem(USER_INFO, { userName: 'lucas' });
+        setLocalItem(AUTH_INFO, { token: data.data.data.token });
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({

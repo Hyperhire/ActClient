@@ -29,7 +29,7 @@ const MainOnGoingCampaign = () => {
         <ArrowRight />
       </div>
       {isSuccess &&
-        data.map((item, index) => {
+        data.slice(0, 5).map((item, index) => {
           return (
             <div key={index}>
               <CampaignItem item={item} clickHandler={onClickHandler} />

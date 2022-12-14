@@ -3,7 +3,7 @@ import Carousel from 'react-material-ui-carousel';
 import CircleIcon from '@mui/icons-material/Circle';
 
 const ActCarousel = props => {
-  const { items, autoPlay, animation = 'slide', initHandler, changeHandler, dotAnchor = 'right' } = props;
+  const { items, autoPlay, animation = 'slide', initHandler, changeHandler, dotAnchor = 'right', type = 'normal' } = props;
   return (
     <Carousel
       sx={{ width: '100%', height: '100%' }}
@@ -35,7 +35,7 @@ const ActCarousel = props => {
     >
       {items?.map((item, i) => {
         return (
-          <div key={i} className="act-carousel-image">
+          <div key={i} className={`${type === 'main' ? 'act-carousel-main-image' : 'act-carousel-image'}`}>
             <img src={item} alt="main-image" />
           </div>
         );

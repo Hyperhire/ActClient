@@ -36,11 +36,15 @@
     @extend .body-medium;
     color: $body-text;
   }
+ }
+.subtitle-date {
+  @extend .padding-col-8;
+  @extend .body-small;
+  color: $body-text;
 }
 .activate-menu {
   transform: translateX(-100%);
   opacity: 1;
-
 }
 
 .side-menu-wrap {

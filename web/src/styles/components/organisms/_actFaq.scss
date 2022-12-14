@@ -1,9 +1,13 @@
 .acr-faq-wrapper {
   .acr-faq-title{
+    @extend .padding-row-8;
+    @extend .padding-col-8;
     @extend .title-small;
     color: $title-text;
   }
   .acr-faq-description {
+    @extend .padding-row-8;
+    @extend .padding-col-8;
     @extend .body-medium;
     color: $title-text;
   }

@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import Routes from './Routes';
 import useApiError from 'hooks/useApiError';
 
-window.onload = function () {
-  localStorage.clear();
-};
+// window.onload = function () {
+//   localStorage.clear();
+// };
+
 const { handleError } = useApiError;
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ActFaq from 'components/organisms/ActFaq';
 import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_lg.svg';
@@ -7,7 +7,6 @@ import { api } from '../../../repository';
 const MainFaq = () => {
   const navigate = useNavigate();
   const { isLoading, isSuccess, data, isError, error } = useReactQuery(`main-faq-list`, api.faq.list);
-  console.log('data', data);
   // const faqs = [
   //   {
   //     title: 'ACT 기부는 무엇인가요?',
@@ -26,13 +25,14 @@ const MainFaq = () => {
   const onClickHandler = () => {
     navigate('faq');
   };
+
   return (
     <div className="main-faq-wrapper">
       <div className="main-faq-title-wrapper link" onClick={onClickHandler}>
         <div className="main-faq-title">FAQ</div>
         <ArrowRight />
       </div>
-      {/*{isSuccess && <ActFaq faqs={data} bgColor="#fafafa" contentColor="#efefef" />}*/}
+      {isSuccess && <ActFaq faqs={data.slice(0, 3)} bgColor="#fafafa" contentColor="#efefef" />}
     </div>
   );
 };

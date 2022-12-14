@@ -23,7 +23,7 @@ const Login = ({ setOption }) => {
   const { data, mutate: login, isLoading, isError, error, isSuccess } = useLogin('login');
 
   useEffect(() => {
-    if (isSuccess && data?.status === 200) {
+    if (isSuccess && (data?.status === 200 || data?.status === 201)) {
       navigate(locationState ? locationState.from : '/', { state: { ...locationState } }, { replace: true });
     }
   }, [data, isLoading, isError, error, isSuccess, navigate, locationState]);

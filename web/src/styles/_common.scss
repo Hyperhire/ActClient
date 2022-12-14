@@ -617,3 +617,8 @@ html, body, #root, .App {
   z-index: -1;
   opacity: 0;
 }
+.search-bar-wrapper {
+  margin: 1.5rem;
+  @extend .border-radius-4;
+  background-color: $divider;
+}

@@ -7,7 +7,7 @@ const ActFaq = ({ faqs, bgColor, contentColor }) => {
     <div className="acr-faq-wrapper">
       {faqs.map((faq, index) => (
         <Accordion
-          key={faq.title + index}
+          key={faq.answer + index}
           className={`bordered-top ${faqs.length === index - 1 ? 'border-bottom' : null}`}
           disableGutters={true}
           sx={{
@@ -16,10 +16,10 @@ const ActFaq = ({ faqs, bgColor, contentColor }) => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-            <div className="acr-faq-title">{faq.title}</div>
+            <div className="acr-faq-title">{faq.question}</div>
           </AccordionSummary>
           <AccordionDetails sx={{ backgroundColor: contentColor }} className="background-box">
-            <div className="acr-faq-description">{faq.description}</div>
+            <div className="acr-faq-description">{faq.answer}</div>
           </AccordionDetails>
         </Accordion>
       ))}

@@ -23,7 +23,7 @@ const MainSummaryOrganization = () => {
       <div className="list-wrapper">
         <div className="item-scroll-wrapper">
           {isSuccess &&
-            data.map((item, index) => {
+            data.slice(0, 4).map((item, index) => {
               return (
                 <div key={index} className="item-wrapper">
                   {index % 2 ? (

@@ -49,4 +49,5 @@ export const SEARCH_TYPE = {
   CAMPAIGN: 'campaign',
   NEWS: 'new',
   DISCLOSURE: 'disclosure',
+  FAQ: 'faq',
 };

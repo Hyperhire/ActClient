@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DisclosureItem from 'components/organisms/DisclosureItem';
 import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_lg.svg';
-import { ORGANIZATION_NEWS_TYPE } from '../../../constants/constant';
-import { useReactQuery } from '../../../hooks/useReactQuery';
-import { api } from '../../../repository';
+import { ORGANIZATION_NEWS_TYPE } from 'constants/constant';
+import { useReactQuery } from 'hooks/useReactQuery';
+import { api } from 'repository';
 
 const MainDisclosure = () => {
   const { isSuccess, data } = useReactQuery('main-notice-list', api.notice.list);
@@ -25,7 +25,7 @@ const MainDisclosure = () => {
         <ArrowRight />
       </div>
       {isSuccess &&
-        data.map((item, index) => {
+        data.slice(0, 3).map((item, index) => {
           return (
             <div key={index}>
               <DisclosureItem item={item} clickHandler={item => onClickItemHandler(ORGANIZATION_NEWS_TYPE.DISCLOSURE, item)} />

@@ -12,15 +12,15 @@ import { api } from '../../repository';
 
 const CampaignDetail = ({ setOption }) => {
   const navigate = useNavigate();
-  const { name } = useParams();
   const { id } = useParams();
   const { isLoading, isSuccess, data, isError, error } = useReactQuery(`campaign-detail-${id}`, api.campaign.detail(id));
+
   useEffect(() => {
-    setOption({ title: '캠페인', subtitle: data?.title, description: '', back: true, menu: false, chip: data?.organization === '굿네이버스' ? <Give /> : null });
-  }, [data?.organization, name, setOption]);
+    setOption({ title: '캠페인', subtitle: data?.title, description: '', back: true, menu: false, chip: data?.org.name === '굿네이버스' ? <Give /> : null });
+  }, [data, setOption]);
 
   const onClickHandler = () => {
-    navigate(`/donation`, { state: { organization: data?.organization, campaign: name, type: DONATION_TYPE.CAMPAIGN } });
+    navigate(`/donation`, { state: { organization: data?.org.name, campaign: data?.title, type: DONATION_TYPE.CAMPAIGN } });
   };
 
   const dDay = () => {
@@ -53,7 +53,7 @@ const CampaignDetail = ({ setOption }) => {
           </div>
           <div className="campaign-detail-divider" />
           <div className="campaign-detail-content-total-amount-wrapper">
-            <div className="campaign-detail-content-amount-content">{`${data.currentAmount?.toLocaleString()}원 후원 (${data.sponsorCount}명)`}</div>
+            <div className="campaign-detail-content-amount-content">{`${data.currentAmount?.toLocaleString()}원 후원 (${data.numberOfDonor.toLocaleString()}명)`}</div>
           </div>
           <div className="campaign-detail-content-target-wrapper">
             <div className="campaign-detail-content-target-content-wrapper">

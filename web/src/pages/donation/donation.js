@@ -144,84 +144,80 @@ const Donation = ({ setOption }) => {
   };
 
   return (
-    <Suspense fallback={<ActSpinner />}>
-      <div className="donation-wrapper">
-        <div className="left-24 divider-thick-primary-2" />
-        {type === DONATION_TYPE.CAMPAIGN && (
-          <div className="donation-campaign-wrapper">
-            <div className="donation-campaign-label">캠페인명</div>
-            <div className="donation-campaign-title">{campaign}</div>
+    <div className="donation-wrapper">
+      <div className="left-24 divider-thick-primary-2" />
+      {type === DONATION_TYPE.CAMPAIGN && (
+        <div className="donation-campaign-wrapper">
+          <div className="donation-campaign-label">캠페인명</div>
+          <div className="donation-campaign-title">{campaign}</div>
+        </div>
+      )}
+      <form className="donation-form-wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <div className="donation-form-toggle-wrapper">
+          <ActToggleButton
+            {...register('donationType')}
+            label="후원방식"
+            errors={errors}
+            control={control}
+            items={getDonationTypeItems()}
+            id="donationType"
+            selectedItem={setDonationType}
+            columns={type === DONATION_TYPE.CAMPAIGN ? 1 : 2}
+            defaultValue={2}
+          />
+          <ActToggleButton
+            {...register('donationAmount')}
+            label="후원금액"
+            errors={errors}
+            control={control}
+            items={donationAmountItems}
+            id="donationAmount"
+            columns={3}
+            selectedItem={setDonationAmount}
+          />
+          {type === DONATION_TYPE.ORGANIZATION && (
+            <ActToggleButton
+              {...register('donationDate')}
+              label="정기 결제일"
+              errors={errors}
+              control={control}
+              items={donationDateItems}
+              id="donationDate"
+              columns={3}
+              selectedItem={setDonationDate}
+              disabled={donationType === DONATION_PAYMENT_TYPE.TEMP}
+            />
+          )}
+        </div>
+        <div className="divider" />
+        {isValid && (
+          <div className="donation-form-summary-wrapper">
+            <div className="donation-form-summary-chip-wrapper">{type === DONATION_TYPE.CAMPAIGN ? <TempIcon /> : donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />}</div>
+            <div className="donation-form-summary-amount-wrapper">
+              <div className="donation-form-summary-regular-payment">{donationType === DONATION_PAYMENT_TYPE.REGULAR && '매월'}</div>
+              <div className="donation-form-summary-amount">{donationAmount?.toLocaleString()}원</div>
+            </div>
           </div>
         )}
-        <form className="donation-form-wrapper" onSubmit={handleSubmit(onSubmit)}>
-          <div className="donation-form-toggle-wrapper">
-            <ActToggleButton
-              {...register('donationType')}
-              label="후원방식"
-              errors={errors}
-              control={control}
-              items={getDonationTypeItems()}
-              id="donationType"
-              selectedItem={setDonationType}
-              columns={type === DONATION_TYPE.CAMPAIGN ? 1 : 2}
-              defaultValue={2}
-            />
-            <ActToggleButton
-              {...register('donationAmount')}
-              label="후원금액"
-              errors={errors}
-              control={control}
-              items={donationAmountItems}
-              id="donationAmount"
-              columns={3}
-              selectedItem={setDonationAmount}
-            />
-            {type === DONATION_TYPE.ORGANIZATION && (
-              <ActToggleButton
-                {...register('donationDate')}
-                label="정기 결제일"
-                errors={errors}
-                control={control}
-                items={donationDateItems}
-                id="donationDate"
-                columns={3}
-                selectedItem={setDonationDate}
-                disabled={donationType === DONATION_PAYMENT_TYPE.TEMP}
-              />
-            )}
-          </div>
-          <div className="divider" />
-          {isValid && (
-            <div className="donation-form-summary-wrapper">
-              <div className="donation-form-summary-chip-wrapper">
-                {type === DONATION_TYPE.CAMPAIGN ? <TempIcon /> : donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />}
-              </div>
-              <div className="donation-form-summary-amount-wrapper">
-                <div className="donation-form-summary-regular-payment">{donationType === DONATION_PAYMENT_TYPE.REGULAR && '매월'}</div>
-                <div className="donation-form-summary-amount">{donationAmount?.toLocaleString()}원</div>
-              </div>
-            </div>
-          )}
-          <div className="padding-row-24">
-            <ActButton type="submit" disabled={!isValid} className="tertiary-button-x-large" label="결제하기" />
-          </div>
-        </form>
-        <div className="donation-note-wrapper">
-          {getNote().map((note, index) => {
-            return (
-              <div className="donation-note-item" key={index}>
-                <div className="donation-note-item-icon-wrapper">
-                  <div className="donation-note-item-icon">
-                    <DotGray />
-                  </div>
-                </div>
-                <div className="donation-note-item-content flex-1">{note}</div>
-              </div>
-            );
-          })}
+        <div className="padding-row-24">
+          <ActButton type="submit" disabled={!isValid} className="tertiary-button-x-large" label="결제하기" />
         </div>
+      </form>
+      <div className="donation-note-wrapper">
+        {getNote().map((note, index) => {
+          return (
+            <div className="donation-note-item" key={index}>
+              <div className="donation-note-item-icon-wrapper">
+                <div className="donation-note-item-icon">
+                  <DotGray />
+                </div>
+              </div>
+              <div className="donation-note-item-content flex-1">{note}</div>
+            </div>
+          );
+        })}
       </div>
-    </Suspense>
+    </div>
   );
 };
 export default Donation;

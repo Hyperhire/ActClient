@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
 import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
 import { ReactComponent as ProfileIcon } from 'styles/assets/icons/profile/default.svg';
@@ -20,11 +21,13 @@ import Back from 'components/atoms/Back';
 import { authAtom } from 'state';
 
 import { getItem, removeItem, USER_INFO } from '../../utils/sessionStorage';
+import { AUTH_INFO, getLocalItem, removeLocalItem } from '../../utils/localStorage';
 import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
 
 const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
   const auth = useRecoilValue(authAtom);
+  const authInfo = getLocalItem(AUTH_INFO);
   const userInfo = getItem(USER_INFO);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,11 +41,12 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
   const logout = () => {
     setAuth(false);
     removeItem(USER_INFO);
+    removeLocalItem(AUTH_INFO);
   };
   const list = () => (
     <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <div className="side-menu-wrap">
-        {auth ? (
+        {authInfo?.token ? (
           <div className="side-menu-login-menu-wrap">
             <div className="side-menu-wrap-profile-wrap">
               <ProfileIcon />
@@ -113,7 +117,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
             {page.name}
           </Link>
         ))}
-        {auth ? (
+        {authInfo?.token ? (
           <div className="flex-1 align-end">
             <div onClick={logout} className="side-menu-logout-label">
               로그아웃
@@ -131,12 +135,18 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
     setOpen(open);
   };
 
+  const onLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <div className="max-width padding-row-24">
       <header className="nav-wrapper row align-center flex-auto">
         <div className="nav max-width flex-auto">
           <div className="nav-inside row align-center justify-between">
-            <div className="flex-1">{option.back ? <Back size="1rem" /> : <Logo width="58" height="28" />}</div>
+            <div className="flex-1 link" onClick={onLogoClick}>
+              {option.back ? <Back size="1rem" /> : <Logo width="58" height="28" />}
+            </div>
             <div className="flex-2">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
             <div className="flex-1 row max-width align-center justify-end">
               {option.menu ? (
@@ -160,7 +170,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           {option.description && <div className="description">{option.description}</div>}
         </div>
       )}
-      {option.date && <div>{dayjs(new Date()).format('YYYY-MM-DD')}</div>}
+      {option.date && <div className="subtitle-date">{dayjs(new Date()).locale('ko').format('YYYY.MM.DD a h:m')}</div>}
 
       <SwipeableDrawer
         PaperProps={{

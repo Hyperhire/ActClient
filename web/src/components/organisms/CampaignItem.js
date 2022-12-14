@@ -4,7 +4,7 @@ import { ReactComponent as TwoPerson } from 'styles/assets/icons/2person.svg';
 
 const CampaignItem = props => {
   const { item, clickHandler } = props;
-  const { images, org, title, rate = 0, amount = 0, endedAt } = item;
+  const { images, org, title, currentAmount = 0, targetAmount = 0, endedAt } = item;
   const dDay = () => {
     let today = dayjs();
     let expired_at = dayjs(endedAt);
@@ -29,8 +29,8 @@ const CampaignItem = props => {
         </div>
         <div className="etc-wrapper">
           <div className="rate-amount-wrapper">
-            <div className="rate">{rate}%</div>
-            <div className="amount">{amount.toLocaleString()}원</div>
+            <div className="rate">{Math.round((currentAmount / targetAmount) * 100)}%</div>
+            <div className="amount">{currentAmount.toLocaleString()}원</div>
           </div>
           <div className="remaining-period">{dDay()}일 남음</div>
         </div>
