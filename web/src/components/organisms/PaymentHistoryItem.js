@@ -27,7 +27,7 @@ const PaymentHistoryItem = ({ id, item, index, control, register, errors, watch,
         </div>
         <div className="payment-history-item-content-wrapper">
           <div className="payment-history-item-content">{item.pg}</div>
-          <div className="payment-history-item-content">{dayjs(item.createdAt).locale('ko').format('YYYY.MM.DD a h:m')}</div>
+          <div className="payment-history-item-content">{dayjs(item.createdAt).locale('ko').format('YYYY.MM.DD a h:mm')}</div>
           <div className="row payment-history-item-content">
             <div>{item.amount.toLocaleString()}원</div>
             <div className="payment-history-item-type-regular-label">정기결제</div>

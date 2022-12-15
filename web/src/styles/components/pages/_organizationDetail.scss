@@ -8,6 +8,7 @@
       @extend .padding-24;
       .organization-detail-description {
         @extend .pre-wrap;
+        white-space: pre-line;
         @extend .body-large;
         color: $title-text;
       }

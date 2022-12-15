@@ -37,7 +37,7 @@ const OrganizationDetail = ({ setOption }) => {
         <div className="organization-detail-intro-wrapper">
           <OrganizationCover item={data} />
           <div className="organization-detail-content-wrapper">
-            <div className="organization-detail-description">{data.longDescription}</div>
+            <div className="organization-detail-description">{data.longDescription.replace(/\\n/g, '\n')}</div>
             <div className="organization-detail-shortcut-wrapper">
               <Home />
               <div className="organization-detail-shortcut-label link" onClick={onClickHomepage}>

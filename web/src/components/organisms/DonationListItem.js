@@ -21,7 +21,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
         )}
         <div className="item-wrapper">
           <div className="title">시작일</div>
-          <div className="content">{dayjs(item.startedAt).locale('ko').format('YYYY.MM.DD a h:m')}</div>
+          <div className="content">{dayjs(item.startedAt).locale('ko').format('YYYY.MM.DD a h:mm')}</div>
         </div>
         {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">

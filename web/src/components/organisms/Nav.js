@@ -170,7 +170,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
           {option.description && <div className="description">{option.description}</div>}
         </div>
       )}
-      {option.date && <div className="subtitle-date">{dayjs(new Date()).locale('ko').format('YYYY.MM.DD a h:m')}</div>}
+      {option.date && <div className="subtitle-date">{dayjs(new Date()).locale('ko').format('YYYY.MM.DD a h:mm')}</div>}
 
       <SwipeableDrawer
         PaperProps={{
