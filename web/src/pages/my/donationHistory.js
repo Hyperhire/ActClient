@@ -6,19 +6,24 @@ import ActTab from 'components/atoms/ActTab';
 import { DONATION_TYPE } from 'constants/constant';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
+import useModal from '../../hooks/useModal';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
   const userInfo = getItem(USER_INFO);
+  const { showModal } = useModal();
+
   useEffect(() => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
   }, [setOption]);
   const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
-
-  console.log('data', data);
   const onHandleCancelRegularPayment = id => {
-    console.log('onHandleCancelRegularPayment', id);
+    showModal({
+      open: true,
+      message: `정말 해지하시겠습니까?`,
+      handleConfirm: () => console.log('yes'),
+    });
   };
 
   const onHandleClickNFT = item => {

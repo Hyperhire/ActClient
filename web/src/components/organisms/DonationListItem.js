@@ -32,11 +32,11 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
 
         <div className="item-wrapper">
           <div className="title">결제금액</div>
-          <div className="content">{item.amount}</div>
+          <div className="content">{item.amount.toLocaleString()}</div>
         </div>
         <div className="item-wrapper">
           <div className="title">후원방식</div>
-          <div className="content">{item.isRecurring ? '정기' : '일시'}</div>
+          <div className="content">{item.isRecurring ? '정기후원' : '일시후원'}</div>
         </div>
         {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
@@ -46,7 +46,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
         )}
       </div>
       <div className="button-wrapper">
-        {type === DONATION_TYPE.ORGANIZATION && (
+        {type === DONATION_TYPE.ORGANIZATION && item.isRecurring && (
           <div className="donation-list-item-button">
             <ActButton
               className="primary-button-large-outline"
@@ -56,6 +56,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
             />
           </div>
         )}
+
         <div className="donation-list-item-button">
           <ActButton
             className="primary-button-large"

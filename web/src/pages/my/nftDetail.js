@@ -7,6 +7,11 @@ import Nft from 'styles/assets/images/ntf.svg';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import 'dayjs/locale/ko';
+const NFT_ATTRIBUTES = {
+  DONATION_TYPE: 0,
+  AMOUNT: 2,
+  ORGANIZATION_NAME: 1,
+};
 
 const NftDetail = ({ setOption }) => {
   const location = useLocation();
@@ -49,7 +54,7 @@ const NftDetail = ({ setOption }) => {
           <div className="nft-detail-content-wrapper">
             <div className="nft-detail-content">
               <div className="nft-detail-content-label">단체명</div>
-              <div className="nft-detail-content-data">{data.metadata.attributes[1].value}</div>
+              <div className="nft-detail-content-data">{data.metadata.attributes[NFT_ATTRIBUTES.ORGANIZATION_NAME].value}</div>
             </div>
             <div className="nft-detail-content">
               <div className="nft-detail-content-label">Token ID</div>
@@ -61,7 +66,7 @@ const NftDetail = ({ setOption }) => {
             {/*</div>*/}
             <div className="nft-detail-content">
               <div className="nft-detail-content-label">금액</div>
-              <div className="nft-detail-content-data">{data.metadata.attributes[2].value}</div>
+              <div className="nft-detail-content-data">{data.metadata.attributes[NFT_ATTRIBUTES.AMOUNT].value}</div>
             </div>
             <div className="nft-detail-content">
               <div className="nft-detail-content-label">날짜</div>
@@ -70,7 +75,7 @@ const NftDetail = ({ setOption }) => {
             </div>
             <div className="nft-detail-content">
               <div className="nft-detail-content-label">후원방식</div>
-              <div className="nft-detail-content-data">{data.metadata.attributes[0].value}</div>
+              <div className="nft-detail-content-data">{data.metadata.attributes[NFT_ATTRIBUTES.DONATION_TYPE].value}</div>
             </div>
           </div>{' '}
         </>
