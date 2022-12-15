@@ -32,8 +32,8 @@ const Payment = () => {
                 open: true,
                 message: `결제 승인 성공.`,
                 handleConfirm: () => {
-                  navigate('/');
-                  navigate('/my/DonationHistory', { replace: true });
+                  navigate('/', { replace: true });
+                  navigate('/my/DonationHistory');
                 },
               });
             }
