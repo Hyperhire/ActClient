@@ -6,7 +6,18 @@ import { ErrorMessage } from '@hookform/error-message';
 import { ReactComponent as CheckedIcon } from 'styles/assets/icons/checked.svg';
 
 const ActCheckBox = (props, ref) => {
-  const { control, id, label, labelStyle = { fontFamily: 'Pretendard', fontWeight: 400, fontSize: '0.875rem', color: 'black' }, errors, disabled, checked = false, handleChange, item } = props;
+  const {
+    control,
+    id,
+    label,
+    labelStyle = { fontFamily: 'Pretendard', fontWeight: 400, fontSize: '0.875rem', color: 'black' },
+    errors,
+    disabled,
+    checked = false,
+    handleChange,
+    item,
+    hideError = false,
+  } = props;
   return (
     <div ref={ref} className="act-check-box-wrapper">
       <Controller
@@ -40,7 +51,7 @@ const ActCheckBox = (props, ref) => {
           />
         )}
       />
-      <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />
+      {!hideError && <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />}
     </div>
   );
 };

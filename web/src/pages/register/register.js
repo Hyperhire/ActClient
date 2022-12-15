@@ -13,7 +13,6 @@ const Register = ({ setOption }) => {
 
   const navigate = useNavigate();
   const onClickRegisterHandler = type => {
-    console.log('onClickHandler', type);
     navigate(`${type}`);
   };
   return (

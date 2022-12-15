@@ -77,7 +77,9 @@ const ActToggleButton = (props, ref) => {
           </ToggleButtonGroup>
         )}
       />
-      <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
+      <div className="act-toggle-button-error-wrapper">
+        <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
+      </div>
     </div>
   );
 };

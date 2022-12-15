@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
-import { MEMBER_TYPE } from 'constants/constant';
+import { DONATION_TYPE, MEMBER_TYPE } from 'constants/constant';
 import ActInput from 'components/atoms/ActInput';
 import { individualSignUpYup, organizationSignUpYup } from 'utils/yupSchema';
 import NavigationGuard from 'components/organisms/NavigationGuard';
@@ -56,8 +56,8 @@ const RegisterByEmail = ({ setOption }) => {
     password: '',
     passwordCheck: '',
     nickname: '',
-    receiveReceipt: undefined,
     agreement: undefined,
+    receiveReceipt: undefined,
     // terms: undefined,
     // privacy: undefined,
   };
@@ -128,7 +128,6 @@ const RegisterByEmail = ({ setOption }) => {
               <div className="register-by-email-form-receipt-label">연말정산 간소화 서비스에서 기부금 영수증을 발급하시겠습니까?</div>
             </div>
             <ActToggleButton
-              {...register('receiveReceipt')}
               errors={errors}
               control={control}
               items={[
@@ -189,6 +188,7 @@ const RegisterByEmail = ({ setOption }) => {
           control={control}
           register={register}
           setValue={setValue}
+          hideError={true}
         />
 
         <div className="register-by-email-form-submit-wrapper">

@@ -622,3 +622,11 @@ html, body, #root, .App {
   @extend .border-radius-4;
   background-color: $divider;
 }
+.error-text {
+  @extend .top-4;
+  @extend .body-small;
+  @include result(true);
+}
+.success-text {
+  @include result(false);
+}

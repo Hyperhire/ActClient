@@ -9,4 +9,8 @@
     color: $title-text;
     @extend .bottom-8;
   }
+  .act-toggle-button-error-wrapper {
+    @extend .row;
+    @extend .max-width;
+  }
 }

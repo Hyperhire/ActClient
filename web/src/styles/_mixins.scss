@@ -127,3 +127,11 @@
   transform: translateY(-5px);
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
+@mixin result($error) {
+  @extend .body-small;
+  @if($error == true) {
+    color: $danger;
+  } @else {
+    color: $success;
+  }
+}

@@ -1,11 +1,3 @@
-@mixin result($error) {
-  @extend .body-small;
-  @if($error == true) {
-    color: $danger;
-  } @else {
-    color: $success;
-  }
-}
 .act-date-picker-wrapper {
   @extend .col;
   @extend .max-width;

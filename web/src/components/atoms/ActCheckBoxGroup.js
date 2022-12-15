@@ -4,7 +4,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import ActCheckBox from 'components/atoms/ActCheckBox';
 
 const ActCheckBoxGroup = (props, ref) => {
-  const { register, control, parentId, items, label, labelStyle, errors, setValue } = props;
+  const { register, control, parentId, items, label, labelStyle, errors, setValue, hideError = false } = props;
   const [checkBoxParent, setCheckBoxParent] = useState(false);
   const [checkBoxItems, setCheckBoxItems] = useState(items);
 
@@ -48,7 +48,19 @@ const ActCheckBoxGroup = (props, ref) => {
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 0 }}>
       {checkBoxItems.map((item, index) => {
-        return <ActCheckBox {...register(item.id)} checked={item.checked} key={index} id={item.id} label={item.label} errors={errors} control={control} handleChange={onHandleChange} />;
+        return (
+          <ActCheckBox
+            {...register(item.id)}
+            checked={item.checked}
+            key={index}
+            id={item.id}
+            label={item.label}
+            errors={errors}
+            control={control}
+            handleChange={onHandleChange}
+            hideError={hideError}
+          />
+        );
       })}
     </Box>
   );
@@ -56,12 +68,22 @@ const ActCheckBoxGroup = (props, ref) => {
   return (
     <div ref={ref} className="act-check-box-group">
       <div className="act-check-boxes-wrapper">
-        <ActCheckBox {...register(parentId)} id={parentId} checked={checkBoxParent} label={label} labelStyle={labelStyle} errors={errors} control={control} handleChange={onHandleChange} />
+        <ActCheckBox
+          {...register(parentId)}
+          id={parentId}
+          checked={checkBoxParent}
+          label={label}
+          labelStyle={labelStyle}
+          errors={errors}
+          control={control}
+          handleChange={onHandleChange}
+          hideError={hideError}
+        />
       </div>
 
       <div className="act-check-box-group-divider top-12 bottom-12" />
       <div className="act-check-boxes-wrapper">{children}</div>
-      <ErrorMessage errors={errors} name={parentId} render={({ message: validMessage }) => <div className="red font-size-10">{validMessage}</div>} />
+      <div className="padding-row-24">{!hideError && <ErrorMessage errors={errors} name={parentId} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />}</div>
     </div>
   );
 };
