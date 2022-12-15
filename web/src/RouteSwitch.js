@@ -72,7 +72,7 @@ const RouteSwitch = () => {
               <Route path="resign-membership" element={<ResignMembership setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />
               <Route path="donationHistory" element={<DonationHistory setOption={setOption} />} />
-              <Route path="nft/:id" element={<NftDetail setOption={setOption} />} />
+              <Route path="nft" element={<NftDetail setOption={setOption} />} />
             </Route>
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/payment/:orderId/:status" element={<Payment />} />

@@ -16,13 +16,13 @@ const DonationHistory = ({ setOption }) => {
   }, [setOption]);
   const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
 
+  console.log('data', data);
   const onHandleCancelRegularPayment = id => {
     console.log('onHandleCancelRegularPayment', id);
   };
 
-  const onHandleClickNFT = id => {
-    console.log('handleClickNFT', id);
-    navigate(`../nft/${id}`);
+  const onHandleClickNFT = item => {
+    navigate(`../nft`, { state: { item } });
   };
 
   const parseData = [
@@ -54,7 +54,13 @@ const DonationHistory = ({ setOption }) => {
         .map((item, index) => {
           return (
             <div key={index}>
-              <DonationListItem type={DONATION_TYPE.CAMPAIGN} key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
+              <DonationListItem
+                type={DONATION_TYPE.CAMPAIGN}
+                key={index}
+                item={item}
+                handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
+                handleClickNFT={item => onHandleClickNFT(item)}
+              />
               <div className="divider" />
             </div>
           );

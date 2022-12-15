@@ -65,7 +65,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
                 <div>NFT 확인</div>
               </div>
             }
-            handleOnClick={() => handleClickNFT(item._id)}
+            handleOnClick={() => handleClickNFT(item)}
           />
         </div>
       </div>

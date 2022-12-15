@@ -10,6 +10,7 @@ export const api = {
     update: '',
     paymentHistory: '/api/v1/order/my',
     donationHistory: '/api/v1/donation/my',
+    nftDetail: id => `/api/v1/nft?token_id=${id}`,
   },
   organization: {
     list: '/api/v1/org',
