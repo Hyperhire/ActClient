@@ -31,7 +31,10 @@ const Payment = () => {
               showModal({
                 open: true,
                 message: `결제 승인 성공.`,
-                handleConfirm: () => window.location.replace('/my/DonationHistory'),
+                handleConfirm: () => {
+                  navigate('/');
+                  navigate('/my/DonationHistory', { replace: true });
+                },
               });
             }
           })
