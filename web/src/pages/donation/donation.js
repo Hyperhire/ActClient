@@ -69,19 +69,18 @@ const Donation = ({ setOption }) => {
       url: api.order.make,
       method: 'post',
       data: paymentData,
-    }).then(
-      response => {
+    })
+      .then(response => {
         // console.log('response', response);
         // navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
         navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
-      },
-      e => {
+      })
+      .catch(() => {
         showModal({
           open: true,
           message: `결제에 실패하였습니다.`,
         });
-      },
-    );
+      });
   };
 
   const getDonationTypeItems = () => {
