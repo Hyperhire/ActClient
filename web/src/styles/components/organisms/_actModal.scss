@@ -6,6 +6,7 @@
   @extend .align-center;
   @extend .justify-between;
   @extend .padding-24;
+  z-Index: 12;
   .act-modal-message-wrapper {
     @extend .row;
     @extend .flex-1;

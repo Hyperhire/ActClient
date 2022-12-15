@@ -31,6 +31,7 @@ const DonationPayment = lazy(() => import('pages/donation/donationPayment'));
 const Faq = lazy(() => import('pages/faq'));
 const Redirect = lazy(() => import('pages/redirect'));
 const NftDetail = lazy(() => import('pages/my/nftDetail'));
+const Payment = lazy(() => import('pages/payment'));
 
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
@@ -74,7 +75,7 @@ const RouteSwitch = () => {
               <Route path="nft/:id" element={<NftDetail setOption={setOption} />} />
             </Route>
             <Route path="/redirect" element={<Redirect />} />
-            <Route path="/payment/:status" element={<Redirect />} />
+            <Route path="/payment/:orderId/:status" element={<Payment />} />
           </Routes>
         </div>
       </div>
