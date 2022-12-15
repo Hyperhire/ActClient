@@ -65,15 +65,15 @@ const Donation = ({ setOption }) => {
       isRecurring: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? true : false,
       amount: data.donationAmount,
     };
+    const isMobile = navigator.userAgent.indexOf('Mobi') > -1;
+    console.log('isMobile', isMobile);
     request({
       url: api.order.make,
       method: 'post',
       data: paymentData,
     })
       .then(response => {
-        // console.log('response', response);
-        // navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
-        navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
+        navigate('/redirect', { state: { url: isMobile ? response.data.data.redirectURLS.mobile : response.data.data.redirectURLS.web } }, { replace: true });
       })
       .catch(() => {
         showModal({

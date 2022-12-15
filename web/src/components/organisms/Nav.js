@@ -52,13 +52,13 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
               <ProfileIcon />
               <div className="side-menu-wrap-profile-info-wrap">
                 <div className="side-menu-wrap-profile-name-wrap">
-                  <div className="side-menu-wrap-profile-name">{userInfo?.userName || 'nickname'}</div>
+                  <div className="side-menu-wrap-profile-name">{userInfo?.nickname || 'nickname'}</div>
                   <ActIcon />
                   <div className="side-menu-wrap-profile-type">개인</div>
                 </div>
                 <div className="side-menu-wrap-profile-email-wrap">
                   <EmailIcon />
-                  <div className="side-menu-wrap-profile-email">abc@naver.com</div>
+                  <div className="side-menu-wrap-profile-email">{userInfo?.email}</div>
                 </div>
               </div>
             </div>

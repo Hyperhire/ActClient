@@ -42,7 +42,6 @@ const Payment = () => {
               handleConfirm: () => navigate('/'),
             });
           });
-
         break;
       case 'fail':
         showModal({

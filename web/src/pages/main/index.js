@@ -1,4 +1,5 @@
 import React, { lazy, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainSummaryOrganization from 'components/organisms/main/MainSummaryOrganization';
 import MainOnGoingCampaign from 'components/organisms/main/MainOnGoingCampaign';
 import MainDisclosure from 'components/organisms/main/MainDisclosure';
@@ -7,6 +8,8 @@ const MainCarousel = lazy(() => import('components/organisms/main/MainCarousel')
 const Footer = lazy(() => import('components/organisms/Footer'));
 
 const Main = ({ setOption }) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     setOption({ title: '', back: false, menu: true });
     return () => setOption({});
@@ -20,6 +23,7 @@ const Main = ({ setOption }) => {
       <MainDisclosure />
       <MainFaq />
       <Footer />
+      <button onClick={() => navigate('login', { replace: true })}>LogOut</button>
     </div>
   );
 };

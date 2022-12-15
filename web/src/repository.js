@@ -4,9 +4,9 @@ export const api = {
     register: '/auth/user/register',
     findPassword: '',
     logout: '',
+    my: 'api/v1/auth/user/my',
   },
   my: {
-    info: '',
     update: '',
     paymentHistory: '/api/v1/order/my',
     donationHistory: '/api/v1/donation/my',

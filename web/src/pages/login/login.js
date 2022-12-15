@@ -20,13 +20,17 @@ const Login = ({ setOption }) => {
   const location = useLocation();
   const locationState = location.state;
 
-  const { data, mutate: login, isLoading, isError, error, isSuccess } = useLogin('login');
+  const { data, mutate: login, isLoading, isSuccess } = useLogin('login');
 
   useEffect(() => {
     if (isSuccess && (data?.status === 200 || data?.status === 201)) {
-      navigate(locationState ? locationState.from : '/', { state: { ...locationState } }, { replace: true });
+      if (locationState) {
+        navigate(locationState.from, { replace: true });
+      } else {
+        navigate(`/`, { replace: true }, { state: { ...locationState } });
+      }
     }
-  }, [data, isLoading, isError, error, isSuccess, navigate, locationState]);
+  }, [data, isSuccess, locationState]);
 
   const [showPassword, setShowPassword] = useState(false);
   const onClickEyeHandler = () => {

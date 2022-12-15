@@ -17,12 +17,15 @@ export const useLogin = queryKey => {
 
   return useMutation(login, {
     onSuccess: async data => {
-      console.log('login', data);
       if (data.status === 200 || data.status === 201) {
+        setLocalItem(AUTH_INFO, { token: data.data.data.token });
         setAuthorization(data.data.data.token);
         //todo server에서 데이터 받아와야 됨
-        setItem(USER_INFO, { userName: 'lucas' });
-        setLocalItem(AUTH_INFO, { token: data.data.data.token });
+        request({ url: api.auth.my, method: 'get' }).then(response => {
+          if (response.status === 200) {
+            setItem(USER_INFO, response.data);
+          }
+        });
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({
