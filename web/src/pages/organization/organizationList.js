@@ -20,7 +20,6 @@ const OrganizationList = ({ setOption }) => {
   const { isLoading, isSuccess, data, isError, error } = useReactQuery('org-list', api.main.org);
 
   const onClickHandler = id => {
-    console.log('onClickHandler', id);
     navigate(`${id}`);
   };
   return (

@@ -18,6 +18,10 @@ const MainSummaryOrganization = () => {
     navigate('organization');
   };
 
+  const onClickItemHandler = item => {
+    navigate(`organization/${item._id}`);
+  };
+
   return (
     <div className="main-summary-organization-wrapper">
       <div className="list-wrapper">
@@ -25,7 +29,7 @@ const MainSummaryOrganization = () => {
           {isSuccess &&
             data.slice(0, 4).map((item, index) => {
               return (
-                <div key={index} className="item-wrapper">
+                <div key={index} className="item-wrapper link" onClick={() => onClickItemHandler(item)}>
                   {index % 2 ? (
                     <div className="item-image-top">
                       <img src={item?.image} alt="" />
