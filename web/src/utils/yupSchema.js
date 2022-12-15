@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { DONATION_PAYMENT_TYPE } from '../constants/constant';
 
 export const individualSignUpYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
@@ -98,7 +99,7 @@ export const donationOrganizationYup = yup.object().shape({
   donationType: yup.string().required(''),
   donationAmount: yup.number().required(''),
   donationDate: yup.number().when('donationType', {
-    is: donationType => donationType === 1,
+    is: donationType => donationType === DONATION_PAYMENT_TYPE.REGULAR,
     then: yup.number().required(''),
     otherwise: yup.number().notRequired(''),
   }),

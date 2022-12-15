@@ -52,11 +52,15 @@ const Donation = ({ setOption }) => {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { isValid, isSubmitting, errors },
   } = useForm(formOptions);
-  let status = 'pending';
-  let result;
 
+  useEffect(() => {
+    if (donationType === DONATION_PAYMENT_TYPE.TEMP) {
+      setValue('donationDate', undefined, { shouldValidate: true });
+    }
+  }, [donationType]);
   const onSubmit = data => {
     const paymentData = {
       targetType: type === DONATION_TYPE.ORGANIZATION ? 'ORG' : 'CAMPAIGN',
