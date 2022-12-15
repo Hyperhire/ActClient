@@ -19,15 +19,14 @@ const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state;
-
   const { data, mutate: login, isLoading, isSuccess } = useLogin('login');
 
   useEffect(() => {
     if (isSuccess && (data?.status === 200 || data?.status === 201)) {
-      if (locationState) {
-        navigate(locationState.from, { replace: true });
+      if (locationState && locationState.to) {
+        navigate(locationState.to, { state: { ...locationState }, replace: true });
       } else {
-        navigate(`/`, { replace: true }, { state: { ...locationState } });
+        navigate(`/`, { replace: true });
       }
     }
   }, [data, isSuccess, locationState]);
@@ -70,9 +69,6 @@ const Login = ({ setOption }) => {
 
   const onSubmit = async formData => {
     login(formData);
-    // if (await login({ userName: data.userId, userPassword: data.userPassword })) {
-    //   navigate(locationState ? locationState.from : '/', { state: { ...locationState } }, { replace: true });
-    // }
   };
 
   const getIcon = values => {

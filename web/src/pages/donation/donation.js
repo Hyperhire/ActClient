@@ -18,6 +18,7 @@ const Donation = ({ setOption }) => {
   const { showModal } = useModal();
   const location = useLocation();
   const navigate = useNavigate();
+  console.log('locationState33', location);
   const { type, item } = location.state;
   useEffect(() => {
     if (!location.state) navigate('/', { replace: true });
@@ -77,7 +78,7 @@ const Donation = ({ setOption }) => {
       data: paymentData,
     })
       .then(response => {
-        navigate('/redirect', { state: { url: isMobile ? response.data.data.redirectURLS.mobile : response.data.data.redirectURLS.web } }, { replace: true });
+        navigate('/redirect', { state: { url: isMobile ? response.data.data.redirectURLS.mobile : response.data.data.redirectURLS.web }, replace: true });
       })
       .catch(() => {
         showModal({
