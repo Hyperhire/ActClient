@@ -25,12 +25,13 @@ const Payment = () => {
               showModal({
                 open: true,
                 message: `결제 승인 실패`,
+                handleConfirm: () => navigate('/'),
               });
             } else {
               showModal({
                 open: true,
                 message: `결제 승인 성공.`,
-                handleConfirm: () => navigate('/my/DonationHistory'),
+                handleConfirm: () => navigate('/my/DonationHistory', { replace: true }),
               });
             }
           })
@@ -38,6 +39,7 @@ const Payment = () => {
             showModal({
               open: true,
               message: `결제 승인 실패`,
+              handleConfirm: () => navigate('/'),
             });
           });
 
