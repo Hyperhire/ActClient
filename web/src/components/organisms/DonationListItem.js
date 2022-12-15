@@ -1,6 +1,9 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import ActButton from 'components/atoms/ActButton';
 import { DONATION_TYPE } from 'constants/constant';
+import { ReactComponent as Act } from 'styles/assets/icons/logo/act.svg';
+import 'dayjs/locale/ko';
 
 const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickNFT }) => {
   return (
@@ -8,7 +11,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
       <div className="item-list-wrapper">
         <div className="item-wrapper">
           <div className="title">단체명</div>
-          <div className="content">{item.organization}</div>
+          <div className="content">{item.org.name}</div>
         </div>
         {type === DONATION_TYPE.CAMPAIGN && (
           <div className="item-wrapper">
@@ -18,12 +21,12 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
         )}
         <div className="item-wrapper">
           <div className="title">시작일</div>
-          <div className="content">{item.startDate}</div>
+          <div className="content">{dayjs(item.startedAt).locale('ko').format('YYYY.MM.DD a h:m')}</div>
         </div>
         {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">종료일</div>
-            <div className="content">{item.endDate}</div>
+            <div className="content">{item.endedAt ?? '-'}</div>
           </div>
         )}
 
@@ -33,7 +36,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
         </div>
         <div className="item-wrapper">
           <div className="title">후원방식</div>
-          <div className="content">{item.donationType}</div>
+          <div className="content">{item.isRecurring ? '정기' : '일시'}</div>
         </div>
         {type === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
@@ -44,14 +47,27 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
       </div>
       <div className="button-wrapper">
         {type === DONATION_TYPE.ORGANIZATION && (
-          <ActButton
-            className="donation-list-item-button"
-            label={item.donationStatus === 'cancel' ? '후원 해지 완료' : '후원 해지하기'}
-            handleOnClick={() => handleCancelRegularPayment(item.id)}
-            disabled={item.donationStatus === 'cancel'}
-          />
+          <div className="donation-list-item-button">
+            <ActButton
+              className="primary-button-large-outline"
+              label={item.isTerminated ? '후원 해지 완료' : '후원 해지하기'}
+              handleOnClick={() => handleCancelRegularPayment(item._id)}
+              disabled={item.isTerminated}
+            />
+          </div>
         )}
-        <ActButton className="donation-list-item-button" label="Act nft 확인" handleOnClick={() => handleClickNFT(item.id)} />
+        <div className="donation-list-item-button">
+          <ActButton
+            className="primary-button-large"
+            label={
+              <div className="row align-center justify-center">
+                <Act width="3.2rem" height="1.1rem" />
+                <div>NFT 확인</div>
+              </div>
+            }
+            handleOnClick={() => handleClickNFT(item._id)}
+          />
+        </div>
       </div>
     </div>
   );

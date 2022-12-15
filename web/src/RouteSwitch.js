@@ -30,6 +30,7 @@ const Donation = lazy(() => import('pages/donation/donation'));
 const DonationPayment = lazy(() => import('pages/donation/donationPayment'));
 const Faq = lazy(() => import('pages/faq'));
 const Redirect = lazy(() => import('pages/redirect'));
+const NftDetail = lazy(() => import('pages/my/nftDetail'));
 
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
@@ -70,8 +71,10 @@ const RouteSwitch = () => {
               <Route path="resign-membership" element={<ResignMembership setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />
               <Route path="donationHistory" element={<DonationHistory setOption={setOption} />} />
+              <Route path="nft/:id" element={<NftDetail setOption={setOption} />} />
             </Route>
             <Route path="/redirect" element={<Redirect />} />
+            <Route path="/payment/:status" element={<Redirect />} />
           </Routes>
         </div>
       </div>

@@ -20,7 +20,7 @@ const CampaignDetail = ({ setOption }) => {
   }, [data, setOption]);
 
   const onClickHandler = () => {
-    navigate(`/donation`, { state: { organization: data?.org.name, campaign: data?.title, type: DONATION_TYPE.CAMPAIGN } });
+    navigate(`/donation`, { state: { item: data, type: DONATION_TYPE.CAMPAIGN } });
   };
 
   const dDay = () => {

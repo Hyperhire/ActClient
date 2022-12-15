@@ -8,8 +8,8 @@ export const api = {
   my: {
     info: '',
     update: '',
-    paymentHistory: '',
-    donationHistory: '',
+    paymentHistory: '/api/v1/order/my',
+    donationHistory: '/api/v1/donation/my',
   },
   organization: {
     list: '/api/v1/org',
@@ -22,9 +22,6 @@ export const api = {
   },
   faq: {
     list: '/api/v1/faq',
-  },
-  payment: {
-    kakao: '/v1/payment/ready',
   },
   main: {
     banner: '/api/v1/banner',
@@ -39,5 +36,9 @@ export const api = {
     list: '/api/v1/notice',
     detail: id => `/api/v1/notice/${id}`,
     listByOrg: org => `/api/v1/notice/list-by-org/${org}`,
+  },
+  order: {
+    make: '/api/v1/order',
+    complete: '/api/v1/order/complete',
   },
 };

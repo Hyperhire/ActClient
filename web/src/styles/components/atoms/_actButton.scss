@@ -98,3 +98,17 @@
     background: $disable-bg;
   }
 }
+.button-small-outline {
+  @extend .act-button;
+  width: max-content;
+  @extend .padding-row-8;
+  height: 2rem;
+  @extend .body-medium;
+  color: $primary;
+  background: $white;
+  @extend .bordered;
+  &:disabled {
+    color: $disable-bg;
+    background: $white;
+  }
+}

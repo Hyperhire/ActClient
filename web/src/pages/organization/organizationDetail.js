@@ -25,7 +25,7 @@ const OrganizationDetail = ({ setOption }) => {
   }, [setOption]);
 
   const onClickHandler = () => {
-    navigate(`/donation`, { state: { organization: data.title, type: DONATION_TYPE.ORGANIZATION } });
+    navigate(`/donation`, { state: { item: data, type: DONATION_TYPE.ORGANIZATION } });
   };
 
   const onClickHomepage = () => {

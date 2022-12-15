@@ -28,9 +28,16 @@
     }
   }
   .button-wrapper {
-    display: flex;
-    width: 100%;
+    @extend .row;
     @extend .gap-16;
+    @extend .max-width;
+    @extend .align-center;
+    @extend .justify-around;
+
+    .donation-list-item-button {
+      @extend .max-width;
+
+    }
   }
 }
 

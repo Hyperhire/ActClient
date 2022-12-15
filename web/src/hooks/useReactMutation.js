@@ -22,7 +22,7 @@ export const useLogin = queryKey => {
         setAuthorization(data.data.data.token);
         //todo server에서 데이터 받아와야 됨
         setItem(USER_INFO, { userName: 'lucas' });
-        setLocalItem(AUTH_INFO, { token: data.data.data.token });
+        setLocalItem(AUTH_INFO, { token: 'bearer ' + data.data.data.token });
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({

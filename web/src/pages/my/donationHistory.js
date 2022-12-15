@@ -4,6 +4,8 @@ import { getItem, USER_INFO } from 'utils/sessionStorage';
 import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
 import { DONATION_TYPE } from 'constants/constant';
+import { useReactQuery } from '../../hooks/useReactQuery';
+import { api } from '../../repository';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const DonationHistory = ({ setOption }) => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
   }, [setOption]);
+  const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
 
   const onHandleCancelRegularPayment = id => {
     console.log('onHandleCancelRegularPayment', id);
@@ -19,73 +22,46 @@ const DonationHistory = ({ setOption }) => {
 
   const onHandleClickNFT = id => {
     console.log('handleClickNFT', id);
+    navigate(`../nft/${id}`);
   };
 
-  const makeDummy = type => {
-    let tmp = [];
-    for (let i = 0; i < 20; i++) {
-      tmp.push(
-        type === DONATION_TYPE.ORGANIZATION
-          ? {
-              id: i,
-              organization: `organization ${i}`,
-              startDate: `fromData ${i}`,
-              endDate: `endDate ${i}`,
-              amount: `amount ${i}`,
-              donationType: `donationType ${i}`,
-              regularPaymentDate: `regularPaymentDate ${i}`,
-              donationStatus: `${i % 5 && 'cancel'}`,
-            }
-          : {
-              id: i,
-              organization: `organization ${i}`,
-              campaignTitle: `fromData ${i}`,
-              startDate: `endDate ${i}`,
-              amount: `amount ${i}`,
-              donationType: `donationType ${i}`,
-            },
-      );
-    }
-    return tmp;
-  };
-
-  const data = [
+  const parseData = [
     {
       index: 0,
       label: '단체후원',
-      list: makeDummy(DONATION_TYPE.ORGANIZATION).map((item, index) => {
-        return (
-          <div key={index}>
-            <DonationListItem
-              type={DONATION_TYPE.ORGANIZATION}
-              key={index}
-              item={item}
-              handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
-              handleClickNFT={id => onHandleClickNFT(id)}
-            />
-            {index !== makeDummy(DONATION_TYPE.ORGANIZATION).length && <div className="divider" />}
-          </div>
-        );
-      }),
+      list: data
+        .filter(item => item.targetType === 'ORG')
+        .map((item, index) => {
+          return (
+            <div key={index}>
+              <DonationListItem
+                type={DONATION_TYPE.ORGANIZATION}
+                key={index}
+                item={item}
+                handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
+                handleClickNFT={id => onHandleClickNFT(id)}
+              />
+              <div className="divider" />
+            </div>
+          );
+        }),
     },
     {
       index: 1,
       label: '캠페인후원',
-      list: makeDummy(DONATION_TYPE.CAMPAIGN).map((item, index) => {
-        return (
-          <div key={index}>
-            <DonationListItem type={DONATION_TYPE.CAMPAIGN} key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
-            {index !== makeDummy(DONATION_TYPE.CAMPAIGN).length && <div className="divider" />}
-          </div>
-        );
-      }),
+      list: data
+        .filter(item => item.targetType === 'CAMPAIGN')
+        .map((item, index) => {
+          return (
+            <div key={index}>
+              <DonationListItem type={DONATION_TYPE.CAMPAIGN} key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
+              <div className="divider" />
+            </div>
+          );
+        }),
     },
   ];
 
-  return (
-    <div className="col">
-      <ActTab data={data} />
-    </div>
-  );
+  return <div className="col">{isSuccess && <ActTab data={parseData} />}</div>;
 };
 export default DonationHistory;

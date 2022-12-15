@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 import { api } from 'repository';
+import { AUTH_INFO, getLocalItem } from './localStorage';
 
 const { REACT_APP_BASE_URL, REACT_APP_AUTHORIZATION, REACT_APP_KAKAO_PAYMENT_URL } = process.env;
 
@@ -32,8 +34,7 @@ kakaoClient.interceptors.request.use(onRequest);
 kakaoClient.interceptors.response.use(onResponseSuccess, onResponseRejected);
 
 export const request = ({ ...options }) => {
-  // client.defaults.headers.common.Authorization = REACT_APP_AUTHORIZATION;
-  // const addPrefix = api.prefix + options.url;
+  client.defaults.headers.common.Authorization = getLocalItem(AUTH_INFO)?.token;
   const onSuccess = response => response;
   const onError = error => error;
   return client(options).then(onSuccess).catch(onError);
@@ -41,10 +42,4 @@ export const request = ({ ...options }) => {
 
 export const setAuthorization = token => {
   client.defaults.headers.common.Authorization = token;
-};
-
-export const requestKakao = ({ ...options }) => {
-  const onSuccess = response => response;
-  const onError = error => error;
-  return kakaoClient(options).then(onSuccess).catch(onError);
 };

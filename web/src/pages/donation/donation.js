@@ -9,21 +9,22 @@ import { ReactComponent as RegularIcon } from 'styles/assets/icons/label/regular
 import { ReactComponent as TempIcon } from 'styles/assets/icons/label/temp.svg';
 import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
 import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from 'constants/constant';
-import { requestKakao } from 'utils/axiosClient';
+import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import ActSpinner from '../../components/atoms/ActSpinner';
+import useModal from '../../hooks/useModal';
 
 const Donation = ({ setOption }) => {
+  const { showModal } = useModal();
   const location = useLocation();
   const navigate = useNavigate();
-  const { type, organization, campaign = '' } = location.state;
-
+  const { type, item } = location.state;
   useEffect(() => {
     if (!location.state) navigate('/', { replace: true });
   }, [location.state, navigate]);
 
   useEffect(() => {
-    setOption({ title: type === DONATION_TYPE.ORGANIZATION ? '단체 후원하기' : '캠페인 후원하기', subtitle: organization, description: '', back: true, menu: false, date: true });
+    setOption({ title: type === DONATION_TYPE.ORGANIZATION ? '단체 후원하기' : '캠페인 후원하기', subtitle: item.title, description: '', back: true, menu: false, date: true });
   }, [setOption]);
 
   const [donationType, setDonationType] = useState(undefined);
@@ -57,60 +58,30 @@ const Donation = ({ setOption }) => {
   let result;
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
-    // navigate(`payment`, { state: { data } });
     const paymentData = {
-      cid: 'TC0ONETIME',
-      partner_order_id: '1',
-      partner_user_id: 'lucas',
-      item_name: '일시 후원',
-      quantity: 1,
-      total_amount: 100000,
-      tax_free_amount: 100000,
-      approval_url: 'https://www.act-donation.co.kr/payment-success',
-      cancel_url: 'https://www.act-donation.co.kr/payment-cancel',
-      fail_url: 'https://www.act-donation.co.kr/payment-fail',
-      payment_method_type: 'CARD',
+      targetType: type === DONATION_TYPE.ORGANIZATION ? 'ORG' : 'CAMPAIGN',
+      targetId: item._id,
+      pg: 'KAKAO',
+      isRecurring: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? true : false,
+      amount: data.donationAmount,
     };
-
-    const rk = requestKakao({
-      url: api.payment.kakao,
+    request({
+      url: api.order.make,
       method: 'post',
-      headers: { Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_ADMIN_KEY}`, 'Content-type': 'application/x-www-form-urlencoded;charset=utf-8' },
       data: paymentData,
     }).then(
       response => {
-        status = 'success';
-        result = response;
-        /* response
-         * {
-         * "tid": "T1234567890123456789",
-         *  "next_redirect_app_url": "https://mockup-pg-web.kakao.com/v1/xxxxxxxxxx/aInfo",
-         *  "next_redirect_mobile_url": "https://mockup-pg-web.kakao.com/v1/xxxxxxxxxx/mInfo",
-         *  "next_redirect_pc_url": "https://mockup-pg-web.kakao.com/v1/xxxxxxxxxx/info",
-         *  "android_app_scheme": "kakaotalk://kakaopay/pg?url=https://mockup-pg-web.kakao.com/v1/xxxxxxxxxx/order",
-         *  "ios_app_scheme": "kakaotalk://kakaopay/pg?url=https://mockup-pg-web.kakao.com/v1/xxxxxxxxxx/order",
-         *  "created_at": "2016-11-15T21:18:22"
-         * }
-         */
-        // navigate('/redirect', { state: { url: response.data.next_redirect_mobile_url } }, { replace: true });
+        // console.log('response', response);
+        // navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
+        navigate('/redirect', { state: { url: response.data.data.redirectURLS.web } }, { replace: true });
       },
       e => {
-        status = 'error';
-        result = e;
+        showModal({
+          open: true,
+          message: `결제에 실패하였습니다.`,
+        });
       },
     );
-    return {
-      read() {
-        if (status === 'pending') {
-          throw rk;
-        } else if (status === 'error') {
-          throw result;
-        } else if (status === 'success') {
-          return result;
-        }
-      },
-    };
   };
 
   const getDonationTypeItems = () => {
@@ -149,7 +120,7 @@ const Donation = ({ setOption }) => {
       {type === DONATION_TYPE.CAMPAIGN && (
         <div className="donation-campaign-wrapper">
           <div className="donation-campaign-label">캠페인명</div>
-          <div className="donation-campaign-title">{campaign}</div>
+          <div className="donation-campaign-title">{item.title}</div>
         </div>
       )}
       <form className="donation-form-wrapper" onSubmit={handleSubmit(onSubmit)}>

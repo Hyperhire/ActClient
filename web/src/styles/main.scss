@@ -112,6 +112,7 @@ http://scripts.sil.org/OFL
 @import 'components/organisms/main/mainSummaryOrganization';
 @import 'components/organisms/main/mainDisclosure';
 @import 'components/organisms/main/mainFaq';
+@import 'components/organisms/paymentHistoryItem';
 
 @import 'components/pages/login';
 @import 'components/pages/organizationDetail';
@@ -124,3 +125,5 @@ http://scripts.sil.org/OFL
 @import 'components/pages/findPassword';
 @import 'components/pages/profile';
 @import 'components/pages/resignMembership';
+@import 'components/pages/paymentHistory';
+@import 'components/pages/nftDetail';

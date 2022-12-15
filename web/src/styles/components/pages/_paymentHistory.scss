@@ -1,0 +1,17 @@
+.payment-history-wrapper {
+  @extend .col;
+  .payment-history-divider {
+    @extend .top-24;
+    @extend .left-24;
+    @extend .divider-thick-primary-2;
+  }
+  .payment-history-form-wrapper {
+    @extend .col;
+    .payment-history-form-content-wrapper {
+      @extend .col;
+      .payment-history-form-content-item-wrapper {
+        @extend .padding-24;
+      }
+    }
+  }
+}
