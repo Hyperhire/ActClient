@@ -23,7 +23,6 @@ const Main = ({ setOption }) => {
       <MainDisclosure />
       <MainFaq />
       <Footer />
-      <button onClick={() => navigate('login', { replace: true })}>LogOut</button>
     </div>
   );
 };
