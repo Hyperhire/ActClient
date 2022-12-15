@@ -145,7 +145,7 @@ const Donation = ({ setOption }) => {
             columns={3}
             selectedItem={setDonationAmount}
           />
-          {type === DONATION_TYPE.ORGANIZATION && (
+          {type === DONATION_TYPE.ORGANIZATION && donationType === DONATION_PAYMENT_TYPE.REGULAR && (
             <ActToggleButton
               {...register('donationDate')}
               label="정기 결제일"

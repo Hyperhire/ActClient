@@ -62,6 +62,7 @@ const ActToggleButton = (props, ref) => {
                       color: 'black',
                       backgroundColor: 'white',
                       borderRadius: '0px',
+                      fontWeight: 'bold',
                     },
                     '&.MuiToggleButtonGroup-grouped': {
                       borderRadius: '0px',
