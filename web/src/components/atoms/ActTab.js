@@ -22,7 +22,6 @@ const onClickHandler = index => {
 };
 
 const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data }) => {
-  console.log('ActTab', initialTab);
   const [value, setValue] = useState(false);
 
   // mui bug 때문에 warning clear 하려고 추가 함

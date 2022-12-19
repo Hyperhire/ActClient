@@ -14,8 +14,8 @@ export const GENDER = [
 ];
 
 export const DONATION_TYPE = {
-  ORGANIZATION: 'organization',
-  CAMPAIGN: 'campaign',
+  ORGANIZATION: 'ORG',
+  CAMPAIGN: 'CAMPAIGN',
 };
 
 export const DONATION_PAYMENT_TYPE = {
