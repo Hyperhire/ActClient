@@ -34,7 +34,7 @@ const Payment = () => {
                 message: `결제 승인 성공.`,
                 handleConfirm: () => {
                   navigate('/', { replace: true });
-                  navigate('/my/DonationHistory', { replace: true, state: { type: response.data.targetType } });
+                  navigate('/my/DonationHistory', { replace: true, state: { type: response.data.data.targetType } });
                 },
               });
             }
