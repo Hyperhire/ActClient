@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getItem, USER_INFO } from 'utils/sessionStorage';
 import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
@@ -12,7 +12,8 @@ const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
   const userInfo = getItem(USER_INFO);
   const { showModal } = useModal();
-
+  const location = useLocation();
+  console.log('DonationHistory', location);
   useEffect(() => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
@@ -73,6 +74,6 @@ const DonationHistory = ({ setOption }) => {
     },
   ];
 
-  return <div className="col">{isSuccess && <ActTab data={parseData} />}</div>;
+  return <div className="col">{isSuccess && <ActTab initialTab={location.state?.type} data={parseData} />}</div>;
 };
 export default DonationHistory;

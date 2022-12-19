@@ -3,6 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
+import { DONATION_TYPE } from '../../constants/constant';
 
 const TabPanel = props => {
   const { children, value, index, ...other } = props;
@@ -20,13 +21,14 @@ const onClickHandler = index => {
   };
 };
 
-const ActTab = ({ data }) => {
+const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data }) => {
+  console.log('ActTab', initialTab);
   const [value, setValue] = useState(false);
 
   // mui bug 때문에 warning clear 하려고 추가 함
   useEffect(() => {
     setTimeout(() => {
-      setValue(0);
+      setValue(initialTab === DONATION_TYPE.CAMPAIGN ? 1 : 0);
     }, 100);
   }, []);
 

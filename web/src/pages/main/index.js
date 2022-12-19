@@ -1,9 +1,10 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainSummaryOrganization from 'components/organisms/main/MainSummaryOrganization';
 import MainOnGoingCampaign from 'components/organisms/main/MainOnGoingCampaign';
 import MainDisclosure from 'components/organisms/main/MainDisclosure';
 import MainFaq from 'components/organisms/main/MainFaq';
+
 const MainCarousel = lazy(() => import('components/organisms/main/MainCarousel'));
 const Footer = lazy(() => import('components/organisms/Footer'));
 
@@ -12,6 +13,7 @@ const Main = ({ setOption }) => {
 
   useEffect(() => {
     setOption({ title: '', back: false, menu: true });
+
     return () => setOption({});
   }, [setOption]);
 

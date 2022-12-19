@@ -67,7 +67,7 @@ const Donation = ({ setOption }) => {
       targetType: type === DONATION_TYPE.ORGANIZATION ? 'ORG' : 'CAMPAIGN',
       targetId: item._id,
       pg: 'KAKAO',
-      isRecurring: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? true : false,
+      isRecurring: data.donationType === DONATION_PAYMENT_TYPE.REGULAR,
       amount: data.donationAmount,
     };
     const isMobile = navigator.userAgent.indexOf('Mobi') > -1;

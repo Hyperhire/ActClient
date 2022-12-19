@@ -4,6 +4,7 @@ import useModal from '../hooks/useModal';
 import ActSpinner from '../components/atoms/ActSpinner';
 import { request } from '../utils/axiosClient';
 import { api } from '../repository';
+import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from '../constants/constant';
 
 const Payment = () => {
   const { showModal } = useModal();
@@ -33,7 +34,7 @@ const Payment = () => {
                 message: `결제 승인 성공.`,
                 handleConfirm: () => {
                   navigate('/', { replace: true });
-                  navigate('/my/DonationHistory');
+                  navigate('/my/DonationHistory', { replace: true, state: { type: response.data.targetType } });
                 },
               });
             }
@@ -47,18 +48,66 @@ const Payment = () => {
           });
         break;
       case 'fail':
-        showModal({
-          open: true,
-          message: `결제 실패.`,
-          handleConfirm: () => navigate('/'),
-        });
+        request({
+          url: api.order.failed,
+          method: 'post',
+          data: { id: orderId },
+        })
+          .then(response => {
+            if (response.status !== 200) {
+              showModal({
+                open: true,
+                message: `결제 실패`,
+                handleConfirm: () => navigate('/'),
+              });
+            } else {
+              showModal({
+                open: true,
+                message: `결제 실패.`,
+                handleConfirm: () => {
+                  navigate('/', { replace: true });
+                },
+              });
+            }
+          })
+          .catch(() => {
+            showModal({
+              open: true,
+              message: `결제 실패`,
+              handleConfirm: () => navigate('/'),
+            });
+          });
         break;
       default:
-        showModal({
-          open: true,
-          message: `결제 취소.`,
-          handleConfirm: () => navigate('/'),
-        });
+        request({
+          url: api.order.canceled,
+          method: 'post',
+          data: { id: orderId },
+        })
+          .then(response => {
+            if (response.status !== 200) {
+              showModal({
+                open: true,
+                message: `결제 취소`,
+                handleConfirm: () => navigate('/'),
+              });
+            } else {
+              showModal({
+                open: true,
+                message: `결제 취소`,
+                handleConfirm: () => {
+                  navigate('/', { replace: true });
+                },
+              });
+            }
+          })
+          .catch(() => {
+            showModal({
+              open: true,
+              message: `결제 취소`,
+              handleConfirm: () => navigate('/'),
+            });
+          });
         break;
     }
   }, [orderId, status]);

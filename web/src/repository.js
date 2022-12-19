@@ -41,5 +41,7 @@ export const api = {
   order: {
     make: '/api/v1/order',
     complete: '/api/v1/order/complete',
+    canceled: '/api/v1/order/canceled',
+    failed: '/api/v1/order/failed',
   },
 };

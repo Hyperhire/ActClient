@@ -119,7 +119,7 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
         ))}
         {authInfo?.token ? (
           <div className="flex-1 align-end">
-            <div onClick={logout} className="side-menu-logout-label">
+            <div onClick={logout} className="side-menu-logout-label link">
               로그아웃
             </div>
           </div>
