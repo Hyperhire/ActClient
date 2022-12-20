@@ -5,7 +5,7 @@ import { DONATION_TYPE } from 'constants/constant';
 import { ReactComponent as Act } from 'styles/assets/icons/logo/act.svg';
 import 'dayjs/locale/ko';
 
-const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickNFT }) => {
+const DonationListItem = ({ item, handleCancelRegularPayment, handleClickNFT }) => {
   return (
     <div className="donation-list-item-wrapper">
       <div className="item-list-wrapper">
@@ -13,17 +13,17 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
           <div className="title">단체명</div>
           <div className="content">{item.org.name}</div>
         </div>
-        {type === DONATION_TYPE.CAMPAIGN && (
+        {item.targetType === DONATION_TYPE.CAMPAIGN && (
           <div className="item-wrapper">
             <div className="title">캠페인명</div>
-            <div className="content">{item.campaignTitle}</div>
+            <div className="content">{item.campaign.title}</div>
           </div>
         )}
         <div className="item-wrapper">
           <div className="title">시작일</div>
           <div className="content">{dayjs(item.startedAt).locale('ko').format('YYYY.MM.DD a h:mm')}</div>
         </div>
-        {type === DONATION_TYPE.ORGANIZATION && (
+        {item.targetType === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">종료일</div>
             <div className="content">{item.endedAt ?? '-'}</div>
@@ -38,7 +38,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
           <div className="title">후원방식</div>
           <div className="content">{item.isRecurring ? '정기후원' : '일시후원'}</div>
         </div>
-        {type === DONATION_TYPE.ORGANIZATION && (
+        {item.targetType === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">정기결제일</div>
             <div className="content">{item.regularPaymentDate}</div>
@@ -46,7 +46,7 @@ const DonationListItem = ({ type, item, handleCancelRegularPayment, handleClickN
         )}
       </div>
       <div className="button-wrapper">
-        {type === DONATION_TYPE.ORGANIZATION && item.isRecurring && (
+        {item.targetType === DONATION_TYPE.ORGANIZATION && item.isRecurring && (
           <div className="donation-list-item-button">
             <ActButton
               className="primary-button-large-outline"

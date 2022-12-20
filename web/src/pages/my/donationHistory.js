@@ -13,12 +13,13 @@ const DonationHistory = ({ setOption }) => {
   const userInfo = getItem(USER_INFO);
   const { showModal } = useModal();
   const location = useLocation();
-  console.log('DonationHistory', location);
+
   useEffect(() => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
   }, [setOption]);
   const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
+  console.log('DonationHistory data!', data);
   const onHandleCancelRegularPayment = id => {
     showModal({
       open: true,
@@ -35,42 +36,26 @@ const DonationHistory = ({ setOption }) => {
     {
       index: 0,
       label: '단체후원',
-      list: data
-        .filter(item => item.targetType === DONATION_TYPE.ORGANIZATION)
-        .map((item, index) => {
-          return (
-            <div key={index}>
-              <DonationListItem
-                type={DONATION_TYPE.ORGANIZATION}
-                key={index}
-                item={item}
-                handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
-                handleClickNFT={id => onHandleClickNFT(id)}
-              />
-              <div className="divider" />
-            </div>
-          );
-        }),
+      list: data.orgs.map((item, index) => {
+        return (
+          <div key={index}>
+            <DonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
+            <div className="divider" />
+          </div>
+        );
+      }),
     },
     {
       index: 1,
       label: '캠페인후원',
-      list: data
-        .filter(item => item.targetType === DONATION_TYPE.CAMPAIGN)
-        .map((item, index) => {
-          return (
-            <div key={index}>
-              <DonationListItem
-                type={DONATION_TYPE.CAMPAIGN}
-                key={index}
-                item={item}
-                handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)}
-                handleClickNFT={item => onHandleClickNFT(item)}
-              />
-              <div className="divider" />
-            </div>
-          );
-        }),
+      list: data.campaigns.map((item, index) => {
+        return (
+          <div key={index}>
+            <DonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={item => onHandleClickNFT(item)} />
+            <div className="divider" />
+          </div>
+        );
+      }),
     },
   ];
 
