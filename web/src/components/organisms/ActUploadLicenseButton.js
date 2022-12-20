@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ActImageUploadButton from '../atoms/ActImageUploadButton';
 import { ReactComponent as PlusIcon } from '../../styles/assets/icons/plus.svg';
-const ActUploadLicenseButton = ({ register, id, errors, control, uploadedImages }) => {
-  const [imageFiles, setImageFiles] = useState([]);
+const ActUploadLicenseButton = ({ register, id, errors, control, imageFiles, setImageFiles }) => {
   const [images, setImages] = useState([]);
   const inputRef = useRef(null);
 
@@ -10,6 +9,7 @@ const ActUploadLicenseButton = ({ register, id, errors, control, uploadedImages 
     e.preventDefault();
     inputRef.current?.click();
   };
+
   const deleteImage = targetImage => {
     const tmpArr = [...imageFiles];
     tmpArr.splice(
@@ -18,19 +18,9 @@ const ActUploadLicenseButton = ({ register, id, errors, control, uploadedImages 
     );
     setImageFiles(tmpArr);
   };
+
   return (
-    <ActImageUploadButton
-      register={register}
-      id={id}
-      errors={errors}
-      control={control}
-      uploadedImages={uploadedImages}
-      inputRef={inputRef}
-      imageFiles={imageFiles}
-      setImageFiles={setImageFiles}
-      images={images}
-      setImages={setImages}
-    >
+    <ActImageUploadButton register={register} id={id} errors={errors} control={control} inputRef={inputRef} imageFiles={imageFiles} setImageFiles={setImageFiles} images={images} setImages={setImages}>
       <div className="act-upload-license-button-wrapper">
         <div className="act-upload-license-button">
           {images?.length > 0 ? (

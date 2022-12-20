@@ -23,7 +23,7 @@ const ActInput = (props, ref) => {
     placeholder,
     eyeHandler,
     eyeIcon,
-    duplicateLabel,
+    duplicate,
     options,
     params,
     maxLength,
@@ -34,7 +34,7 @@ const ActInput = (props, ref) => {
   } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
 
-  const [duplicatedResult, setDuplicatedResult] = useState({ resultData: { status: undefined, message: '' }, result: undefined });
+  const [duplicatedResult, setDuplicatedResult] = useState({ result: undefined, data: { status: undefined, message: '' } });
 
   useEffect(() => {
     if (isError) {
@@ -45,6 +45,16 @@ const ActInput = (props, ref) => {
   const onResultCallBack = result => {
     setDuplicatedResult(result);
   };
+
+  useEffect(() => {
+    if (duplicate) {
+      if (duplicatedResult.result !== undefined) {
+        duplicate.setValue(duplicate.id, duplicatedResult.data.status, { shouldValidate: true });
+      } else {
+        duplicate.setValue(duplicate.id, true, { shouldValidate: true });
+      }
+    }
+  }, [duplicatedResult]);
 
   return (
     <div className="act-input-wrapper ">
@@ -115,10 +125,18 @@ const ActInput = (props, ref) => {
                         {eyeIcon}
                       </div>
                     </InputAdornment>
-                  ) : duplicateLabel ? (
+                  ) : duplicate ? (
                     <InputAdornment position="end">
                       <div className="duplication-button-wrapper">
-                        <DuplicateButton id={id} label={duplicateLabel} resultCallBack={onResultCallBack} disabled={duplicatedResult.result === true || fieldInvalid || !field.value} />
+                        <DuplicateButton
+                          {...duplicate.register(duplicate.id)}
+                          id={duplicate.id}
+                          control={control}
+                          label={duplicate.label}
+                          resultCallBack={onResultCallBack}
+                          disabled={duplicatedResult.result === true || fieldInvalid || !field.value}
+                          testValue={field.value}
+                        />
                       </div>
                     </InputAdornment>
                   ) : (
@@ -150,7 +168,7 @@ const ActInput = (props, ref) => {
           {isError ? (
             <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />
           ) : (
-            duplicatedResult.result === true && <div className={`${duplicatedResult.data === 200 ? 'success-text' : 'error-text'}`}>{duplicatedResult.data.message}</div>
+            duplicatedResult.result === true && <div className={`${duplicatedResult.data.status ? 'error-text' : 'success-text'}`}>{duplicatedResult.data.message}</div>
           )}
         </div>
       )}

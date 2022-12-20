@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
+
 import { DONATION_TYPE, MEMBER_TYPE } from 'constants/constant';
 import ActInput from 'components/atoms/ActInput';
 import { individualSignUpYup, organizationSignUpYup } from 'utils/yupSchema';
@@ -17,7 +18,6 @@ const RegisterByEmail = ({ setOption }) => {
   const { type } = useParams();
   const navigate = useNavigate();
   const { data, mutate: doRegister, isLoading, isError, error, isSuccess } = useRegisterByEmail('register');
-
   useEffect(() => {
     if (isSuccess && data) {
       navigate('/', { replace: true });
@@ -30,7 +30,7 @@ const RegisterByEmail = ({ setOption }) => {
   }, [setOption]);
 
   const [activeGuard, setActiveGuard] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState();
+  const [imageFiles, setImageFiles] = useState([]);
   const [checkBoxItems, setCheckBoxItems] = useState([
     {
       key: 0,
@@ -58,6 +58,8 @@ const RegisterByEmail = ({ setOption }) => {
     nickname: '',
     agreement: undefined,
     receiveReceipt: undefined,
+    duplicateEmail: undefined,
+    duplicateNickname: undefined,
     // terms: undefined,
     // privacy: undefined,
   };
@@ -77,10 +79,37 @@ const RegisterByEmail = ({ setOption }) => {
   }, [isDirty]);
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
     //todo 단체회원 구분을 위한 타입 추가(서버 작업 필요)
-    const { email, password, nickname, receiveReceipt } = data;
-    doRegister({ type, email, password, nickname, receiveReceipt });
+    const { email, password, nickname } = data;
+
+    const defaultParams = {
+      loginType: 'EMAIL',
+      email,
+      nickname,
+      password,
+    };
+    const formData = new FormData();
+    let params;
+    if (type === MEMBER_TYPE.ORGANIZATION) {
+      params = {
+        ...defaultParams,
+        name: data.organizationName,
+        constant: { agreeTnc: data.terms, agreePrivacyPolicy: data.privacy },
+        manager: { name: data.managerName, mobile: data.managerMobile },
+        businessRegistrationUrl: data.organizationWebsite,
+        businessRegistrationNumber: data.organizationLicenseNumber,
+        homepageUrl: data.organizationWebsite,
+      };
+      formData.append('image', imageFiles[0]);
+    } else if (type === MEMBER_TYPE.INDIVIDUAL) {
+      params = {
+        ...defaultParams,
+        constant: { agreeTnc: data.terms, agreePrivacyPolicy: data.privacy, getGovernmentReceiptService: data.receiveReceipt },
+      };
+    }
+
+    formData.append('data', JSON.stringify(params));
+    doRegister({ type, data: formData });
     setActiveGuard(false);
   };
 
@@ -97,7 +126,7 @@ const RegisterByEmail = ({ setOption }) => {
             placeholder="아이디를 입력하세요"
             errors={errors}
             control={control}
-            duplicateLabel="중복확인"
+            duplicate={{ register, label: '중복확인', id: 'duplicateEmail', setValue: setValue }}
             fieldInvalid={!!getFieldState('email').error}
           />
           <div className="register-by-email-form-half-row-wrapper">
@@ -116,7 +145,7 @@ const RegisterByEmail = ({ setOption }) => {
             placeholder="닉네임을 입력하세요"
             errors={errors}
             control={control}
-            duplicateLabel="중복확인"
+            duplicate={{ register, label: '중복확인', id: 'duplicateNickname', setValue: setValue }}
             fieldInvalid={!!getFieldState('nickname').error}
             regExp={/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g}
           />
@@ -141,7 +170,7 @@ const RegisterByEmail = ({ setOption }) => {
         {type === MEMBER_TYPE.ORGANIZATION && <div className="register-by-email-divider" />}
         {type === MEMBER_TYPE.ORGANIZATION && (
           <div className="register-by-email-form-common-wrapper">
-            <ActUploadLicenseButton register={register('image')} id="image" errors={errors} control={control} uploadedImages={setUploadedImages} />
+            <ActUploadLicenseButton register={register('image')} id="image" errors={errors} control={control} imageFiles={imageFiles} setImageFiles={setImageFiles} />
           </div>
         )}
         {type === MEMBER_TYPE.ORGANIZATION && (

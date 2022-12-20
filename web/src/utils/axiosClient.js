@@ -9,8 +9,8 @@ const client = axios.create({ baseURL: REACT_APP_BASE_URL });
 const kakaoClient = axios.create({ baseURL: REACT_APP_KAKAO_PAYMENT_URL });
 
 const onRequest = config => {
-  const { method, url, data } = config;
-  console.log('axios ======================>', method, url, data ?? '');
+  const { headers, method, url, data } = config;
+  console.log('axios ======================>', headers, method, url, data ?? '');
   return config;
 };
 

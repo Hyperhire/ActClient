@@ -6,14 +6,8 @@ const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
 
 const UPLOAD_LIMIT = 1;
 
-const ActImageUploadButton = ({ children, register, id, control, uploadedImages, inputRef, imageFiles, setImageFiles, images, setImages }) => {
+const ActImageUploadButton = ({ children, register, id, control, inputRef, imageFiles, setImageFiles, setImages }) => {
   const { ref, ...rest } = register;
-  useEffect(() => {
-    uploadedImages(images);
-    return () => {
-      uploadedImages([]);
-    };
-  }, [images, uploadedImages]);
 
   useEffect(() => {
     const fileReaders = [];

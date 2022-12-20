@@ -3,12 +3,14 @@ import { DONATION_PAYMENT_TYPE } from '../constants/constant';
 
 export const individualSignUpYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  duplicateEmail: yup.boolean().oneOf([false], ''),
   nickname: yup
     .string()
     .required('필수 입력값 입니다.')
     .max(12, '닉네임은 12자리 이하여야 합니다.')
     .min(4, '닉네임는 4자리 이상이어야 합니다.')
     .matches(/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g, '닉네임은 한글과 영문만 사용가능합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
   password: yup
     .string()
     .required('필수 입력값 입니다.')
@@ -26,12 +28,14 @@ export const individualSignUpYup = yup.object().shape({
 
 export const organizationSignUpYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  duplicateEmail: yup.boolean().oneOf([false], ''),
   nickname: yup
     .string()
     .required('필수 입력값 입니다.')
     .max(12, '닉네임은 12자리 이하여야 합니다.')
     .min(4, '닉네임는 4자리 이상이어야 합니다.')
     .matches(/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g, '닉네임은 한글과 영문만 사용가능합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
   password: yup
     .string()
     .required('필수 입력값 입니다.')
@@ -99,16 +103,18 @@ export const donationOrganizationYup = yup.object().shape({
   donationType: yup.string().required(''),
   donationAmount: yup.number().required(''),
   donationDate: yup.number().when('donationType', {
-    is: donationType => donationType === DONATION_PAYMENT_TYPE.REGULAR,
+    is: donationType => donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION,
     then: yup.number().required(''),
     otherwise: yup.number().notRequired(''),
   }),
+  pg: yup.string().required(''),
 });
 
 // donation campaign
 export const donationCampaignYup = yup.object().shape({
   donationType: yup.string().required(''),
   donationAmount: yup.number().required(''),
+  pg: yup.string().required(''),
 });
 
 // donation campaign

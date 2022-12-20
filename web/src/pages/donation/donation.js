@@ -5,10 +5,13 @@ import { useForm } from 'react-hook-form';
 import ActButton from 'components/atoms/ActButton';
 import ActToggleButton from 'components/atoms/ActToggleButton';
 import { donationCampaignYup, donationOrganizationYup } from 'utils/yupSchema';
-import { ReactComponent as RegularIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
-import { ReactComponent as TempIcon } from 'styles/assets/icons/label/temp.svg';
+import { ReactComponent as SubscriptionIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
+import { ReactComponent as SingleIcon } from 'styles/assets/icons/label/temp.svg';
 import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
-import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from 'constants/constant';
+import kakkoPaymentIcon from 'styles/assets/images/icons/payment_kakao_logo.png';
+import NaverPaymentIcon from 'styles/assets/images/icons/payment_naver_logo.png';
+
+import { DONATION_PAYMENT_TYPE, DONATION_TYPE, PAYMENT_PG_TYPE } from 'constants/constant';
 import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import ActSpinner from '../../components/atoms/ActSpinner';
@@ -18,7 +21,6 @@ const Donation = ({ setOption }) => {
   const { showModal } = useModal();
   const location = useLocation();
   const navigate = useNavigate();
-  console.log('locationState33', location);
   const { type, item } = location.state;
   useEffect(() => {
     if (!location.state) navigate('/', { replace: true });
@@ -31,6 +33,7 @@ const Donation = ({ setOption }) => {
   const [donationType, setDonationType] = useState(undefined);
   const [donationAmount, setDonationAmount] = useState(undefined);
   const [donationDate, setDonationDate] = useState(undefined);
+  const [pgType, setPgType] = useState(undefined);
 
   const DonationCampaignForm = {
     donationType: undefined,
@@ -58,20 +61,27 @@ const Donation = ({ setOption }) => {
   } = useForm(formOptions);
 
   useEffect(() => {
-    if (donationType === DONATION_PAYMENT_TYPE.TEMP) {
+    if (donationType === DONATION_PAYMENT_TYPE.SINGLE) {
       setValue('donationDate', undefined, { shouldValidate: true });
     }
   }, [donationType]);
   const onSubmit = data => {
+    if (data.pg === PAYMENT_PG_TYPE.NAVER) {
+      showModal({
+        open: true,
+        message: `현재 카카오페이만 지원합니다.`,
+      });
+      return;
+    }
     const paymentData = {
-      targetType: type === DONATION_TYPE.ORGANIZATION ? 'ORG' : 'CAMPAIGN',
+      targetType: type,
       targetId: item._id,
-      pg: 'KAKAO',
-      isRecurring: data.donationType === DONATION_PAYMENT_TYPE.REGULAR,
+      pg: data.pg,
+      paymentType: data.donationType,
       amount: data.donationAmount,
     };
+
     const isMobile = navigator.userAgent.indexOf('Mobi') > -1;
-    console.log('isMobile', isMobile);
     request({
       url: api.order.make,
       method: 'post',
@@ -89,9 +99,9 @@ const Donation = ({ setOption }) => {
   };
 
   const getDonationTypeItems = () => {
-    const items = [{ value: DONATION_PAYMENT_TYPE.TEMP, label: '일시후원' }];
+    const items = [{ value: DONATION_PAYMENT_TYPE.SINGLE, label: '일시후원' }];
     if (type === DONATION_TYPE.ORGANIZATION) {
-      items.unshift({ value: DONATION_PAYMENT_TYPE.REGULAR, label: '정기후원' });
+      items.unshift({ value: DONATION_PAYMENT_TYPE.SUBSCRIPTION, label: '정기후원' });
     }
     return items;
   };
@@ -108,6 +118,25 @@ const Donation = ({ setOption }) => {
     { value: 1, label: '1일' },
     { value: 10, label: '10일' },
     { value: 20, label: '20일' },
+  ];
+
+  const pgItems = [
+    {
+      value: PAYMENT_PG_TYPE.KAKAO,
+      label: (
+        <div className="max-width">
+          <img className="display-block max-width object-fit-cover height-30" src={kakkoPaymentIcon} alt="" />
+        </div>
+      ),
+    },
+    {
+      value: PAYMENT_PG_TYPE.NAVER,
+      label: (
+        <div className="max-width">
+          <img className="display-block max-width object-fit-cover height-30" src={NaverPaymentIcon} alt="" />
+        </div>
+      ),
+    },
   ];
 
   const getNote = () => {
@@ -150,7 +179,7 @@ const Donation = ({ setOption }) => {
             columns={3}
             selectedItem={setDonationAmount}
           />
-          {type === DONATION_TYPE.ORGANIZATION && donationType === DONATION_PAYMENT_TYPE.REGULAR && (
+          {type === DONATION_TYPE.ORGANIZATION && donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && (
             <ActToggleButton
               {...register('donationDate')}
               label="정기 결제일"
@@ -160,21 +189,24 @@ const Donation = ({ setOption }) => {
               id="donationDate"
               columns={3}
               selectedItem={setDonationDate}
-              disabled={donationType === DONATION_PAYMENT_TYPE.TEMP}
+              disabled={donationType === DONATION_PAYMENT_TYPE.SINGLE}
             />
           )}
+          <ActToggleButton {...register('pg')} label="결제방법" errors={errors} control={control} items={pgItems} id="pg" selectedItem={setPgType} columns={2} defaultValue="kakao" />
         </div>
         <div className="divider" />
         {isValid && (
           <div className="donation-form-summary-wrapper">
-            <div className="donation-form-summary-chip-wrapper">{type === DONATION_TYPE.CAMPAIGN ? <TempIcon /> : donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />}</div>
+            <div className="donation-form-summary-chip-wrapper">
+              {type === DONATION_TYPE.CAMPAIGN ? <SingleIcon /> : donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION ? <SubscriptionIcon /> : <SingleIcon />}
+            </div>
             <div className="donation-form-summary-amount-wrapper">
-              <div className="donation-form-summary-regular-payment">{donationType === DONATION_PAYMENT_TYPE.REGULAR && '매월'}</div>
+              <div className="donation-form-summary-regular-payment">{donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && '매월'}</div>
               <div className="donation-form-summary-amount">{donationAmount?.toLocaleString()}원</div>
             </div>
           </div>
         )}
-        <div className="padding-row-24">
+        <div className="padding-24">
           <ActButton type="submit" disabled={!isValid} className="tertiary-button-x-large" label="결제하기" />
         </div>
       </form>

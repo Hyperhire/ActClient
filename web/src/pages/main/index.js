@@ -9,8 +9,6 @@ const MainCarousel = lazy(() => import('components/organisms/main/MainCarousel')
 const Footer = lazy(() => import('components/organisms/Footer'));
 
 const Main = ({ setOption }) => {
-  const navigate = useNavigate();
-
   useEffect(() => {
     setOption({ title: '', back: false, menu: true });
 

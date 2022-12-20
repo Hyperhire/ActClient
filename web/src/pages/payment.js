@@ -1,10 +1,9 @@
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import useModal from '../hooks/useModal';
 import ActSpinner from '../components/atoms/ActSpinner';
 import { request } from '../utils/axiosClient';
 import { api } from '../repository';
-import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from '../constants/constant';
 
 const Payment = () => {
   const { showModal } = useModal();

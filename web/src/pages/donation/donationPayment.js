@@ -8,8 +8,8 @@ import { donationPaymentYup } from '../../utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import ActCheckBox from 'components/atoms/ActCheckBox';
 import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
-import { ReactComponent as RegularIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
-import { ReactComponent as TempIcon } from 'styles/assets/icons/label/temp.svg';
+import { ReactComponent as SubscriptionIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
+import { ReactComponent as SingleIcon } from 'styles/assets/icons/label/temp.svg';
 import ActSpinner from '../../components/atoms/ActSpinner';
 
 const DonationPayment = ({ setOption }) => {
@@ -30,7 +30,7 @@ const DonationPayment = ({ setOption }) => {
       description: '',
       back: true,
       menu: false,
-      chip: data.donationType === DONATION_PAYMENT_TYPE.REGULAR ? <RegularIcon /> : <TempIcon />,
+      chip: data.donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION ? <SubscriptionIcon /> : <SingleIcon />,
     });
   }, [setOption]);
 

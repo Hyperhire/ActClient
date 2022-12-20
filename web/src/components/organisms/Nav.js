@@ -23,6 +23,8 @@ import { authAtom } from 'state';
 import { getItem, removeItem, USER_INFO } from '../../utils/sessionStorage';
 import { AUTH_INFO, getLocalItem, removeLocalItem } from '../../utils/localStorage';
 import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
+import { useReactQuery } from '../../hooks/useReactQuery';
+import { api } from '../../repository';
 
 const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
@@ -43,6 +45,16 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
     removeItem(USER_INFO);
     removeLocalItem(AUTH_INFO);
   };
+  const { refetch, data } = useReactQuery('user-data', api.auth.my, { refetchOnWindowFocus: false });
+  useEffect(() => {
+    async function fetchData() {
+      await refetch();
+    }
+    if (open) {
+      authInfo?.token && fetchData();
+    }
+  }, [open]);
+
   const list = () => (
     <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <div className="side-menu-wrap">
@@ -52,13 +64,13 @@ const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'de
               <ProfileIcon />
               <div className="side-menu-wrap-profile-info-wrap">
                 <div className="side-menu-wrap-profile-name-wrap">
-                  <div className="side-menu-wrap-profile-name">{userInfo?.nickname || 'nickname'}</div>
+                  <div className="side-menu-wrap-profile-name">{data?.nickname || 'nickname'}</div>
                   <ActIcon />
                   <div className="side-menu-wrap-profile-type">개인</div>
                 </div>
                 <div className="side-menu-wrap-profile-email-wrap">
                   <EmailIcon />
-                  <div className="side-menu-wrap-profile-email">{userInfo?.email}</div>
+                  <div className="side-menu-wrap-profile-email">{data?.email}</div>
                 </div>
               </div>
             </div>

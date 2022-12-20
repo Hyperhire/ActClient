@@ -1,10 +1,13 @@
 export const api = {
   auth: {
-    login: '/auth/user/login',
-    register: '/auth/user/register',
+    login: '/api/v1/auth/login',
+    registerInd: '/api/v1/auth/user/register',
+    registerOrg: '/api/v1/auth/org/register',
     findPassword: '',
     logout: '',
-    my: 'api/v1/auth/user/my',
+    my: 'api/v1/auth/my',
+    duplicateEmail: email => `/api/v1/auth/check-duplicate-email?email=${email}`,
+    duplicateNickname: nickname => `/api/v1/auth/check-duplicate-nickname?nickname=${nickname}`,
   },
   my: {
     update: '',
@@ -43,5 +46,8 @@ export const api = {
     complete: '/api/v1/order/complete',
     canceled: '/api/v1/order/canceled',
     failed: '/api/v1/order/failed',
+  },
+  utils: {
+    uploadImage: '/api/v1/utils/upload-image',
   },
 };

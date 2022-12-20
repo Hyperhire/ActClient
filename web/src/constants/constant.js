@@ -18,9 +18,14 @@ export const DONATION_TYPE = {
   CAMPAIGN: 'CAMPAIGN',
 };
 
+export const PAYMENT_PG_TYPE = {
+  KAKAO: 'KAKAO',
+  NAVER: 'NAVER',
+};
+
 export const DONATION_PAYMENT_TYPE = {
-  REGULAR: 'regular',
-  TEMP: 'temp',
+  SUBSCRIPTION: 'SUBSCRIPTION',
+  SINGLE: 'SINGLE',
 };
 
 export const DONATION_HISTORY_TYPE = {

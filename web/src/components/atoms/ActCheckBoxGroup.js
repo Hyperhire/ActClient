@@ -21,6 +21,7 @@ const ActCheckBoxGroup = (props, ref) => {
     if (id === parentId) {
       setCheckBoxItems(
         checkBoxItems.map(item => {
+          setValue(item.id, e.target.checked, { shouldValidate: true });
           return { ...item, checked: e.target.checked };
         }),
       );

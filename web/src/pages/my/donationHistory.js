@@ -36,7 +36,7 @@ const DonationHistory = ({ setOption }) => {
       index: 0,
       label: '단체후원',
       list: data
-        .filter(item => item.targetType === 'ORG')
+        .filter(item => item.targetType === DONATION_TYPE.ORGANIZATION)
         .map((item, index) => {
           return (
             <div key={index}>
@@ -56,7 +56,7 @@ const DonationHistory = ({ setOption }) => {
       index: 1,
       label: '캠페인후원',
       list: data
-        .filter(item => item.targetType === 'CAMPAIGN')
+        .filter(item => item.targetType === DONATION_TYPE.CAMPAIGN)
         .map((item, index) => {
           return (
             <div key={index}>

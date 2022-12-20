@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { useSetRecoilState } from 'recoil';
 import { request, setAuthorization } from 'utils/axiosClient';
 import { api } from 'repository';
-import { authAtom } from 'state';
 import useModal from './useModal';
-import { MODAL_TYPES } from 'constants/constant';
+import { MEMBER_TYPE, MODAL_TYPES } from 'constants/constant';
 import { setItem, USER_INFO } from 'utils/sessionStorage';
 import { AUTH_INFO, setLocalItem } from 'utils/localStorage';
 
@@ -46,20 +44,25 @@ export const useLogin = queryKey => {
 export const useRegisterByEmail = queryKey => {
   const queryClient = useQueryClient();
   const { showModal } = useModal();
-  const register = async userInfo => {
-    return request({ url: api.auth.register, method: 'post', data: userInfo });
+  const register = async registerInfo => {
+    return request({
+      data: registerInfo.data,
+      url: registerInfo.type === MEMBER_TYPE.ORGANIZATION ? api.auth.registerOrg : api.auth.registerInd,
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   };
 
   return useMutation(register, {
     onSuccess: async data => {
-      if (data.status === 200) {
+      if (data.status === 200 || data.status === 201) {
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({
-          modalType: MODAL_TYPES.ALERT_MODAL,
-          modalProps: {
-            message: `회원가입에 실패하였습니다.\n${data.message}`,
-          },
+          open: true,
+          message: `회원가입에 실패하였습니다.\n${data.message}`,
         });
       }
     },

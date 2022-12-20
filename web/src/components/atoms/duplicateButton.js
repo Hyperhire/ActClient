@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import ActButton from './ActButton';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
-const DuplicateButton = ({ testValue, label, resultCallBack, disabled = true }) => {
-  const checkDuplicated = () => {
-    setTimeout(() => {
-      // resultCallBack({ result: true, data: { status: 400, message: '사용불가' } });
-      resultCallBack({ result: true, data: { status: 200, message: '사용가능' } });
-    }, 1);
+const DuplicateButton = (props, ref) => {
+  const { id, control, testValue, label, resultCallBack, disabled = true } = props;
+  const checkDuplicated = async () => {
+    const res = await request({
+      url: id === 'duplicateEmail' ? api.auth.duplicateEmail(testValue) : id === 'duplicateNickname' && api.auth.duplicateNickname(testValue),
+      method: 'get',
+    });
+    resultCallBack({ result: true, data: { status: res.data.data.duplicated, message: res.data.data.duplicated ? '사용 중입니다.' : '사용할 수 있습니다.' } });
   };
-  return <ActButton className="button-small" label={label} disabled={disabled} handleOnClick={checkDuplicated} />;
+  return <Controller control={control} name={id} render={props => <ActButton className="button-small" label={label} disabled={disabled} handleOnClick={checkDuplicated} {...props} />} />;
 };
-export default DuplicateButton;
+
+export default forwardRef(DuplicateButton);
