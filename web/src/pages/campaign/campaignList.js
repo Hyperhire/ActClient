@@ -25,6 +25,7 @@ const CampaignList = ({ setOption }) => {
   const onSearchResultData = data => {
     setSearchKeyword(data.search);
   };
+
   useIntersectionObserver({
     target: loadMoreRef,
     onIntersect: fetchNextPage,
@@ -47,7 +48,7 @@ const CampaignList = ({ setOption }) => {
           )),
         )}
       {isFetching && !isFetchingNextPage && <ActSpinner />}
-      <div ref={loadMoreRef} />
+      <div className="max-width height-2" ref={loadMoreRef} />
     </div>
   );
 };
