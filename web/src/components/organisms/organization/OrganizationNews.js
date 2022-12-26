@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getItem, USER_INFO } from 'utils/sessionStorage';
-import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
 import { ORGANIZATION_NEWS_TYPE } from 'constants/constant';
 import OrganizationNewsItem from '../OrganizationNewsItem';

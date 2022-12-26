@@ -67,7 +67,7 @@ const CampaignDetail = ({ setOption }) => {
           </div>
           <div className="campaign-detail-content-description-wrapper">
             <div className="campaign-detail-content-description">
-              <div>{data.description}</div>
+              <div>{data.description.replace(/\\n/g, '\n')}</div>
             </div>
           </div>
         </div>

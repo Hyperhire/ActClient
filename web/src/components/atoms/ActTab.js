@@ -55,7 +55,9 @@ const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data }) => {
       {data.map(item => {
         return (
           <TabPanel key={item.index} value={value} index={item.index}>
+            {item.header}
             {item.list}
+            {item.footer}
           </TabPanel>
         );
       })}

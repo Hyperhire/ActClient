@@ -7,7 +7,9 @@ import { useReactQuery } from 'hooks/useReactQuery';
 import { api } from 'repository';
 
 const MainDisclosure = () => {
-  const { isSuccess, data } = useReactQuery('main-notice-list', api.notice.list);
+  const query = `?limit=3`;
+  const url = `${api.notice.list}${query}`;
+  const { isSuccess, data } = useReactQuery('main-notice-list', url);
   const navigate = useNavigate();
 
   const onClickHandler = () => {
@@ -25,7 +27,7 @@ const MainDisclosure = () => {
         <ArrowRight />
       </div>
       {isSuccess &&
-        data.slice(0, 3).map((item, index) => {
+        data.list.map((item, index) => {
           return (
             <div key={index}>
               <DisclosureItem item={item} clickHandler={item => onClickItemHandler(ORGANIZATION_NEWS_TYPE.DISCLOSURE, item)} />

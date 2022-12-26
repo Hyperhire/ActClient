@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { getItem, USER_INFO } from 'utils/sessionStorage';
 import PaymentHistoryItem from '../../components/organisms/PaymentHistoryItem';
 import ActButton from '../../components/atoms/ActButton';
 import useModal from '../../hooks/useModal';
@@ -12,7 +10,6 @@ import { api } from '../../repository';
 const PaymentHistory = ({ setOption }) => {
   const { showModal } = useModal();
   const navigate = useNavigate();
-  const userInfo = getItem(USER_INFO);
   const [buttonName, setButtonName] = useState('전체선택');
   const { isSuccess, data } = useReactQuery('payment-history', api.my.paymentHistory);
 

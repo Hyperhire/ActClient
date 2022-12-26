@@ -32,6 +32,8 @@ const Faq = lazy(() => import('pages/faq'));
 const Redirect = lazy(() => import('pages/redirect'));
 const NftDetail = lazy(() => import('pages/my/nftDetail'));
 const Payment = lazy(() => import('pages/payment'));
+const OrgBase = lazy(() => import('pages/org'));
+const SettlementHistory = lazy(() => import('pages/org/settlementHistory'));
 
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
@@ -76,6 +78,15 @@ const RouteSwitch = () => {
             </Route>
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/payment/:orderId/:status" element={<Payment />} />
+            <Route path="/org" element={<OrgBase setOption={setOption} />}>
+              <Route path="profile" element={<Profile setOption={setOption} />} />
+              <Route path="settlementHistory" element={<SettlementHistory setOption={setOption} />} />
+              {/*<Route path="donationHistory" element={<PaymentHistory setOption={setOption} />} />*/}
+              {/*<Route path="campaign" element={<ResignMembership setOption={setOption} />} />*/}
+              {/*<Route path="news" element={<PaymentHistory setOption={setOption} />} />*/}
+              {/*<Route path="disclosure" element={<DonationHistory setOption={setOption} />} />*/}
+              {/*<Route path="faq" element={<NftDetail setOption={setOption} />} />*/}
+            </Route>
           </Routes>
         </div>
       </div>

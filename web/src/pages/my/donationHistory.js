@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getItem, USER_INFO } from 'utils/sessionStorage';
 import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
-import { DONATION_TYPE } from 'constants/constant';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import useModal from '../../hooks/useModal';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
-  const userInfo = getItem(USER_INFO);
   const { showModal } = useModal();
   const location = useLocation();
 

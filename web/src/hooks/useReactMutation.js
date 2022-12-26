@@ -1,29 +1,25 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { request, setAuthorization } from 'utils/axiosClient';
+import { useContext } from 'react';
+import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import useModal from './useModal';
-import { MEMBER_TYPE, MODAL_TYPES } from 'constants/constant';
-import { setItem, USER_INFO } from 'utils/sessionStorage';
-import { AUTH_INFO, setLocalItem } from 'utils/localStorage';
+import { MEMBER_TYPE } from 'constants/constant';
+import { TokenContext } from '../utils/TokenContext';
 
 export const useLogin = queryKey => {
   const queryClient = useQueryClient();
   const { showModal } = useModal();
+  const { onRefreshSuccess } = useContext(TokenContext);
+
   const login = async loginInfo => {
     return request({ url: api.auth.login, method: 'post', data: loginInfo });
   };
 
   return useMutation(login, {
     onSuccess: async data => {
-      if (data.status === 200 || data.status === 201) {
-        setLocalItem(AUTH_INFO, { token: data.data.data.token });
-        setAuthorization(data.data.data.token);
-        //todo server에서 데이터 받아와야 됨
-        request({ url: api.auth.my, method: 'get' }).then(response => {
-          if (response.status === 200) {
-            setItem(USER_INFO, response.data);
-          }
-        });
+      if (data.status === 200) {
+        // await handleReIssueToken({ token: data.data.data.token });
+        onRefreshSuccess({ token: data.data.data.token });
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({

@@ -8,6 +8,7 @@ export const api = {
     my: 'api/v1/auth/my',
     duplicateEmail: email => `/api/v1/auth/check-duplicate-email?email=${email}`,
     duplicateNickname: nickname => `/api/v1/auth/check-duplicate-nickname?nickname=${nickname}`,
+    reIssueToken: '/api/v1/auth/reissue-token',
   },
   my: {
     update: '',

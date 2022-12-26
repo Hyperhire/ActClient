@@ -28,7 +28,7 @@ const NewsDetail = ({ setOption }) => {
 
   return (
     <div className="news-detail-wrapper">
-      {isSuccess && (
+      {isSuccess && data && (
         <div className="news-detail-content-wrapper">
           <div className="news-detail-content-carousel-wrapper">
             <ActCarousel
@@ -40,7 +40,7 @@ const NewsDetail = ({ setOption }) => {
             />
           </div>
           <div className="news-detail-content-description-wrapper">
-            <div className="news-detail-content-description">{data.description}</div>
+            <div className="news-detail-content-description">{data.description?.replace(/\\n/g, '\n')}</div>
           </div>
         </div>
       )}

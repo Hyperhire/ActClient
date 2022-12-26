@@ -1,13 +1,10 @@
 import 'styles/main.scss';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Routes from './Routes';
 import useApiError from 'hooks/useApiError';
-
-// window.onload = function () {
-//   localStorage.clear();
-// };
+import { TokenProvider } from './utils/TokenContext';
 
 const { handleError } = useApiError;
 const queryClient = new QueryClient({
@@ -23,9 +20,11 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <Routes />
-      </Router>
+      <TokenProvider>
+        <Router>
+          <Routes />
+        </Router>
+      </TokenProvider>
     </QueryClientProvider>
   );
 }

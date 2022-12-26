@@ -1,16 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DummyImage1 from 'styles/assets/images/mainKeyVisual/img2.png';
-import DummyImage2 from 'styles/assets/images/mainKeyVisual/img3.png';
 import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
-import { ReactComponent as Holt } from 'styles/assets/images/organizationLogo/circle/holt.svg';
-import { ReactComponent as WorldVision } from 'styles/assets/images/organizationLogo/circle/world-vision.svg';
 import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_sm.svg';
 import { useReactQuery } from 'hooks/useReactQuery';
 import { api } from 'repository';
 
 const MainSummaryOrganization = () => {
-  const { isSuccess, data } = useReactQuery('main-org-list', api.main.org);
+  const query = `?limit=4`;
+  const url = `${api.main.org}${query}`;
+  const { isSuccess, data } = useReactQuery('main-org-list', url);
 
   const navigate = useNavigate();
 
@@ -27,7 +25,7 @@ const MainSummaryOrganization = () => {
       <div className="list-wrapper">
         <div className="item-scroll-wrapper">
           {isSuccess &&
-            data.slice(0, 4).map((item, index) => {
+            data.list.map((item, index) => {
               return (
                 <div key={index} className="item-wrapper link" onClick={() => onClickItemHandler(item)}>
                   {index % 2 ? (

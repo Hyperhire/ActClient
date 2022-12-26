@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
 import { profileUpdateYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
-import { getItem, USER_INFO } from 'utils/sessionStorage';
 import ActButton from 'components/atoms/ActButton';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActDatePicker from 'components/atoms/ActDatePicker';
@@ -14,12 +14,13 @@ import ActSelect from 'components/atoms/ActSelect';
 import { ReactComponent as NaverIcon } from 'styles/assets/images/icons/naver.svg';
 import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line_right_sm.svg';
 import ActUploadProfileButton from 'components/organisms/ActUploadProfileButton';
-
 import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
-import ActDatePicker2 from '../../components/atoms/ActDatePicker2';
+import { usersAtom } from '../../state';
+
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
-  const userInfo = getItem(USER_INFO);
+  const user = useRecoilValue(usersAtom);
+
   const [activeGuard, setActiveGuard] = useState(false);
   const [uploadedImages, setUploadedImages] = useState();
 
@@ -99,7 +100,7 @@ const Profile = ({ setOption }) => {
         <div className="profile-login-info-label">회원가입 ID</div>
         <div className="profile-login-info-content-wrapper">
           <NaverIcon width={24} height={24} />
-          <div className="profile-login-info-content-email">{userInfo.userName} @gmail.com</div>
+          <div className="profile-login-info-content-email">{user.email}</div>
         </div>
       </div>
       <form className="profile_form-wrapper" onSubmit={handleSubmit(onSubmit)}>

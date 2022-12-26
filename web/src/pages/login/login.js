@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRecoilValue } from 'recoil';
 import ActButton from 'components/atoms/ActButton';
 import { loginYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';

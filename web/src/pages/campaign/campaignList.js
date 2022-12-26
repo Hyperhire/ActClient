@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CampaignImage1 from '../../styles/assets/images/campaign/img1.png';
-import { ReactComponent as TwoPerson } from '../../styles/assets/icons/2person.svg';
-import CampaignImage2 from '../../styles/assets/images/campaign/img2.png';
-import CampaignImage3 from '../../styles/assets/images/campaign/img3.png';
-import CampaignImage4 from '../../styles/assets/images/campaign/img4.png';
-import CampaignImage5 from '../../styles/assets/images/campaign/img5.png';
-import { ReactComponent as ArrowRight } from '../../styles/assets/icons/arrow_line_right_lg.svg';
-import CampaignItem from '../../components/organisms/CampaignItem';
-import ActSearchBar from '../../components/atoms/ActSearchBar';
-import { SEARCH_TYPE } from '../../constants/constant';
-import { useReactQuery } from '../../hooks/useReactQuery';
-import { api } from '../../repository';
+import CampaignItem from 'components/organisms/CampaignItem';
+import ActSearchBar from 'components/atoms/ActSearchBar';
+import { SEARCH_TYPE } from 'constants/constant';
+import { useReactQuery } from 'hooks/useReactQuery';
+import { api } from 'repository';
+import { useReactInfiniteQuery } from '../../hooks/useReactInfiniteQuery';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import ActSpinner from '../../components/atoms/ActSpinner';
 const CampaignList = ({ setOption }) => {
-  const { isSuccess, data } = useReactQuery('campaign-list', api.campaign.list);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const loadMoreRef = useRef();
+  const { isSuccess, data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useReactInfiniteQuery([searchKeyword, api.campaign.list]);
 
   useEffect(() => {
     setOption({ title: '', subtitle: '진행중인 캠페인', description: '', back: true, menu: false });
@@ -25,8 +23,13 @@ const CampaignList = ({ setOption }) => {
   };
 
   const onSearchResultData = data => {
-    console.log('onSearchResultData', data);
+    setSearchKeyword(data);
   };
+  useIntersectionObserver({
+    target: loadMoreRef,
+    onIntersect: fetchNextPage,
+    enabled: hasNextPage,
+  });
 
   return (
     <div className="campaign-list-wrapper">
@@ -35,14 +38,16 @@ const CampaignList = ({ setOption }) => {
       </div>
       <div className="left-24 divider-thick-primary-2" />
       {isSuccess &&
-        data.map((item, index) => {
-          return (
+        data?.pages?.map(page =>
+          page?.result?.list?.map((item, index) => (
             <div key={index}>
               <CampaignItem item={item} clickHandler={onClickHandler} />
               <div className="divider" />
             </div>
-          );
-        })}
+          )),
+        )}
+      {isFetching && !isFetchingNextPage && <ActSpinner />}
+      <div ref={loadMoreRef} />
     </div>
   );
 };

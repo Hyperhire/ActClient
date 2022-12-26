@@ -1,7 +1,9 @@
 import { request } from 'utils/axiosClient';
 
-const fetchData = async url => {
-  const result = await request({ url });
+const fetchData = async props => {
+  const { url, headers } = props;
+  console.log('fetchData', props);
+  const result = await request({ url, headers });
   return result.data?.data;
 };
 

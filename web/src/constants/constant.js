@@ -2,6 +2,7 @@ export const MEMBER_TYPE = {
   INDIVIDUAL: 'individual',
   ORGANIZATION: 'organization',
 };
+
 export const GENDER = [
   {
     value: '남',
@@ -55,4 +56,8 @@ export const SEARCH_TYPE = {
   NEWS: 'new',
   DISCLOSURE: 'disclosure',
   FAQ: 'faq',
+};
+
+export const COOKIES = {
+  REFRESH_TOKEN: 'refresh-token',
 };
