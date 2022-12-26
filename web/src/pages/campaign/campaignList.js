@@ -23,7 +23,7 @@ const CampaignList = ({ setOption }) => {
   };
 
   const onSearchResultData = data => {
-    setSearchKeyword(data);
+    setSearchKeyword(data.search);
   };
   useIntersectionObserver({
     target: loadMoreRef,
