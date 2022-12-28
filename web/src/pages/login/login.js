@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,19 +15,26 @@ import { ReactComponent as Signup } from 'styles/assets/icons/signup.svg';
 import { ReactComponent as Eye } from 'styles/assets/icons/eye/eye.svg';
 import { ReactComponent as EyeClose } from 'styles/assets/icons/eye/eye-off.svg';
 import { useLogin } from 'hooks/useReactMutation';
+import { TokenContext } from 'utils/TokenContext';
 
 const Login = ({ setOption }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state;
   const { data, mutate: login, isLoading, isSuccess } = useLogin('login');
+  const { onRefreshSuccess } = useContext(TokenContext);
 
   useEffect(() => {
-    if (isSuccess && (data?.status === 200 || data?.status === 201)) {
-      if (locationState && locationState.to) {
-        navigate(locationState.to, { state: { ...locationState }, replace: true });
+    if (isSuccess && data?.status === 200) {
+      onRefreshSuccess({ token: data.data.data.token });
+      if (data.data.data.user.constant.isEmailVerified) {
+        if (locationState && locationState.to) {
+          navigate(locationState.to, { state: { ...locationState }, replace: true });
+        } else {
+          navigate(`/`, { replace: true });
+        }
       } else {
-        navigate(`/`, { replace: true });
+        navigate(`/verify`, { replace: true });
       }
     }
   }, [data, isSuccess, locationState]);

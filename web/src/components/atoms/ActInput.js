@@ -31,6 +31,8 @@ const ActInput = (props, ref) => {
     handleChange,
     style,
     hideErrorMessage = false,
+    actInputRef,
+    disabled = false,
   } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
 
@@ -57,7 +59,7 @@ const ActInput = (props, ref) => {
   }, [duplicatedResult]);
 
   return (
-    <div className="act-input-wrapper ">
+    <div className="act-input-wrapper">
       {label && (
         <div className="label-wrapper">
           <div className="label">{label}</div>
@@ -76,7 +78,10 @@ const ActInput = (props, ref) => {
                 select={type === 'select'}
                 fullWidth
                 type={type}
+                maxLength={maxLength}
                 variant="outlined"
+                inputRef={ref => actInputRef && actInputRef(ref)}
+                disabled={disabled}
                 sx={{
                   '& fieldset': { borderRadius: 0, border: 'none', borderBottom: isError ? 'solid 1px red' : 'solid 1px black' },
                   '& .MuiOutlinedInput-root': {
@@ -111,7 +116,6 @@ const ActInput = (props, ref) => {
                     paddingBottom: 8,
                   },
                   ...params?.inputProps,
-                  maxLength: maxLength,
                 }}
                 placeholder={placeholder}
                 InputProps={{
@@ -145,6 +149,7 @@ const ActInput = (props, ref) => {
                 }}
                 {...field}
                 onChange={e => {
+                  if (maxLength && e.target.value.length > maxLength) return;
                   field.onChange(e);
                   setDuplicatedResult({ ...duplicatedResult, result: undefined });
                   if (handleChange) handleChange(e);

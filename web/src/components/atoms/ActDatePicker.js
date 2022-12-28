@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -11,7 +11,6 @@ const ActDatePicker = ({ register, id, errors, control, label, value, setValue }
       <DatePicker
         value={value}
         onChange={newValue => {
-          console.log('DatePicker onchange');
           if (!newValue) return;
           if (newValue.isValid()) {
             setValue(id, dayjs(newValue, 'YY/MM/DD'), { shouldValidate: true, shouldDirty: false });

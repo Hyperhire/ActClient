@@ -20,7 +20,8 @@ const OrganizationNews = ({ id }) => {
   const onClickHandler = (type, item) => {
     navigate(`/news/${item._id}`, { state: { type } });
   };
-
+  console.log('newsData', newsData);
+  console.log('noticeData', noticeData);
   const data = [
     {
       index: 0,

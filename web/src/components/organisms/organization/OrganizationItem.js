@@ -4,13 +4,13 @@ import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
 
 const OrganizationItem = props => {
   const { item, clickHandler } = props;
-  const { _id, name, donationStatus, shortDescription, image, bannerUrl } = item;
+  const { _id, name, shortDescription, image, bannerUrl, isDonating } = item;
   return (
     <div className="organization-item-wrapper link" onClick={() => clickHandler(_id)}>
       <div className="organization-item">
         <div className="organization-item-label-wrapper">
           <div className="organization-item-label">{name}</div>
-          {donationStatus && <Give />}
+          {isDonating && <Give />}
         </div>
         <div className="organization-item-description">{shortDescription}</div>
       </div>

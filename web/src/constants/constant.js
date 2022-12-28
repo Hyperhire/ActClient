@@ -5,11 +5,11 @@ export const MEMBER_TYPE = {
 
 export const GENDER = [
   {
-    value: '남',
+    value: 'male',
     label: '남',
   },
   {
-    value: '여',
+    value: 'female',
     label: '여',
   },
 ];

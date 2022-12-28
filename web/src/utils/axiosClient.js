@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-const { REACT_APP_BASE_URL, REACT_APP_KAKAO_PAYMENT_URL } = process.env;
+const { REACT_APP_BASE_URL } = process.env;
 
 const client = axios.create({ baseURL: REACT_APP_BASE_URL });
-const kakaoClient = axios.create({ baseURL: REACT_APP_KAKAO_PAYMENT_URL });
 
 const onRequest = config => {
   const { headers, method, url, data } = config;
@@ -26,9 +25,6 @@ const onResponseRejected = error => {
 };
 client.interceptors.request.use(onRequest);
 client.interceptors.response.use(onResponseSuccess, onResponseRejected);
-
-kakaoClient.interceptors.request.use(onRequest);
-kakaoClient.interceptors.response.use(onResponseSuccess, onResponseRejected);
 
 export const request = ({ ...options }) => {
   const onSuccess = response => response;

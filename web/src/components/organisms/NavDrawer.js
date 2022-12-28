@@ -16,7 +16,6 @@ import { TokenContext } from 'utils/TokenContext';
 
 const NavDrawer = ({ setOpen }) => {
   const navigate = useNavigate();
-
   const user = useRecoilValue(usersAtom);
   const setUser = useSetRecoilState(usersAtom);
   const auth = useRecoilValue(authAtom);
@@ -30,21 +29,22 @@ const NavDrawer = ({ setOpen }) => {
   };
 
   const { isSuccess, data } = useReactQuery('user-data', api.auth.my, { refetchOnWindowFocus: true, enabled: auth.authenticated });
+
   useEffect(() => {
     if (isSuccess && data) setUser(data);
   }, [isSuccess, data]);
 
   const PAGES =
-    user?.userType === MEMBER_TYPE.INDIVIDUAL
+    user?.userType === MEMBER_TYPE.ORGANIZATION
       ? [
-          { url: '/organization', name: '단체찾기' },
-          { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '공시보기' },
-          { url: '/faq', name: 'FAQ' },
-        ]
-      : [
           { url: '/organization', name: '단체캠페인' },
           { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '단체 소식' },
           { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '단체 공시' },
+          { url: '/faq', name: 'FAQ' },
+        ]
+      : [
+          { url: '/organization', name: '단체찾기' },
+          { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '공시보기' },
           { url: '/faq', name: 'FAQ' },
         ];
 

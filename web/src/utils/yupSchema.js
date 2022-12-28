@@ -60,17 +60,13 @@ export const profileUpdateYup = yup.object().shape({
   nickname: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
   password: yup
     .string()
-    .required('')
     .max(15, '비밀번호는 15자리 이하여야 합니다.')
     .min(8, '비밀번호는 8자리 이상이어야 합니다.')
     .matches(/^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/, '특수문자가 포함되어야 합니다.'),
-  passwordCheck: yup
-    .string()
-    .required('')
-    .oneOf([yup.ref('password'), null], '동일한 비밀번호를 입력해주세요.'),
+  passwordCheck: yup.string().oneOf([yup.ref('password'), null], '동일한 비밀번호를 입력해주세요.'),
   gender: yup.string().required('성별을 선택해주세요'),
   name: yup.string().required('실명을 입력해주세요.'),
-  birthday: yup
+  dateOfBirth: yup
     .date()
     .nullable()
     .transform((curr, orig) => (orig === '' ? null : curr))
@@ -128,10 +124,20 @@ export const donationPaymentYup = yup.object().shape({
 });
 // search
 export const searchYup = yup.object().shape({
-  search: yup.string().required(''),
+  search: yup.string(),
 });
 
 //resign membership
 export const resignMembershipYup = yup.object().shape({
   isConfirm: yup.boolean().oneOf([true], ''),
+});
+
+//verify
+export const verifyYup = yup.object().shape({
+  verify0: yup.string().required(''),
+  verify1: yup.string().required(''),
+  verify2: yup.string().required(''),
+  verify3: yup.string().required(''),
+  verify4: yup.string().required(''),
+  verify5: yup.string().required(''),
 });

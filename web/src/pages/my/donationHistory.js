@@ -16,7 +16,6 @@ const DonationHistory = ({ setOption }) => {
     return () => setOption({});
   }, [setOption]);
   const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
-  console.log('DonationHistory data!', data);
   const onHandleCancelRegularPayment = id => {
     showModal({
       open: true,

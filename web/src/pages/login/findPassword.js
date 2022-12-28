@@ -5,6 +5,8 @@ import { findPasswordYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import ActButton from 'components/atoms/ActButton';
 import useModal from '../../hooks/useModal';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
 const FindPassword = ({ setOption }) => {
   const { showModal } = useModal();
@@ -23,22 +25,23 @@ const FindPassword = ({ setOption }) => {
     register,
     handleSubmit,
     setError,
-    formState: { isValid, isSubmitting, errors },
+    formState: { isValid, errors },
   } = useForm(formOptions);
 
   const onSubmit = async data => {
-    showModal({
-      open: true,
-      message: `비밀번호를 이메일로 전송하였습니다.`,
-      handleConfirm: () => setError('email', { type: 'custom', message: '!가입 된 이메일이 아닙니다.' }),
+    const res = await request({
+      url: api.auth.forgotPassword,
+      method: 'post',
+      data: { email: data.email },
     });
-
-    // setActiveGuard(false);
-    // const postData = { ...data, status: statusCheck ? 1 : 0 };
-    // updateUserBoard(postData);
-    // if (await login({ userName: 'lucas', password: 'lucas123' })) {
-    //   navigate(state ? state.from : '/', { replace: true });
-    // }
+    if (res.status === 200) {
+      showModal({
+        open: true,
+        message: `비밀번호를 이메일로 전송하였습니다.`,
+      });
+    } else {
+      setError('email', { type: 'custom', message: res.response.data.error });
+    }
   };
 
   return (

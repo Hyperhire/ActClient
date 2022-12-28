@@ -1,0 +1,41 @@
+.verify-wrapper {
+  @extend .col;
+  @extend .padding-24;
+  .verify-form {
+    @extend .col;
+    @extend .max-width;
+    @extend .max-height;
+    @extend .gap-16;
+    .verify-guide1 {
+      @extend .text-center;
+      @extend .body-large;
+      color: $title-text;
+      @extend .pre-wrap;
+    }
+    .verify-inputs {
+      @extend .row;
+      @extend .gap-4;
+      @extend .align-center;
+      @extend .justify-center;
+    }
+    .re-send-code-button-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .padding-top-16;
+    }
+    .verify-guide2 {
+      @extend .text-center;
+      @extend .body-medium;
+      color: $body-text;
+      @extend .pre-wrap;
+    }
+    .submit-button-wrapper {
+      @extend .row;
+      @extend .max-width;
+      @extend .flex-1;
+      @extend .align-end;
+      @extend .justify-center;
+    }
+  }
+}

@@ -17,7 +17,7 @@ const OrganizationList = ({ setOption }) => {
     setOption({ title: '', subtitle: '기부 단체', description: '', back: true, menu: true });
   }, [setOption]);
 
-  const { isLoading, isSuccess, data, isError, error } = useReactQuery('org-list', api.main.org);
+  const { isSuccess, data } = useReactQuery('org-list', api.main.org);
 
   const onClickHandler = id => {
     navigate(`${id}`);
@@ -26,14 +26,15 @@ const OrganizationList = ({ setOption }) => {
     <div className="col">
       <div className="left-24 divider-thick-primary-2" />
       <div>
-        {data.map((item, index) => {
-          return (
-            <div key={index}>
-              <OrganizationItem item={item} clickHandler={onClickHandler} />
-              <div className="divider" />
-            </div>
-          );
-        })}
+        {isSuccess &&
+          data.list.map((item, index) => {
+            return (
+              <div key={index}>
+                <OrganizationItem item={item} clickHandler={onClickHandler} />
+                <div className="divider" />
+              </div>
+            );
+          })}
       </div>
     </div>
   );

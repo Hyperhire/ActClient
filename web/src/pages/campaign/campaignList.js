@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import CampaignItem from 'components/organisms/CampaignItem';
 import ActSearchBar from 'components/atoms/ActSearchBar';
 import { SEARCH_TYPE } from 'constants/constant';
-import { useReactQuery } from 'hooks/useReactQuery';
 import { api } from 'repository';
 import { useReactInfiniteQuery } from '../../hooks/useReactInfiniteQuery';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
@@ -23,6 +22,7 @@ const CampaignList = ({ setOption }) => {
   };
 
   const onSearchResultData = data => {
+    console.log('onSearchResultData', data);
     setSearchKeyword(data.search);
   };
 

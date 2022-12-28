@@ -1,11 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ActImageUploadButton from '../atoms/ActImageUploadButton';
 import { ReactComponent as ProfileIcon } from 'styles/assets/icons/profile/black.svg';
 import { ReactComponent as DeleteIcon } from 'styles/assets/icons/del/oval.svg';
 
-const ActUploadProfileButton = ({ register, id, errors, control, uploadedImages }) => {
-  const [imageFiles, setImageFiles] = useState([]);
-  const [images, setImages] = useState([]);
+const ActUploadProfileButton = ({ register, id, errors, control, imageFiles, setImageFiles }) => {
+  const [images, setImages] = useState();
+  useEffect(() => {
+    console.log('images', images);
+  }, [images]);
+
   const inputRef = useRef(null);
 
   const handleOnClick = e => {
@@ -21,18 +24,7 @@ const ActUploadProfileButton = ({ register, id, errors, control, uploadedImages 
     setImageFiles(tmpArr);
   };
   return (
-    <ActImageUploadButton
-      register={register}
-      id={id}
-      errors={errors}
-      control={control}
-      uploadedImages={uploadedImages}
-      inputRef={inputRef}
-      imageFiles={imageFiles}
-      setImageFiles={setImageFiles}
-      images={images}
-      setImages={setImages}
-    >
+    <ActImageUploadButton register={register} id={id} errors={errors} control={control} inputRef={inputRef} imageFiles={imageFiles} setImageFiles={setImageFiles} images={images} setImages={setImages}>
       <div className="act-upload-profile-button-wrapper">
         {images?.length > 0 ? (
           images?.map((image, idx) => {

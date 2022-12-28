@@ -34,6 +34,7 @@ const NftDetail = lazy(() => import('pages/my/nftDetail'));
 const Payment = lazy(() => import('pages/payment'));
 const OrgBase = lazy(() => import('pages/org'));
 const SettlementHistory = lazy(() => import('pages/org/settlementHistory'));
+const Verify = lazy(() => import('pages/login/verify'));
 
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
@@ -87,6 +88,7 @@ const RouteSwitch = () => {
               {/*<Route path="disclosure" element={<DonationHistory setOption={setOption} />} />*/}
               {/*<Route path="faq" element={<NftDetail setOption={setOption} />} />*/}
             </Route>
+            <Route path="/verify" element={<PrivateRoute outlet={<Verify setOption={setOption} />} path="/login" />} />
           </Routes>
         </div>
       </div>

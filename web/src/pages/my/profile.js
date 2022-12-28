@@ -16,13 +16,23 @@ import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line
 import ActUploadProfileButton from 'components/organisms/ActUploadProfileButton';
 import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
 import { usersAtom } from '../../state';
+import { useEditProfile, useRegisterByEmail } from '../../hooks/useReactMutation';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
+import useModal from '../../hooks/useModal';
+import { convertURLtoFile } from '../../utils/convertUrlToFile';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(usersAtom);
+  const [imageFiles, setImageFiles] = useState([]);
+  const { showModal } = useModal();
 
-  const [activeGuard, setActiveGuard] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState();
+  useEffect(() => {
+    convertURLtoFile(user.info.profileUrl).then(file => {
+      setImageFiles([file]);
+    });
+  }, [user.info.profileUrl]);
 
   useEffect(() => {
     setOption({
@@ -40,19 +50,27 @@ const Profile = ({ setOption }) => {
     });
   }, [setOption]);
 
+  const { data, mutate: editProfile, isLoading, isError, error, isSuccess } = useEditProfile('edit-profile');
+
+  useEffect(() => {
+    if (isSuccess && data?.status) {
+      showModal({
+        open: true,
+        message: data.status === 200 ? `프로필이 수정되었습니다.` : `프로필 수정에 실패하였습니다.`,
+      });
+    }
+  }, [data, isSuccess]);
+
   const onClickResignMembership = () => {
-    setActiveGuard(false);
     navigate('/my/resign-membership');
   };
   const profileUpdateDefaultForm = {
-    email: '',
-    nickname: '',
-    password: '',
-    passwordCheck: '',
-    name: '',
-    birthday: '',
-    gender: '',
-    mobile: '',
+    email: user.info.email,
+    nickname: user.info.nickname,
+    name: user.info.indInfo.name,
+    dateOfBirth: dayjs(user.info.indInfo.dateOfBirth, 'YY/MM/DD'),
+    gender: user.info.indInfo.sex,
+    mobile: user.info.indInfo.mobile,
   };
 
   const formOptions = { mode: 'onChange', defaultValues: profileUpdateDefaultForm, resolver: yupResolver(profileUpdateYup) };
@@ -66,13 +84,57 @@ const Profile = ({ setOption }) => {
     formState: { isDirty, isValid, isSubmitting, errors },
   } = useForm(formOptions);
 
-  useEffect(() => {
-    setActiveGuard(isDirty);
-  }, [isDirty]);
-
   const onSubmit = data => {
-    setActiveGuard(false);
-    console.log('onSubmit', data);
+    const formData = new FormData();
+    formData.append('image', imageFiles[0]);
+
+    let params = {};
+    if (user.info.nickname !== data.nickname) {
+      params = { ...params, nickname: data.nickname };
+    }
+    if (data.password) {
+      params = { ...params, password: data.password };
+    }
+
+    if (user.info.indInfo?.name !== data.name) {
+      params = {
+        ...params,
+        indInfo: {
+          ...params.indInfo,
+          name: data.name,
+        },
+      };
+    }
+    if (user.info.indInfo?.dateOfBirth !== data.dateOfBirth) {
+      params = {
+        ...params,
+        indInfo: {
+          ...params.indInfo,
+          dateOfBirth: data.dateOfBirth,
+        },
+      };
+    }
+    if (user.info.indInfo?.sex !== data.gender) {
+      params = {
+        ...params,
+        indInfo: {
+          ...params.indInfo,
+          sex: data.gender,
+        },
+      };
+    }
+    if (user.info.indInfo?.mobile !== data.mobile) {
+      params = {
+        ...params,
+        indInfo: {
+          ...params.indInfo,
+          mobile: data.mobile,
+        },
+      };
+    }
+
+    formData.append('data', JSON.stringify(params));
+    editProfile(formData);
   };
 
   const onDuplicateIdHandler = () => {
@@ -85,15 +147,8 @@ const Profile = ({ setOption }) => {
 
   return (
     <div className="profile-wrapper">
-      <NavigationGuard
-        when={activeGuard}
-        message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?"
-        onClickYes={async () => {
-          console.log('onClickYes');
-        }}
-      />
       <div className="profile-image-wrapper">
-        <ActUploadProfileButton register={register('profileImage')} id="profileImage" errors={errors} control={control} uploadedImages={setUploadedImages} />
+        <ActUploadProfileButton register={register('profileImage')} id="profileImage" errors={errors} control={control} imageFiles={imageFiles} setImageFiles={setImageFiles} />
         <ActIcon />
       </div>
       <div className="profile-login-info-wrapper">
@@ -115,6 +170,7 @@ const Profile = ({ setOption }) => {
             errors={errors}
             control={control}
             duplicateHandler={onDuplicateIdHandler}
+            disabled={true}
           />
           <ActInput
             {...register('nickname')}
@@ -147,11 +203,12 @@ const Profile = ({ setOption }) => {
           <ActInput {...register('name')} id="name" label="실명" required={true} placeholder="실명을 입력하세요" errors={errors} control={control} />
           <div className="profile-form-half-wrapper">
             <div className="row flex-1">
-              <ActDatePicker register={register} id="birthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} value={getValues('birthday')} setValue={setValue} />
-              {/*<ActDatePicker2 register={register} id="birthday" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} />*/}
+              <ActDatePicker register={register} id="dateOfBirth" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} value={getValues('dateOfBirth')} setValue={setValue} />
             </div>
             <div className="row flex-1 ">
-              <ActSelect register={register} id="gender" label="성별" errors={errors} control={control} options={GENDER} />
+              <div className="max-width">
+                <ActSelect register={register} id="gender" label="성별" errors={errors} control={control} options={GENDER} />
+              </div>
             </div>
           </div>
           <ActInput {...register('mobile')} type="number" id="mobile" label="휴대폰번호" required={true} placeholder="- 없이 입력해주세요" errors={errors} control={control} />

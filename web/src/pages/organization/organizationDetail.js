@@ -44,7 +44,7 @@ const OrganizationDetail = ({ setOption }) => {
                 홈페이지 바로가기
               </div>
             </div>
-            <ActButton className="tertiary-button-x-large" handleOnClick={onClickHandler} label="후원하기" isDonation={true} />
+            <ActButton className="tertiary-button-x-large" handleOnClick={onClickHandler} label="후원하기" isDonating={data.isDonating} />
           </div>
         </div>
       )}

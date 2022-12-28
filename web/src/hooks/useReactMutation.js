@@ -19,7 +19,6 @@ export const useLogin = queryKey => {
     onSuccess: async data => {
       if (data.status === 200) {
         // await handleReIssueToken({ token: data.data.data.token });
-        onRefreshSuccess({ token: data.data.data.token });
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({
@@ -60,6 +59,34 @@ export const useRegisterByEmail = queryKey => {
           open: true,
           message: `회원가입에 실패하였습니다.\n${data.message}`,
         });
+      }
+    },
+    onError: (error, variable, context) => {
+      console.log('onError', error, variable, context);
+    },
+    onSettled: () => {
+      console.log('onSettled useRegisterByEmail');
+    },
+  });
+};
+
+export const useEditProfile = queryKey => {
+  const queryClient = useQueryClient();
+  const editProfile = async profileInfo => {
+    return request({
+      data: profileInfo,
+      url: api.auth.editProfile,
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(editProfile, {
+    onSuccess: async data => {
+      if (data.status === 200 || data.status === 201) {
+        await queryClient.invalidateQueries(queryKey);
       }
     },
     onError: (error, variable, context) => {

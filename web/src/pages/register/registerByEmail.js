@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 
-import { DONATION_TYPE, MEMBER_TYPE } from 'constants/constant';
+import { MEMBER_TYPE } from 'constants/constant';
 import ActInput from 'components/atoms/ActInput';
 import { individualSignUpYup, organizationSignUpYup } from 'utils/yupSchema';
 import NavigationGuard from 'components/organisms/NavigationGuard';
@@ -13,14 +13,21 @@ import ActToggleButton from 'components/atoms/ActToggleButton';
 import { useRegisterByEmail } from 'hooks/useReactMutation';
 import { ReactComponent as ReceiptIcon } from 'styles/assets/icons/receipt.svg';
 import ActUploadLicenseButton from 'components/organisms/ActUploadLicenseButton';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
 const RegisterByEmail = ({ setOption }) => {
   const { type } = useParams();
   const navigate = useNavigate();
+  const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
   const { data, mutate: doRegister, isLoading, isError, error, isSuccess } = useRegisterByEmail('register');
   useEffect(() => {
     if (isSuccess && data) {
-      navigate('/', { replace: true });
+      request({ url: api.auth.login, method: 'post', data: loginInfo }).then(res => {
+        if (res.status === 200) {
+          navigate('/verify', { replace: true });
+        }
+      });
     }
   }, [data, isLoading, isError, error, isSuccess, navigate]);
 
@@ -71,7 +78,7 @@ const RegisterByEmail = ({ setOption }) => {
     handleSubmit,
     getFieldState,
     setValue,
-    formState: { isDirty, isValid, isSubmitting, errors },
+    formState: { isDirty, isValid, errors },
   } = useForm(formOptions);
 
   useEffect(() => {
@@ -82,6 +89,7 @@ const RegisterByEmail = ({ setOption }) => {
     //todo 단체회원 구분을 위한 타입 추가(서버 작업 필요)
     const { email, password, nickname } = data;
 
+    setLoginInfo({ email, password });
     const defaultParams = {
       loginType: 'EMAIL',
       email,
