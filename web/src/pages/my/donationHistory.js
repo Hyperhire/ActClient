@@ -16,7 +16,7 @@ const DonationHistory = ({ setOption }) => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
   }, [setOption]);
-  const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
+  const { isSuccess, data, refetch } = useReactQuery('donation-history', api.my.donationHistory);
 
   const unsubscribe = async item => {
     request({
@@ -35,6 +35,9 @@ const DonationHistory = ({ setOption }) => {
           open: true,
           message: '해지 실패하였습니다.',
         });
+      })
+      .finally(() => {
+        refetch();
       });
   };
 
