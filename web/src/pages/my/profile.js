@@ -15,17 +15,16 @@ import { ReactComponent as NaverIcon } from 'styles/assets/images/icons/naver.sv
 import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line_right_sm.svg';
 import ActUploadProfileButton from 'components/organisms/ActUploadProfileButton';
 import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
-import { usersAtom } from '../../state';
-import { useEditProfile, useRegisterByEmail } from '../../hooks/useReactMutation';
-import { request } from '../../utils/axiosClient';
-import { api } from '../../repository';
-import useModal from '../../hooks/useModal';
-import { convertURLtoFile } from '../../utils/convertUrlToFile';
+import { usersAtom } from 'state';
+import { useEditProfile } from 'hooks/useReactMutation';
+import useModal from 'hooks/useModal';
+import { convertURLtoFile } from 'utils/convertUrlToFile';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(usersAtom);
   const [imageFiles, setImageFiles] = useState([]);
+  const [isChangedNickname, setIsChangedNickname] = useState(false);
   const { showModal } = useModal();
 
   useEffect(() => {
@@ -71,6 +70,7 @@ const Profile = ({ setOption }) => {
     dateOfBirth: dayjs(user.info.indInfo.dateOfBirth, 'YY/MM/DD'),
     gender: user.info.indInfo.sex,
     mobile: user.info.indInfo.mobile,
+    duplicateNickname: false,
   };
 
   const formOptions = { mode: 'onChange', defaultValues: profileUpdateDefaultForm, resolver: yupResolver(profileUpdateYup) };
@@ -81,8 +81,14 @@ const Profile = ({ setOption }) => {
     handleSubmit,
     getValues,
     setValue,
+    getFieldState,
+    watch,
     formState: { isDirty, isValid, isSubmitting, errors },
   } = useForm(formOptions);
+
+  useEffect(() => {
+    setIsChangedNickname(user.info.nickname !== watch('nickname'));
+  }, [watch('nickname')]);
 
   const onSubmit = data => {
     const formData = new FormData();
@@ -137,14 +143,6 @@ const Profile = ({ setOption }) => {
     editProfile(formData);
   };
 
-  const onDuplicateIdHandler = () => {
-    console.log('onDuplicateIdHandler');
-  };
-
-  const onDuplicateNicknameHandler = () => {
-    console.log('onDuplicateNicknameHandler');
-  };
-
   return (
     <div className="profile-wrapper">
       <div className="profile-image-wrapper">
@@ -160,18 +158,7 @@ const Profile = ({ setOption }) => {
       </div>
       <form className="profile_form-wrapper" onSubmit={handleSubmit(onSubmit)}>
         <div className="profile-form-default-info-wrapper">
-          <ActInput
-            {...register('email')}
-            id="email"
-            label="이메일주소"
-            required={true}
-            info={true}
-            placeholder="아이디를 입력하세요"
-            errors={errors}
-            control={control}
-            duplicateHandler={onDuplicateIdHandler}
-            disabled={true}
-          />
+          <ActInput {...register('email')} id="email" label="이메일주소" required={true} info={true} placeholder="아이디를 입력하세요" errors={errors} control={control} disabled={true} />
           <ActInput
             {...register('nickname')}
             id="nickname"
@@ -180,7 +167,9 @@ const Profile = ({ setOption }) => {
             placeholder="닉네임을 입력하세요"
             errors={errors}
             control={control}
-            duplicateHandler={onDuplicateNicknameHandler}
+            duplicate={{ register, label: '중복확인', id: 'duplicateNickname', setValue: setValue }}
+            fieldInvalid={!!getFieldState('nickname').error || !isChangedNickname}
+            regExp={/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g}
           />
           <div className="profile-form-half-wrapper">
             <div className="row flex-1">
@@ -214,7 +203,7 @@ const Profile = ({ setOption }) => {
           <ActInput {...register('mobile')} type="number" id="mobile" label="휴대폰번호" required={true} placeholder="- 없이 입력해주세요" errors={errors} control={control} />
         </div>
         <div className="profile-form-submit-wrapper">
-          <ActButton className="tertiary-button-x-large" disabled={!isValid} type="submit" label="프로필 수정 완료" />
+          <ActButton className="tertiary-button-x-large" disabled={!isValid && isChangedNickname} type="submit" label="프로필 수정 완료" />
         </div>
       </form>
     </div>

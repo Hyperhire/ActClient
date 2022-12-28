@@ -58,6 +58,7 @@ export const organizationSignUpYup = yup.object().shape({
 export const profileUpdateYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
   nickname: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
   password: yup
     .string()
     .max(15, '비밀번호는 15자리 이하여야 합니다.')

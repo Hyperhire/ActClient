@@ -65,6 +65,7 @@ const Donation = ({ setOption }) => {
       setValue('donationDate', undefined, { shouldValidate: true });
     }
   }, [donationType]);
+
   const onSubmit = data => {
     if (data.pg === PAYMENT_PG_TYPE.NAVER) {
       showModal({
@@ -73,13 +74,17 @@ const Donation = ({ setOption }) => {
       });
       return;
     }
-    const paymentData = {
+    let paymentData;
+    paymentData = {
       targetType: type,
       targetId: item._id,
       pg: data.pg,
       paymentType: data.donationType,
       amount: data.donationAmount,
     };
+    if (data.donationType === DONATION_PAYMENT_TYPE.SUBSCRIPTION) {
+      paymentData = { ...paymentData, subscriptionOn: data.donationDate };
+    }
 
     const isMobile = navigator.userAgent.indexOf('Mobi') > -1;
     request({
