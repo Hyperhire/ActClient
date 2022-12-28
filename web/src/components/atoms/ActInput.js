@@ -36,7 +36,7 @@ const ActInput = (props, ref) => {
   } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
 
-  const [duplicatedResult, setDuplicatedResult] = useState({ result: undefined, data: { status: undefined, message: '' } });
+  const [duplicatedResult, setDuplicatedResult] = useState(duplicate?.defaultValue ? duplicate.defaultValue : { result: undefined, data: { status: undefined, message: '' } });
 
   useEffect(() => {
     if (isError) {

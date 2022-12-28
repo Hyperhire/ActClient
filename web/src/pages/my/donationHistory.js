@@ -5,6 +5,7 @@ import ActTab from 'components/atoms/ActTab';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import useModal from '../../hooks/useModal';
+import { request } from '../../utils/axiosClient';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
@@ -16,11 +17,33 @@ const DonationHistory = ({ setOption }) => {
     return () => setOption({});
   }, [setOption]);
   const { isSuccess, data } = useReactQuery('donation-history', api.my.donationHistory);
-  const onHandleCancelRegularPayment = id => {
+
+  const unsubscribe = async item => {
+    request({
+      url: api.order.unsubscribe,
+      method: 'post',
+      data: { id: item._id },
+    })
+      .then(res => {
+        showModal({
+          open: true,
+          message: res.status === 200 ? '해지 되었습니다.' : '해지 실패하였습니다.',
+        });
+      })
+      .catch(() => {
+        showModal({
+          open: true,
+          message: '해지 실패하였습니다.',
+        });
+      });
+  };
+
+  const onHandleCancelRegularPayment = item => {
     showModal({
       open: true,
       message: `정말 해지하시겠습니까?`,
-      handleConfirm: () => console.log('yes'),
+      handleConfirm: () => unsubscribe(item),
+      handleCancel: () => {},
     });
   };
 

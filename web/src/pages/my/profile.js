@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { profileUpdateYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import ActButton from 'components/atoms/ActButton';
@@ -19,10 +19,13 @@ import { usersAtom } from 'state';
 import { useEditProfile } from 'hooks/useReactMutation';
 import useModal from 'hooks/useModal';
 import { convertURLtoFile } from 'utils/convertUrlToFile';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(usersAtom);
+  const setUser = useSetRecoilState(usersAtom);
   const [imageFiles, setImageFiles] = useState([]);
   const [isChangedNickname, setIsChangedNickname] = useState(false);
   const { showModal } = useModal();
@@ -49,13 +52,16 @@ const Profile = ({ setOption }) => {
     });
   }, [setOption]);
 
-  const { data, mutate: editProfile, isLoading, isError, error, isSuccess } = useEditProfile('edit-profile');
+  const { data, mutate: editProfile, isSuccess } = useEditProfile('edit-profile');
 
   useEffect(() => {
     if (isSuccess && data?.status) {
-      showModal({
-        open: true,
-        message: data.status === 200 ? `프로필이 수정되었습니다.` : `프로필 수정에 실패하였습니다.`,
+      request({ url: api.auth.my, method: 'get' }).then(res => {
+        setUser(res.data.data);
+        showModal({
+          open: true,
+          message: data.status === 200 ? `프로필이 수정되었습니다.` : `프로필 수정에 실패하였습니다.`,
+        });
       });
     }
   }, [data, isSuccess]);
@@ -70,7 +76,7 @@ const Profile = ({ setOption }) => {
     dateOfBirth: dayjs(user.info.indInfo.dateOfBirth, 'YY/MM/DD'),
     gender: user.info.indInfo.sex,
     mobile: user.info.indInfo.mobile,
-    duplicateNickname: false,
+    duplicateNickname: undefined,
   };
 
   const formOptions = { mode: 'onChange', defaultValues: profileUpdateDefaultForm, resolver: yupResolver(profileUpdateYup) };
@@ -167,7 +173,13 @@ const Profile = ({ setOption }) => {
             placeholder="닉네임을 입력하세요"
             errors={errors}
             control={control}
-            duplicate={{ register, label: '중복확인', id: 'duplicateNickname', setValue: setValue }}
+            duplicate={{
+              register,
+              label: '중복확인',
+              id: 'duplicateNickname',
+              setValue: setValue,
+              defaultValue: isChangedNickname ? undefined : { result: true, data: { status: false, message: '' } },
+            }}
             fieldInvalid={!!getFieldState('nickname').error || !isChangedNickname}
             regExp={/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g}
           />

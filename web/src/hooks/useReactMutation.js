@@ -93,7 +93,7 @@ export const useEditProfile = queryKey => {
       console.log('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useRegisterByEmail');
+      console.log('onSettled useEditProfile');
     },
   });
 };

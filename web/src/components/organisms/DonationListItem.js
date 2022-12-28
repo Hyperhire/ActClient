@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import ActButton from 'components/atoms/ActButton';
-import { DONATION_TYPE } from 'constants/constant';
+import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from 'constants/constant';
 import { ReactComponent as Act } from 'styles/assets/icons/logo/act.svg';
 import 'dayjs/locale/ko';
 
@@ -36,23 +36,23 @@ const DonationListItem = ({ item, handleCancelRegularPayment, handleClickNFT }) 
         </div>
         <div className="item-wrapper">
           <div className="title">후원방식</div>
-          <div className="content">{item.isRecurring ? '정기후원' : '일시후원'}</div>
+          <div className="content">{item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION ? '정기후원' : '일시후원'}</div>
         </div>
         {item.targetType === DONATION_TYPE.ORGANIZATION && (
           <div className="item-wrapper">
             <div className="title">정기결제일</div>
-            <div className="content">{item.regularPaymentDate}</div>
+            <div className="content">{item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION ? `매월 ${item.subscriptionOn}일` : '-'}</div>
           </div>
         )}
       </div>
       <div className="button-wrapper">
-        {item.targetType === DONATION_TYPE.ORGANIZATION && item.isRecurring && (
+        {item.targetType === DONATION_TYPE.ORGANIZATION && item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && (
           <div className="donation-list-item-button">
             <ActButton
               className="primary-button-large-outline"
-              label={item.isTerminated ? '후원 해지 완료' : '후원 해지하기'}
-              handleOnClick={() => handleCancelRegularPayment(item._id)}
-              disabled={item.isTerminated}
+              label={item.active ? '후원 해지하기' : '후원 해지 완료'}
+              handleOnClick={() => handleCancelRegularPayment(item)}
+              disabled={!item.active}
             />
           </div>
         )}

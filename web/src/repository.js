@@ -50,7 +50,7 @@ export const api = {
     complete: '/api/v1/order/complete',
     canceled: '/api/v1/order/canceled',
     failed: '/api/v1/order/failed',
-    inactiveSubscription: '/api/v1/subscription/inactive',
+    unsubscribe: '/api/v1/subscription/inactive',
   },
   utils: {
     uploadImage: '/api/v1/utils/upload-image',
