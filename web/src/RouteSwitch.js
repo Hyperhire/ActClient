@@ -70,7 +70,7 @@ const RouteSwitch = () => {
               <Route path="payment" element={<DonationPayment setOption={setOption} />} />
             </Route>
             <Route path="/faq" element={<Faq setOption={setOption} />} />
-            <Route path="/my" element={<MyBase setOption={setOption} />}>
+            <Route path="my" element={<PrivateRoute outlet={<MyBase setOption={setOption} />} path="/login" />}>
               <Route path="profile" element={<Profile setOption={setOption} />} />
               <Route path="resign-membership" element={<ResignMembership setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />

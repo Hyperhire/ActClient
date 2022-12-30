@@ -22,7 +22,7 @@ const SettlementHistory = ({ setOption }) => {
 
   const list1 = [{ amount: 1_000 }, { amount: 2_000 }, { amount: 3_000 }, { amount: 4_000 }];
   const list2 = [{ amount: 10_000 }, { amount: 20_000 }, { amount: 30_000 }];
-  let sum = 0;
+
   const parseData = [
     {
       index: 0,
@@ -33,22 +33,31 @@ const SettlementHistory = ({ setOption }) => {
             <ActButton className="button-small-outline" handleOnClick={() => console.log('')} label={buttonName} />
             <ActButton className="button-small-outline" disabled={true} handleOnClick={() => console.log('')} label="삭제" />
           </div>
-          <div className="row">
+          <div className="settlement-history-header-wrapper">
             <div>정산가능금액</div>
-            <div>{list1.reduce((a, b) => a + b.amount, 0)}</div>
+            <div>{list1.reduce((a, b) => a + b.amount, 0).toLocaleString()}</div>
           </div>
         </>
       ),
       footer: (
-        <div className="col">
-          <div>정산금액이 500,000원 이상일때만 정산요청가능합니다.</div>
-          <div className="row">
-            <div>정산요청금액</div>
-            <div>20,000</div>
+        <div className="settlement-history-footer-wrapper">
+          <div className="settlement-history-footer-info-wrapper">
+            <div className="settlement-history-footer-guide">
+              정산금액이&nbsp;<span>500,000원 이상</span>일때만 정산요청 가능합니다.
+            </div>
+            <div className="bordered-dashed" />
+            <div className="settlement-history-footer-amount-wrapper">
+              <div className="settlement-history-footer-amount-label">정산요청금액</div>
+              <div className="settlement-history-footer-amount">20,000</div>
+            </div>
           </div>
-          <div className="row">
-            <div>취소하기</div>
-            <div>정산요청하기</div>
+          <div className="settlement-history-footer-button-wrapper">
+            <div className="settlement-history-footer-cancel-button link" onClick={() => console.log('취소하기')}>
+              <div>취소하기</div>
+            </div>
+            <div className="settlement-history-footer-confirm-button link" onClick={() => console.log('정산요청하기')}>
+              <div>정산요청하기</div>
+            </div>
           </div>
         </div>
       ),
@@ -88,10 +97,8 @@ const SettlementHistory = ({ setOption }) => {
   ];
 
   return (
-    <div className="col">
-      <div className="col">
-        <ActTab data={parseData} />
-      </div>
+    <div className="settlement-history-wrapper">
+      <ActTab data={parseData} />
     </div>
   );
 };

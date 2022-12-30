@@ -14,6 +14,32 @@ export const GENDER = [
   },
 ];
 
+export const DONATION_STATUS_VALUE = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+  SINGLE: 'single',
+};
+
+export const DONATION_STATUS = [
+  {
+    value: DONATION_STATUS_VALUE.ALL,
+    label: '후원상태',
+  },
+  {
+    value: DONATION_STATUS_VALUE.ACTIVE,
+    label: '정기후원(진행중)',
+  },
+  {
+    value: DONATION_STATUS_VALUE.INACTIVE,
+    label: '정기후원(종료)',
+  },
+  {
+    value: DONATION_STATUS_VALUE.SINGLE,
+    label: '일시후원',
+  },
+];
+
 export const DONATION_TYPE = {
   ORGANIZATION: 'ORG',
   CAMPAIGN: 'CAMPAIGN',

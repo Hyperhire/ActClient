@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { get } from 'react-hook-form';
 import DonationListItem from 'components/organisms/DonationListItem';
 import ActTab from 'components/atoms/ActTab';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
+import { usersAtom } from '../../state';
+import { DONATION_PAYMENT_TYPE, DONATION_STATUS, DONATION_STATUS_VALUE, GENDER, MEMBER_TYPE } from '../../constants/constant';
+import OrgDonationListItem from '../../components/organisms/OrgDonationListItem';
+import ActSelect from 'components/atoms/ActSelect';
+import BasicSelect from '../../components/atoms/BasicSelect';
 
 const DonationHistory = ({ setOption }) => {
   const navigate = useNavigate();
   const { showModal } = useModal();
   const location = useLocation();
-
+  const user = useRecoilValue(usersAtom);
+  const [selectedValue, setSelectedValue] = useState(DONATION_STATUS[0].value);
   useEffect(() => {
     setOption({ title: '후원 내역', subtitle: '', description: '', back: true, menu: true });
     return () => setOption({});
@@ -54,18 +62,55 @@ const DonationHistory = ({ setOption }) => {
     navigate(`../nft`, { state: { item } });
   };
 
+  const getList = () => {
+    let list;
+    switch (selectedValue) {
+      case DONATION_STATUS_VALUE.ACTIVE:
+        list = data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && item.active);
+        break;
+
+      case DONATION_STATUS_VALUE.INACTIVE:
+        list = data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && !item.active);
+        break;
+
+      case DONATION_STATUS_VALUE.SINGLE:
+        list = data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SINGLE);
+        break;
+
+      default:
+        list = data.orgs;
+        break;
+    }
+
+    return list.map((item, index) => {
+      return (
+        <div key={index}>
+          <OrgDonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
+          <div className="divider" />
+        </div>
+      );
+    });
+  };
   const parseData = [
     {
       index: 0,
       label: '단체후원',
-      list: data.orgs.map((item, index) => {
-        return (
-          <div key={index}>
-            <DonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
-            <div className="divider" />
-          </div>
-        );
-      }),
+      header: (
+        <div className="padding-row-24">
+          <BasicSelect selectedValue={selectedValue} setSelectedValue={setSelectedValue} options={DONATION_STATUS} />
+        </div>
+      ),
+      list:
+        user.userType === MEMBER_TYPE.INDIVIDUAL
+          ? data.orgs.map((item, index) => {
+              return (
+                <div key={index}>
+                  <DonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={id => onHandleClickNFT(id)} />
+                  <div className="divider" />
+                </div>
+              );
+            })
+          : getList(),
     },
     {
       index: 1,
@@ -81,6 +126,28 @@ const DonationHistory = ({ setOption }) => {
     },
   ];
 
-  return <div className="col">{isSuccess && <ActTab initialTab={location.state?.type} data={parseData} />}</div>;
+  return (
+    <div className="donation-history-wrapper">
+      {isSuccess && <ActTab initialTab={location.state?.type} data={parseData} />}
+      <div className="donation-history-footer-wrapper">
+        <div className="donation-history-footer-item-wrapper">
+          <div className="donation-history-footer-item-label">누적 총 후원금액</div>
+          <div className="donation-history-footer-item-content">53500000원</div>
+        </div>
+        <div className="donation-history-footer-item-wrapper">
+          <div className="donation-history-footer-item-label">단체 정기후원/일반후원 건수</div>
+          <div className="donation-history-footer-item-content">53500000원</div>
+        </div>
+        <div className="donation-history-footer-item-wrapper">
+          <div className="donation-history-footer-item-label">단체 정기후원금액(진행중)</div>
+          <div className="donation-history-footer-item-content">53500000원</div>
+        </div>
+        <div className="donation-history-footer-item-wrapper">
+          <div className="donation-history-footer-item-label">캠페인 후원</div>
+          <div className="donation-history-footer-item-content">53500000원</div>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default DonationHistory;

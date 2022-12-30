@@ -1,0 +1,73 @@
+.settlement-history-wrapper {
+  @extend .col;
+  .settlement-history-header-wrapper {
+    @extend .row;
+    @extend .align-center;
+    @extend .justify-between;
+    @extend .border-radius-8;
+    @extend .max-width;
+    @extend .height-64;
+    background-color: #EDEEF2;
+  }
+  .settlement-history-footer-wrapper {
+    @extend .col;
+    background-color: #FAFAFA;
+    .settlement-history-footer-info-wrapper {
+      @extend .col;
+      @extend .gap-16;
+      @extend .padding-24;
+      .settlement-history-footer-guide {
+        @extend .row;
+        @extend .align-center;
+        @extend .justify-center;
+        @extend .body-medium;
+        color: $body-text;
+        span {
+          color: $title-text;
+        }
+      }
+      .settlement-history-footer-amount-wrapper {
+        @extend .row;
+        @extend .align-center;
+        @extend .justify-between;
+        @extend .max-width;
+        @extend .height-64;
+        .settlement-history-footer-amount-label {
+          @extend .title-medium;
+          color: $title-text;
+        }
+        .settlement-history-footer-amount {
+          @extend .headline-medium;
+          color: $title-text;
+        }
+      }
+    }
+
+    .settlement-history-footer-button-wrapper {
+      @extend .row;
+      @extend .max-width;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .height-64;
+      .settlement-history-footer-cancel-button {
+        @extend .row;
+        @extend .flex-1;
+        @extend .align-center;
+        @extend .justify-center;
+        @extend .body-large;
+        @extend .max-height;
+        background-color: $out-line;
+      }
+      .settlement-history-footer-confirm-button {
+        @extend .row;
+        @extend .flex-1;
+        @extend .align-center;
+        @extend .justify-center;
+        @extend .body-large;
+        @extend .max-height;
+        background-color: $primary;
+        color: white;
+      }
+    }
+  }
+}

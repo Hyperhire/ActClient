@@ -80,7 +80,9 @@ const NavDrawer = ({ setOpen }) => {
               <div className="side-menu-donation-history">
                 <div className="side-menu-donation-history-label">{`${user?.userType === MEMBER_TYPE.INDIVIDUAL ? '후원건수' : '정산가능금액'}`}</div>
                 <div className="side-menu-donation-history-content">
-                  {user?.userType === MEMBER_TYPE.INDIVIDUAL ? `${user?.pgSummary.totalSubscriptionCount} / ${user?.pgSummary.totalCount} 건` : `${user?.pgSummary.withdrawAvailableAmount} 원`}
+                  {user?.userType === MEMBER_TYPE.INDIVIDUAL
+                    ? `${user?.pgSummary.totalSubscriptionCount} / ${user?.pgSummary.totalCount} 건`
+                    : `${user?.pgSummary.withdrawAvailableAmount.toLocaleString()} 원`}
                 </div>
               </div>
             </div>
@@ -126,7 +128,7 @@ const NavDrawer = ({ setOpen }) => {
         ))}
         {auth.authenticated ? (
           <div className="flex-1 align-end">
-            <div onClick={() => logout()} className="side-menu-logout-label link">
+            <div onClick={() => logout().then(() => navigate('/'))} className="side-menu-logout-label link">
               로그아웃
             </div>
           </div>

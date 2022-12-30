@@ -16,6 +16,7 @@ import { ReactComponent as Eye } from 'styles/assets/icons/eye/eye.svg';
 import { ReactComponent as EyeClose } from 'styles/assets/icons/eye/eye-off.svg';
 import { useLogin } from 'hooks/useReactMutation';
 import { TokenContext } from 'utils/TokenContext';
+import { MEMBER_TYPE } from '../../constants/constant';
 
 const Login = ({ setOption }) => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = ({ setOption }) => {
   useEffect(() => {
     if (isSuccess && data?.status === 200) {
       onRefreshSuccess({ token: data.data.data.token });
-      if (data.data.data.user.constant.isEmailVerified) {
+      if (data.data.data.userType === MEMBER_TYPE.INDIVIDUAL ? data.data.data.user.constant.isEmailVerified : data.data.data.org.constant.isEmailVerified) {
         if (locationState && locationState.to) {
           navigate(locationState.to, { state: { ...locationState }, replace: true });
         } else {

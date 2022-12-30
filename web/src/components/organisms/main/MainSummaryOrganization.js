@@ -32,14 +32,14 @@ const MainSummaryOrganization = () => {
                     <div className="item-image-top">
                       <img src={item?.image} alt="" />
                       <div className="organization-icon-bottom">
-                        <img src={item?.icon} alt="" />
+                        <img src={item?.logoUrl} alt="" />
                       </div>
                     </div>
                   ) : (
                     <div className="item-image-bottom">
                       <img src={item?.image} alt="" />
                       <div className="organization-icon-top">
-                        <img src={item?.icon} alt="" />
+                        <img src={item?.logoUrl} alt="" />
                       </div>
                     </div>
                   )}

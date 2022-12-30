@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import { authAtom, usersAtom } from 'state';
 import { getCookie, removeCookie, setCookie } from './cookie';
 import { request, setAuthorization } from './axiosClient';
@@ -44,9 +45,17 @@ const TokenProvider = ({ children }) => {
   };
 
   const logout = () => {
-    resetAuth();
-    resetUser();
-    removeCookie(COOKIES.REFRESH_TOKEN);
+    return new Promise((resolve, reject) => {
+      try {
+        resetAuth();
+        resetUser();
+        removeCookie(COOKIES.REFRESH_TOKEN);
+        resolve();
+      } catch (e) {
+        console.log('e', e);
+        reject();
+      }
+    });
   };
 
   return (
