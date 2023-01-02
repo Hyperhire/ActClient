@@ -6,6 +6,8 @@ import ActTab from '../../components/atoms/ActTab';
 import OrganizationNewsItem from '../../components/organisms/OrganizationNewsItem';
 import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
 import DisclosureItem from '../../components/organisms/DisclosureItem';
+import { useReactQuery } from '../../hooks/useReactQuery';
+import { api } from '../../repository';
 
 const SettlementHistory = ({ setOption }) => {
   const [buttonName, setButtonName] = useState('전체선택');
@@ -19,6 +21,9 @@ const SettlementHistory = ({ setOption }) => {
       menu: true,
     });
   }, [setOption, buttonName]);
+
+  const { isSuccessPre, dataPre, refetchPre } = useReactQuery('settlement-pre', api.my.settlementPre);
+  const { isSuccessPost, dataPost, refetchPost } = useReactQuery('settlement-post', api.my.settlementPost);
 
   const list1 = [{ amount: 1_000 }, { amount: 2_000 }, { amount: 3_000 }, { amount: 4_000 }];
   const list2 = [{ amount: 10_000 }, { amount: 20_000 }, { amount: 30_000 }];

@@ -1,5 +1,4 @@
 .act-button {
-  border-radius: 4px;
   @extend .relative;
   .act-button-chip {
     @extend .absolute;
@@ -22,7 +21,7 @@
 }
 .primary-button-large {
   @extend .act-button;
-  width: 100%;
+  @extend .max-width;
   height: 3rem;
   @extend .body-large;
   color: $white;

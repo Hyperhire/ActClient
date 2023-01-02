@@ -18,9 +18,9 @@ import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.sv
 import { usersAtom } from 'state';
 import { useEditProfile } from 'hooks/useReactMutation';
 import useModal from 'hooks/useModal';
-import { convertURLtoFile } from 'utils/convertUrlToFile';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
+import { urlToFile } from 'utils/downloadFile';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Profile = ({ setOption }) => {
   const { showModal } = useModal();
 
   useEffect(() => {
-    convertURLtoFile(user.info.profileUrl).then(file => {
+    urlToFile(user.info.profileUrl).then(file => {
       setImageFiles([file]);
     });
   }, [user.info.profileUrl]);

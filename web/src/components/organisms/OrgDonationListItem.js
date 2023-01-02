@@ -5,7 +5,7 @@ import { DONATION_PAYMENT_TYPE, DONATION_TYPE, MEMBER_TYPE } from 'constants/con
 import { ReactComponent as Act } from 'styles/assets/icons/logo/act.svg';
 import 'dayjs/locale/ko';
 
-const OrgDonationListItem = ({ item, handleCancelRegularPayment, handleClickNFT }) => {
+const OrgDonationListItem = ({ item, handleClickNFT }) => {
   return (
     <div className="donation-list-item-wrapper">
       <div className="item-list-wrapper">

@@ -6,7 +6,6 @@ import { ReactComponent as Act } from 'styles/assets/icons/logo/act.svg';
 import 'dayjs/locale/ko';
 
 const DonationListItem = ({ item, handleCancelRegularPayment, handleClickNFT, userType }) => {
-  console.log('item', item);
   return (
     <div className="donation-list-item-wrapper">
       <div className="item-list-wrapper">

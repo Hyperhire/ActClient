@@ -13,6 +13,7 @@ import { MEMBER_TYPE, ORGANIZATION_NEWS_TYPE } from 'constants/constant';
 import { useReactQuery } from 'hooks/useReactQuery';
 import { api } from 'repository';
 import { TokenContext } from 'utils/TokenContext';
+import { ReactComponent as ArrowRight } from 'styles/assets/icons/arrow_line_right_sm.svg';
 
 const NavDrawer = ({ setOpen }) => {
   const navigate = useNavigate();
@@ -53,13 +54,20 @@ const NavDrawer = ({ setOpen }) => {
       <div className="side-menu-wrap">
         {auth.authenticated ? (
           <div className="side-menu-login-menu-wrap">
-            <div className="side-menu-wrap-profile-wrap">
-              {user?.userType === MEMBER_TYPE.INDIVIDUAL && <ProfileIcon />}
+            <div className="side-menu-wrap-profile-wrap link" onClick={() => navigate(user?.userType === MEMBER_TYPE.INDIVIDUAL ? 'my/profile-information' : 'org/profile')}>
+              <div className="user-image">
+                {user?.userType === MEMBER_TYPE.INDIVIDUAL ? user.info.profileUrl ? <img src={user.info.profileUrl} alt="user-profile-image" /> : <ProfileIcon /> : <ProfileIcon />}
+              </div>
               <div className="side-menu-wrap-profile-info-wrap">
                 <div className="side-menu-wrap-profile-name-wrap">
-                  <div className="side-menu-wrap-profile-name">{user?.info.nickname || 'nickname'}</div>
-                  {user?.userType === MEMBER_TYPE.INDIVIDUAL && <ActIcon />}
-                  <div className="side-menu-wrap-profile-type">{user?.userType === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'}</div>
+                  <div className="row max-width gap-8">
+                    <div className="side-menu-wrap-profile-name">{user?.info.nickname || 'nickname'}</div>
+                    {user?.userType === MEMBER_TYPE.INDIVIDUAL && <ActIcon />}
+                    <div className="side-menu-wrap-profile-type">{user?.userType === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'}</div>
+                  </div>
+                  <div className="row flex-auto justify-end padding-right-24">
+                    <ArrowRight />
+                  </div>
                 </div>
                 <div className="side-menu-wrap-profile-email-wrap">
                   <EmailIcon />

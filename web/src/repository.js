@@ -1,3 +1,5 @@
+import SettlementHistory from './pages/org/settlementHistory';
+
 export const api = {
   auth: {
     login: '/api/v1/auth/login',
@@ -18,6 +20,8 @@ export const api = {
     paymentHistory: '/api/v1/order/my',
     donationHistory: '/api/v1/donation/my',
     nftDetail: id => `/api/v1/nft?token_id=${id}`,
+    settlementPre: '/api/v1/withdraw/pre-request-list',
+    settlementPost: '/api/v1/withdraw/post-request-list',
   },
   organization: {
     list: '/api/v1/org',

@@ -7,6 +7,7 @@ import Nft from 'styles/assets/images/ntf.svg';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import 'dayjs/locale/ko';
+import { downloadFile } from '../../utils/downloadFile';
 const NFT_ATTRIBUTES = {
   DONATION_TYPE: 0,
   AMOUNT: 2,
@@ -34,8 +35,8 @@ const NftDetail = ({ setOption }) => {
     });
   }, [setOption]);
 
-  const onHandleClickDownload = () => {
-    console.log('onHandleClickDownload');
+  const onHandleClickDownload = async url => {
+    await downloadFile(url);
   };
   const onHandleClickShare = e => {
     e.stopPropagation();
@@ -83,17 +84,20 @@ const NftDetail = ({ setOption }) => {
 
       <div className="nft-detail-button-wrapper">
         <ActButton
+          radius={0}
           className="primary-button-x-large"
           label={
             <div className="row align-center justify-between padding-row-16">
               <div className="flex-1" />
               <div>다운로드</div>
-              <div className="flex-1 justify-end" onClick={onHandleClickShare}>
-                <Share />
+              <div className="flex-1 justify-end">
+                <div onClick={onHandleClickShare}>
+                  <Share />
+                </div>
               </div>
             </div>
           }
-          handleOnClick={onHandleClickDownload}
+          handleOnClick={() => onHandleClickDownload(data.metadata.image)}
         />
       </div>
     </div>

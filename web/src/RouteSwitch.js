@@ -13,6 +13,7 @@ const Register = lazy(() => import('pages/register/register'));
 const RegisterByEmail = lazy(() => import('pages/register/registerByEmail'));
 const MyBase = lazy(() => import('pages/my'));
 const Profile = lazy(() => import('pages/my/profile'));
+const ProfileInformation = lazy(() => import('pages/my/profileInformation'));
 const ResignMembership = lazy(() => import('pages/my/resignMembership'));
 const PaymentHistory = lazy(() => import('pages/my/paymentHistory'));
 const DonationHistory = lazy(() => import('pages/my/donationHistory'));
@@ -72,6 +73,7 @@ const RouteSwitch = () => {
             <Route path="/faq" element={<Faq setOption={setOption} />} />
             <Route path="my" element={<PrivateRoute outlet={<MyBase setOption={setOption} />} path="/login" />}>
               <Route path="profile" element={<Profile setOption={setOption} />} />
+              <Route path="profile-information" element={<ProfileInformation setOption={setOption} />} />
               <Route path="resign-membership" element={<ResignMembership setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />
               <Route path="donationHistory" element={<DonationHistory setOption={setOption} />} />

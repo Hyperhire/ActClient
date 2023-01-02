@@ -21,7 +21,7 @@ const onClickHandler = index => {
   };
 };
 
-const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data }) => {
+const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data, tabChangeHandle }) => {
   const [value, setValue] = useState(false);
 
   // mui bug 때문에 warning clear 하려고 추가 함
@@ -33,6 +33,7 @@ const ActTab = ({ initialTab = DONATION_TYPE.ORGANIZATION, data }) => {
 
   const handleChange = newValue => {
     setValue(newValue);
+    tabChangeHandle && tabChangeHandle(newValue);
   };
 
   return (

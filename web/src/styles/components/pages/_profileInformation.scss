@@ -1,0 +1,42 @@
+.profile-information-wrapper {
+  @extend .col;
+  @extend .max-height;
+  @extend .max-width;
+  .profile-information-content-wrapper{
+    @extend .padding-24;
+    @extend .col;
+    @extend .gap-16;
+    .profile-information-image-wrapper {
+      align-self: center;
+      @extend .width-240;
+      @extend .height-240;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .relative;
+      background-color: $disable-bg;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .profile-information-image-icon {
+        @extend .absolute;
+        right: 1rem;
+        top: 1rem;
+      }
+    }
+    .profile-information-label-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .body-large;
+      color: $title-text;
+    }
+  }
+  .profile-information-download-button-wrapper {
+    @extend .flex-1;
+    @extend .col;
+    @extend .justify-end;
+  }
+}
