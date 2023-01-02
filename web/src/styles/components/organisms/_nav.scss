@@ -61,7 +61,7 @@
       @extend .row;
       @extend .align-center;
       @extend .padding-left-24;
-      @extend .gap-12;
+      @extend .gap-8;
       .user-image {
         @extend .row;
         @extend .width-48;
@@ -82,7 +82,7 @@
         .side-menu-wrap-profile-name-wrap {
           @extend .row;
           @extend .align-center;
-          @extend .gap-8;
+          @extend .gap-4;
           .side-menu-wrap-profile-name {
             @extend .title-large;
             color: $title-text;
@@ -138,6 +138,7 @@
         @extend .align-center;
         @extend .justify-center;
         @extend .padding-16;
+        @extend .flex-1;
         .side-menu-donation-icon-menu-label {
           @extend .body-small;
           color: $title-text;

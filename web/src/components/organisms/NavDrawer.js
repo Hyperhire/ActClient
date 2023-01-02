@@ -55,7 +55,7 @@ const NavDrawer = ({ setOpen }) => {
         {auth.authenticated ? (
           <div className="side-menu-login-menu-wrap">
             <div className="side-menu-wrap-profile-wrap link" onClick={() => navigate(user?.userType === MEMBER_TYPE.INDIVIDUAL ? 'my/profile-information' : 'org/profile')}>
-              <div className="user-image">
+              <div className="user-image background-test2">
                 {user?.userType === MEMBER_TYPE.INDIVIDUAL ? user.info.profileUrl ? <img src={user.info.profileUrl} alt="user-profile-image" /> : <ProfileIcon /> : <ProfileIcon />}
               </div>
               <div className="side-menu-wrap-profile-info-wrap">
@@ -65,7 +65,7 @@ const NavDrawer = ({ setOpen }) => {
                     {user?.userType === MEMBER_TYPE.INDIVIDUAL && <ActIcon />}
                     <div className="side-menu-wrap-profile-type">{user?.userType === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'}</div>
                   </div>
-                  <div className="row flex-auto justify-end padding-right-24">
+                  <div className="row flex-auto justify-end padding-right-4">
                     <ArrowRight />
                   </div>
                 </div>
