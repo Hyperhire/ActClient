@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import InputAdornment from '@mui/material/InputAdornment';
 import { profileUpdateYup } from 'utils/yupSchema';
 import ActInput from 'components/atoms/ActInput';
 import ActButton from 'components/atoms/ActButton';
@@ -21,6 +22,7 @@ import useModal from 'hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
 import { urlToFile } from 'utils/downloadFile';
+import { ReactComponent as Calendar } from '../../styles/assets/icons/cal.svg';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
@@ -56,12 +58,12 @@ const Profile = ({ setOption }) => {
 
   useEffect(() => {
     if (isSuccess && data?.status) {
+      showModal({
+        open: true,
+        message: data.status === 200 ? `프로필이 수정되었습니다.` : `프로필 수정에 실패하였습니다.`,
+      });
       request({ url: api.auth.my, method: 'get' }).then(res => {
         setUser(res.data.data);
-        showModal({
-          open: true,
-          message: data.status === 200 ? `프로필이 수정되었습니다.` : `프로필 수정에 실패하였습니다.`,
-        });
       });
     }
   }, [data, isSuccess]);
@@ -148,7 +150,13 @@ const Profile = ({ setOption }) => {
     formData.append('data', JSON.stringify(params));
     editProfile(formData);
   };
-
+  const inputAdornment = (
+    <InputAdornment position="end">
+      <div className="row align-center">
+        <Calendar />
+      </div>
+    </InputAdornment>
+  );
   return (
     <div className="profile-wrapper">
       <div className="profile-image-wrapper">
@@ -204,7 +212,18 @@ const Profile = ({ setOption }) => {
           <ActInput {...register('name')} id="name" label="실명" required={true} placeholder="실명을 입력하세요" errors={errors} control={control} />
           <div className="profile-form-half-wrapper">
             <div className="row flex-1">
-              <ActDatePicker register={register} id="dateOfBirth" label="생년월일" placeholder="YYMMDD" errors={errors} control={control} value={getValues('dateOfBirth')} setValue={setValue} />
+              <ActDatePicker
+                register={register}
+                id="dateOfBirth"
+                label="생년월일"
+                placeholder="YYMMDD"
+                errors={errors}
+                control={control}
+                value={getValues('dateOfBirth')}
+                setValue={setValue}
+                maxDate={new Date()}
+                inputAdornment={inputAdornment}
+              />
             </div>
             <div className="row flex-1 ">
               <div className="max-width">

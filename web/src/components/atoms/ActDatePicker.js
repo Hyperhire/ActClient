@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import ActInput from 'components/atoms/ActInput';
 
-const ActDatePicker = ({ register, id, errors, control, label, value, setValue }) => {
+const ActDatePicker = ({ register, id, errors, control, label, value, setValue, format = 'YY/MM/DD', maxDate, minDate, placeholder = 'YYMMDD', inputAdornment }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
@@ -13,13 +13,26 @@ const ActDatePicker = ({ register, id, errors, control, label, value, setValue }
         onChange={newValue => {
           if (!newValue) return;
           if (newValue.isValid()) {
-            setValue(id, dayjs(newValue, 'YY/MM/DD'), { shouldValidate: true, shouldDirty: false });
+            setValue(id, dayjs(newValue, format), { shouldValidate: true, shouldDirty: false });
           }
         }}
-        maxDate={new Date()}
-        inputFormat="YY/MM/DD"
+        maxDate={maxDate && maxDate}
+        minDate={minDate && minDate}
+        inputFormat={format}
         renderInput={params => {
-          return <ActInput {...register(id)} id={id} label={label} required placeholder="YYMMDD" errors={errors} control={control} params={params} handleDataPicker={params.onClick} />;
+          return (
+            <ActInput
+              {...register(id)}
+              id={id}
+              label={label}
+              required
+              placeholder={placeholder}
+              errors={errors}
+              control={control}
+              params={{ ...params, InputProps: { ...params.InputProps, endAdornment: inputAdornment } }}
+              handleDataPicker={params.onClick}
+            />
+          );
         }}
       />
     </LocalizationProvider>

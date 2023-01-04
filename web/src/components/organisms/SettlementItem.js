@@ -19,7 +19,7 @@ const SettlementItem = ({ item }) => {
       </div>
       <div className="item-wrapper">
         <div className="title">결제금액</div>
-        <div className="content">{item.amount}</div>
+        <div className="content">{`${item.amount.toLocaleString()}원`}</div>
       </div>
       <div className="item-wrapper">
         <div className="title">후원방식</div>

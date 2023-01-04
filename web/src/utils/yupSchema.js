@@ -147,3 +147,26 @@ export const orgInformationYup = yup.object().shape({
   shortDescription: yup.string(),
   description: yup.string(),
 });
+
+export const newsPostYup = yup.object().shape({
+  title: yup.string().required(''),
+  description: yup.string().required(''),
+  newsImages: yup.array().min(1),
+});
+
+export const campaignPostYup = yup.object().shape({
+  title: yup.string().required(''),
+  description: yup.string().required(''),
+  campaignImages: yup.array().min(1),
+  startedAt: yup
+    .date()
+    .nullable()
+    .transform((curr, orig) => (orig === '' ? null : curr))
+    .required(''),
+  endedAt: yup
+    .date()
+    .nullable()
+    .transform((curr, orig) => (orig === '' ? null : curr))
+    .required(''),
+  goal: yup.string().required(''),
+});

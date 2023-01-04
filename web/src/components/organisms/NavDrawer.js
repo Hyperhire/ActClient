@@ -38,8 +38,8 @@ const NavDrawer = ({ setOpen }) => {
   const PAGES =
     user?.userType === MEMBER_TYPE.ORGANIZATION
       ? [
-          { url: '/organization', name: '단체캠페인' },
-          { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '단체 소식' },
+          { url: '/campaign', name: '단체캠페인' },
+          { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.NEWS }, name: '단체 소식' },
           { url: '/news/list', state: { type: ORGANIZATION_NEWS_TYPE.DISCLOSURE }, name: '단체 공시' },
           { url: '/faq', name: 'FAQ' },
         ]

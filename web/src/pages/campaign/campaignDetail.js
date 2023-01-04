@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
 import ActButton from 'components/atoms/ActButton';
-import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from 'constants/constant';
+import { DONATION_PAYMENT_TYPE, DONATION_TYPE, MEMBER_TYPE } from 'constants/constant';
 import CampaignDetailImage from 'styles/assets/images/campagin-detail.png';
 import ActCarousel from 'components/atoms/ActCarousel';
 import { ReactComponent as TwoPerson } from 'styles/assets/icons/2person.svg';
 import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
+import { usersAtom } from '../../state';
 
 const CampaignDetail = ({ setOption }) => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const user = useRecoilValue(usersAtom);
   const { isLoading, isSuccess, data, isError, error } = useReactQuery(`campaign-detail-${id}`, api.campaign.detail(id));
 
   useEffect(() => {
@@ -72,9 +75,11 @@ const CampaignDetail = ({ setOption }) => {
           </div>
         </div>
       )}
-      <div className="campaign-detail-button-wrapper">
-        <ActButton label="캠페인 후원하기" className="primary-button-x-large" handleOnClick={onClickHandler} />
-      </div>
+      {user?.userType === MEMBER_TYPE.INDIVIDUAL && (
+        <div className="campaign-detail-button-wrapper">
+          <ActButton label="캠페인 후원하기" className="primary-button-x-large" handleOnClick={onClickHandler} />
+        </div>
+      )}
     </div>
   );
 };

@@ -8,9 +8,12 @@ import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import SettlementItemCheckbox from '../../components/organisms/SettlementItemCheckbox';
 import SettlementPaymentHistory from '../../components/organisms/SettlementPaymentHistory';
+import { request } from '../../utils/axiosClient';
+import useModal from '../../hooks/useModal';
 
 const SettlementHistory = ({ setOption }) => {
   const [buttonName, setButtonName] = useState('전체선택');
+  const { showModal } = useModal();
 
   useEffect(() => {
     setOption({
@@ -39,6 +42,7 @@ const SettlementHistory = ({ setOption }) => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     watch,
     formState: { isValid, isSubmitting, errors },
   } = useForm(formOptions);
@@ -51,7 +55,14 @@ const SettlementHistory = ({ setOption }) => {
     control,
     name: 'withdrawItems',
   });
-
+  useEffect(() => {
+    replace(
+      fields.map(field => {
+        return { ...field, checked: false };
+      }),
+    );
+    setValue('withdrawItems', dataPre?.list.NOT_YET, { shouldValidate: true });
+  }, [dataPre]);
   const onClickCheckAll = () => {
     if (getValues('withdrawItems').every(field => field.checked)) {
       replace(
@@ -72,10 +83,32 @@ const SettlementHistory = ({ setOption }) => {
   };
 
   const requestWithdraw = data => {
-    console.log(
-      'requestWithdraw checked',
-      data.withdrawItems.filter(item => item.checked),
-    );
+    const orders = data.withdrawItems.filter(item => item.checked).map(v => v._id);
+
+    request({
+      url: api.my.settlementWithdraw,
+      method: 'post',
+      data: { orders },
+    })
+      .then(res => {
+        if (res.status === 200) {
+          showModal({
+            open: true,
+            message: `정산요청 되었습니다.`,
+            handleConfirm: () => {
+              refetchPre();
+              refetchPost();
+            },
+          });
+        }
+      })
+      .catch(() => {
+        showModal({
+          open: true,
+          message: `정산요청이 실패하였습니다..`,
+          handleConfirm: () => {},
+        });
+      });
   };
 
   const parseData = [

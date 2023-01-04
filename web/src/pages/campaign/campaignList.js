@@ -1,17 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import CampaignItem from 'components/organisms/CampaignItem';
 import ActSearchBar from 'components/atoms/ActSearchBar';
-import { SEARCH_TYPE } from 'constants/constant';
+import { MEMBER_TYPE, ORGANIZATION_NEWS_TYPE, SEARCH_TYPE } from 'constants/constant';
 import { api } from 'repository';
 import { useReactInfiniteQuery } from '../../hooks/useReactInfiniteQuery';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import ActSpinner from '../../components/atoms/ActSpinner';
+import { usersAtom } from '../../state';
+import ActButton from '../../components/atoms/ActButton';
 const CampaignList = ({ setOption }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const loadMoreRef = useRef();
   const { isSuccess, data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useReactInfiniteQuery([searchKeyword, api.campaign.list]);
-
+  const user = useRecoilValue(usersAtom);
   useEffect(() => {
     setOption({ title: '', subtitle: '진행중인 캠페인', description: '', back: true, menu: false });
   }, [setOption]);
@@ -32,11 +35,20 @@ const CampaignList = ({ setOption }) => {
     enabled: hasNextPage,
   });
 
+  const onHandlePost = () => {
+    navigate('post');
+  };
+
+  console.log('data', data);
   return (
     <div className="campaign-list-wrapper">
-      <div className="campaign-list-search-bar-wrapper">
-        <ActSearchBar type={SEARCH_TYPE.CAMPAIGN} searchResultData={onSearchResultData} />
-      </div>
+      {user?.userType === MEMBER_TYPE.INDIVIDUAL ? (
+        <div className="campaign-list-search-bar-wrapper">
+          <ActSearchBar type={SEARCH_TYPE.CAMPAIGN} searchResultData={onSearchResultData} />
+        </div>
+      ) : (
+        <div className="padding-top-24" />
+      )}
       <div className="left-24 divider-thick-primary-2" />
       {isSuccess &&
         data?.pages?.map(page =>
@@ -49,6 +61,12 @@ const CampaignList = ({ setOption }) => {
         )}
       {isFetching && !isFetchingNextPage && <ActSpinner />}
       <div className="max-width height-2" ref={loadMoreRef} />
+      {data?.pages[0].result.list.length <= 0 && (
+        <div className="campaign-list-no-data-wrapper">
+          <div className="campaign-list-no-data">등록 된 단체 캠페인이 없습니다.</div>
+        </div>
+      )}
+      {user?.userType === MEMBER_TYPE.ORGANIZATION && <ActButton className="primary-button-x-large" label="단체 캠페인 등록" handleOnClick={onHandlePost} radius={0} />}
     </div>
   );
 };

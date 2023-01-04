@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import useModal from './useModal';
-import { MEMBER_TYPE } from 'constants/constant';
+import { MEMBER_TYPE, ORGANIZATION_NEWS_TYPE } from 'constants/constant';
 import { TokenContext } from '../utils/TokenContext';
 
 export const useLogin = queryKey => {
@@ -103,7 +103,7 @@ export const useEditOrgInformation = queryKey => {
   const editOrgInfo = async orgInfo => {
     return request({
       data: orgInfo,
-      url: api.auth.editProfile,
+      url: api.auth.editOrgProfile,
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -121,7 +121,63 @@ export const useEditOrgInformation = queryKey => {
       console.log('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useEditProfile');
+      console.log('onSettled useEditOrgInformation');
+    },
+  });
+};
+
+export const useNewsPost = queryKey => {
+  const queryClient = useQueryClient();
+  const newsPost = async newsInfo => {
+    return request({
+      data: newsInfo.data,
+      url: newsInfo.type === ORGANIZATION_NEWS_TYPE.NEWS ? api.news.post : api.notice.post,
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(newsPost, {
+    onSuccess: async data => {
+      if (data.status === 200 || data.status === 201) {
+        await queryClient.invalidateQueries(queryKey);
+      }
+    },
+    onError: (error, variable, context) => {
+      console.log('onError', error, variable, context);
+    },
+    onSettled: () => {
+      console.log('onSettled useNewsPost');
+    },
+  });
+};
+
+export const useCampaignPost = queryKey => {
+  const queryClient = useQueryClient();
+  const campaignPost = async newsInfo => {
+    return request({
+      data: newsInfo,
+      url: api.campaign.post,
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(campaignPost, {
+    onSuccess: async data => {
+      if (data.status === 200 || data.status === 201) {
+        await queryClient.invalidateQueries(queryKey);
+      }
+    },
+    onError: (error, variable, context) => {
+      console.log('onError', error, variable, context);
+    },
+    onSettled: () => {
+      console.log('onSettled useCampaignPost');
     },
   });
 };

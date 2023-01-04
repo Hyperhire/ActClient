@@ -54,7 +54,7 @@ const ActImageUploadButton = ({ children, register, id, control, inputRef, image
     };
   }, [imageFiles]);
 
-  const changeHandler = e => {
+  const changeHandler = (e, onChange) => {
     const { files } = e.target;
     const uploadedImageFiles = [...imageFiles];
     if (uploadedImageFiles.length >= UPLOAD_LIMIT) {
@@ -94,7 +94,6 @@ const ActImageUploadButton = ({ children, register, id, control, inputRef, image
             type="file"
             onChange={e => {
               changeHandler(e);
-              onChange(e);
             }}
             accept="image/png, image/jpg, image/jpeg"
             multiple={multiple}

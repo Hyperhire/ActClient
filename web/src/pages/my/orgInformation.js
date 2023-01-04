@@ -9,16 +9,35 @@ import ActImageViewer from '../../components/organisms/ActImageViewer';
 import ActUploadProfileButton from '../../components/organisms/ActUploadProfileButton';
 import ActButton from '../../components/atoms/ActButton';
 import ActInput from '../../components/atoms/ActInput';
-import { useEditProfile } from '../../hooks/useReactMutation';
+import { useEditOrgInformation, useEditProfile } from '../../hooks/useReactMutation';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
 import useModal from '../../hooks/useModal';
+import { urlToFile } from '../../utils/downloadFile';
 const OrgInformation = ({ setOption }) => {
   const user = useRecoilValue(usersAtom);
   const setUser = useSetRecoilState(usersAtom);
   const { showModal } = useModal();
   const [logoFiles, setLogoFiles] = useState([]);
   const [organizationImageFiles, setOrganizationImageFiles] = useState([]);
+
+  useEffect(() => {
+    urlToFile(user.info.logoUrl).then(file => {
+      setLogoFiles([file]);
+    });
+  }, [user.info.logoUrl]);
+
+  useEffect(() => {
+    const imageArr = user.info.imageUrls.map(url => {
+      return urlToFile(url).then(file => {
+        return file;
+      });
+    });
+    Promise.all(imageArr).then(images => {
+      setOrganizationImageFiles(images);
+    });
+  }, [user.info.imageUrls]);
+
   useEffect(() => {
     setOption({
       title: '단체 정보',
@@ -28,22 +47,25 @@ const OrgInformation = ({ setOption }) => {
       menu: true,
     });
   }, [setOption]);
-  const { data, mutate: editOrgInfo, isSuccess } = useEditProfile('edit-profile');
+  const { data, mutate: editOrgInfo, isSuccess } = useEditOrgInformation('edit-org-profile');
+
   useEffect(() => {
     if (isSuccess && data?.status) {
+      showModal({
+        open: true,
+        message: data.status === 200 ? `단체정보가 수정되었습니다.` : `단체정보 수정에 실패하였습니다.`,
+      });
       request({ url: api.auth.my, method: 'get' }).then(res => {
         setUser(res.data.data);
-        showModal({
-          open: true,
-          message: data.status === 200 ? `단체정보가 수정되었습니다.` : `단체정보 수정에 실패하였습니다.`,
-        });
       });
     }
   }, [data, isSuccess]);
+
   const orgInformationDefaultForm = {
-    shortDescription: '',
-    description: '',
+    shortDescription: user.info.shortDescription,
+    description: user.info.description,
   };
+
   const formOptions = { mode: 'onChange', defaultValues: orgInformationDefaultForm, resolver: yupResolver(orgInformationYup) };
 
   const {
@@ -56,18 +78,17 @@ const OrgInformation = ({ setOption }) => {
   } = useForm(formOptions);
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
     const formData = new FormData();
-    formData.append('logoImage', logoFiles[0]);
+    formData.append('logo', logoFiles[0]);
     organizationImageFiles.forEach(image => {
-      formData.append('orgImages', image);
+      formData.append('images', image);
     });
     const params = {
       shortDescription: data.shortDescription,
       description: data.description,
     };
     formData.append('data', JSON.stringify(params));
-    // editOrgInfo(formData);
+    editOrgInfo(formData);
   };
   const style = {
     '& .MuiOutlinedInput-root': {

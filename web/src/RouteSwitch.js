@@ -37,7 +37,8 @@ const Payment = lazy(() => import('pages/payment'));
 const OrgBase = lazy(() => import('pages/org'));
 const SettlementHistory = lazy(() => import('pages/org/settlementHistory'));
 const Verify = lazy(() => import('pages/login/verify'));
-
+const NewsPost = lazy(() => import('pages/news/newsPost'));
+const CampaignPost = lazy(() => import('pages/campaign/campaignPost'));
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
   return (
@@ -62,10 +63,12 @@ const RouteSwitch = () => {
             <Route path="/campaign" element={<CampaignBase setOption={setOption} />}>
               <Route path="" element={<CampaignList setOption={setOption} />} />
               <Route path=":id" element={<CampaignDetail setOption={setOption} />} />
+              <Route path="post" element={<CampaignPost setOption={setOption} />} />
             </Route>
             <Route path="/news" element={<NewsBase setOption={setOption} />}>
               <Route path="list" element={<NewsList setOption={setOption} />} />
               <Route path=":id" element={<NewsDetail setOption={setOption} />} />
+              <Route path="post" element={<NewsPost setOption={setOption} />} />
             </Route>
             <Route path="/donation" element={<DonationBase setOption={setOption} />}>
               <Route path="" element={<PrivateRoute outlet={<Donation setOption={setOption} />} path="/login" />} />

@@ -14,6 +14,7 @@ export const api = {
     duplicateNickname: nickname => `/api/v1/auth/check-duplicate-nickname?nickname=${nickname}`,
     reIssueToken: '/api/v1/auth/reissue-token',
     editProfile: '/api/v1/auth/edit-profile',
+    editOrgProfile: '/api/v1/org/edit-my-org-detail',
   },
   my: {
     update: '',
@@ -22,12 +23,14 @@ export const api = {
     nftDetail: id => `/api/v1/nft?token_id=${id}`,
     settlementPre: '/api/v1/withdraw/pre-request-list',
     settlementPost: '/api/v1/withdraw/post-request-list',
+    settlementWithdraw: '/api/v1/withdraw',
   },
   organization: {
     list: '/api/v1/org',
     detail: id => `/api/v1/org/${id}`,
   },
   campaign: {
+    post: '/api/v1/campaign',
     list: '/api/v1/campaign',
     detail: id => `/api/v1/campaign/${id}`,
     listByOrg: org => `/api/v1/campaign/list-by-org/${org}`,
@@ -40,11 +43,13 @@ export const api = {
     org: '/api/v1/org',
   },
   news: {
+    post: '/api/v1/news',
     list: '/api/v1/news',
     detail: id => `/api/v1/news/${id}`,
     listByOrg: org => `/api/v1/news/list-by-org/${org}`,
   },
   notice: {
+    post: '/api/v1/notice',
     list: '/api/v1/notice',
     detail: id => `/api/v1/notice/${id}`,
     listByOrg: org => `/api/v1/notice/list-by-org/${org}`,

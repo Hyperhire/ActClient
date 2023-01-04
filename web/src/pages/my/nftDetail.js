@@ -22,7 +22,7 @@ const NftDetail = ({ setOption }) => {
   useEffect(() => {
     if (!location.state) navigate('/', { replace: true });
   }, [location.state, navigate]);
-  console.log('orders', item);
+
   const { isSuccess, data } = useReactQuery(`nft-detail`, api.my.nftDetail(item.orders[0].nft));
 
   useEffect(() => {

@@ -36,7 +36,11 @@ const ActInput = (props, ref) => {
     multiline = false,
     rows = 1,
   } = props;
-  const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
+
+  const isEmptyObj = obj => {
+    return obj.constructor === Object && Object.keys(obj).length === 0;
+  };
+  const isError = !isEmptyObj(errors);
 
   const [duplicatedResult, setDuplicatedResult] = useState(duplicate?.defaultValue ? duplicate.defaultValue : { result: undefined, data: { status: undefined, message: '' } });
 

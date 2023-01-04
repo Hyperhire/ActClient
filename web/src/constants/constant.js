@@ -61,7 +61,7 @@ export const DONATION_HISTORY_TYPE = {
 };
 
 export const ORGANIZATION_NEWS_TYPE = {
-  NEWS: 'new',
+  NEWS: 'news',
   DISCLOSURE: 'disclosure',
 };
 
