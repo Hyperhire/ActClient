@@ -54,8 +54,8 @@ const NavDrawer = ({ setOpen }) => {
       <div className="side-menu-wrap">
         {auth.authenticated ? (
           <div className="side-menu-login-menu-wrap">
-            <div className="side-menu-wrap-profile-wrap link" onClick={() => navigate(user?.userType === MEMBER_TYPE.INDIVIDUAL ? 'my/profile-information' : 'org/profile')}>
-              <div className="user-image background-test2">
+            <div className="side-menu-wrap-profile-wrap link" onClick={() => navigate(user?.userType === MEMBER_TYPE.INDIVIDUAL ? 'my/profile-information' : 'org/organization-information')}>
+              <div className="user-image">
                 {user?.userType === MEMBER_TYPE.INDIVIDUAL ? user.info.profileUrl ? <img src={user.info.profileUrl} alt="user-profile-image" /> : <ProfileIcon /> : <ProfileIcon />}
               </div>
               <div className="side-menu-wrap-profile-info-wrap">

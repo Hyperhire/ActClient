@@ -1,0 +1,51 @@
+.act-image-viewer-wrapper {
+  @extend .col;
+  @extend .align-center;
+  @extend .justify-center;
+  @extend .gap-8;
+  .act-image-viewer-selected-image-wrapper {
+    @extend .row;
+    @extend .max-width;
+    @extend .height-180;
+    @extend .bordered;
+    @extend .border-radius-8;
+    @extend .align-center;
+    @extend .justify-center;
+    @extend .relative;
+    .act-image-viewer-selected-image{
+      @extend .max-width;
+      @extend .max-height;
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        @extend .border-radius-8;
+      }
+    }
+    .act-image-viewer-close-button {
+      @extend .absolute;
+      right: 4px;
+      top: 4px;
+    }
+  }
+  .act-image-viewer-thumbnail-wrapper {
+    @extend .row;
+    @extend .max-width;
+    @extend .gap-8;
+    .act-image-viewer-thumbnail {
+      @extend .height-40;
+      @extend .bordered;
+      @extend .border-radius-4;
+      @extend .align-center;
+      @extend .justify-center;
+      @extend .flex-1;
+      img {
+        display: block;
+        width: 100%;
+        @extend .height-40;
+        object-fit: cover;
+      }
+    }
+  }
+}

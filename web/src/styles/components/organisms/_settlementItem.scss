@@ -1,0 +1,17 @@
+.settlement-list-item-wrapper {
+  @extend .col;
+  @extend .max-width;
+  .item-wrapper {
+    @extend .row;
+    .title {
+      @extend .body-medium;
+      color: $body-text;
+      flex: 1;
+    }
+    .content {
+      @extend .body-medium;
+      color: $title-text;
+      flex: 2;
+    }
+  }
+}

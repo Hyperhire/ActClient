@@ -142,3 +142,8 @@ export const verifyYup = yup.object().shape({
   verify4: yup.string().required(''),
   verify5: yup.string().required(''),
 });
+
+export const orgInformationYup = yup.object().shape({
+  shortDescription: yup.string(),
+  description: yup.string(),
+});

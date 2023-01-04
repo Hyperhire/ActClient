@@ -33,6 +33,8 @@ const ActInput = (props, ref) => {
     hideErrorMessage = false,
     actInputRef,
     disabled = false,
+    multiline = false,
+    rows = 1,
   } = props;
   const isError = !!(JSON.stringify(errors) !== '{}' && errors[id]);
 
@@ -82,16 +84,20 @@ const ActInput = (props, ref) => {
                 variant="outlined"
                 inputRef={ref => actInputRef && actInputRef(ref)}
                 disabled={disabled}
+                multiline={multiline}
+                rows={rows}
                 sx={{
                   '& fieldset': { borderRadius: 0, border: 'none', borderBottom: isError ? 'solid 1px red' : 'solid 1px black' },
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       border: 'none',
                       borderBottom: 'solid 1px black',
+                      padding: 0,
                     },
                     '&.Mui-focused fieldset': {
                       border: 'none',
                       borderBottom: 'solid 1px black',
+                      padding: 0,
                     },
                   },
                   '&.MuiTextField-root': {

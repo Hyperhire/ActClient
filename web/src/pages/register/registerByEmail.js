@@ -178,7 +178,7 @@ const RegisterByEmail = ({ setOption }) => {
         {type === MEMBER_TYPE.ORGANIZATION && <div className="register-by-email-divider" />}
         {type === MEMBER_TYPE.ORGANIZATION && (
           <div className="register-by-email-form-common-wrapper">
-            <ActUploadLicenseButton register={register('image')} id="image" errors={errors} control={control} imageFiles={imageFiles} setImageFiles={setImageFiles} />
+            <ActUploadLicenseButton register={register('image')} id="image" errors={errors} control={control} imageFiles={imageFiles} setImageFiles={setImageFiles} label="사업자등록증" />
           </div>
         )}
         {type === MEMBER_TYPE.ORGANIZATION && (

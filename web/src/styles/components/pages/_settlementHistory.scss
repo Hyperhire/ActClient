@@ -1,16 +1,47 @@
 .settlement-history-wrapper {
   @extend .col;
+  @extend .max-height;
   .settlement-history-header-wrapper {
-    @extend .row;
-    @extend .align-center;
-    @extend .justify-between;
-    @extend .border-radius-8;
-    @extend .max-width;
-    @extend .height-64;
-    background-color: #EDEEF2;
+    @extend .padding-24;
+    @extend .col;
+    @extend .gap-24;
+    .settlement-history-header {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-between;
+      @extend .border-radius-8;
+      @extend .max-width;
+      @extend .height-64;
+      @extend .padding-16;
+      background-color: #EDEEF2;
+      .label {
+        @extend .body-medium;
+        color: $title-text;
+      }
+      .content {
+        @extend .headline-medium;
+        color: $title-text;
+      }
+    }
+  }
+  .settlement-history-list-wrapper {
+    padding-bottom: 12.25rem;
+    .settlement-history-list{
+      @extend .padding-24;
+    }
+
+    .list-title {
+      @extend .padding-24;
+      @extend .headline-medium;
+      color: $title-text;
+    }
   }
   .settlement-history-footer-wrapper {
     @extend .col;
+    @extend .max-width;
+    height: 12.25rem;
+    position : fixed;
+    bottom: 0;
     background-color: #FAFAFA;
     .settlement-history-footer-info-wrapper {
       @extend .col;
@@ -31,7 +62,6 @@
         @extend .align-center;
         @extend .justify-between;
         @extend .max-width;
-        @extend .height-64;
         .settlement-history-footer-amount-label {
           @extend .title-medium;
           color: $title-text;
@@ -48,26 +78,25 @@
       @extend .max-width;
       @extend .align-center;
       @extend .justify-center;
-      @extend .height-64;
-      .settlement-history-footer-cancel-button {
-        @extend .row;
-        @extend .flex-1;
-        @extend .align-center;
-        @extend .justify-center;
-        @extend .body-large;
-        @extend .max-height;
-        background-color: $out-line;
-      }
-      .settlement-history-footer-confirm-button {
-        @extend .row;
-        @extend .flex-1;
-        @extend .align-center;
-        @extend .justify-center;
-        @extend .body-large;
-        @extend .max-height;
-        background-color: $primary;
-        color: white;
-      }
+      //.settlement-history-footer-cancel-button {
+      //  @extend .row;
+      //  @extend .flex-1;
+      //  @extend .align-center;
+      //  @extend .justify-center;
+      //  @extend .body-large;
+      //  @extend .max-height;
+      //  background-color: $out-line;
+      //}
+      //.settlement-history-footer-confirm-button {
+      //  @extend .row;
+      //  @extend .flex-1;
+      //  @extend .align-center;
+      //  @extend .justify-center;
+      //  @extend .body-large;
+      //  @extend .max-height;
+      //  background-color: $primary;
+      //  color: white;
+      //}
     }
   }
 }

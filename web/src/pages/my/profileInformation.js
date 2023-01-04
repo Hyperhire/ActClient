@@ -36,7 +36,7 @@ const ProfileInformation = ({ setOption }) => {
             <ActIcon />
           </div>
         </div>
-        <div className="profile-information-label-wrapper">{user.info.nickname}</div>
+        <div className="profile-information-label-wrapper">{user?.info.nickname}</div>
       </div>
       <div className="profile-information-download-button-wrapper">
         <ActButton

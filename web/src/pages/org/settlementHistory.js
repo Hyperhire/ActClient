@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useFieldArray, useForm } from 'react-hook-form';
 import ActButton from 'components/atoms/ActButton';
 import SettlementItem from 'components/organisms/SettlementItem';
 import ActTab from '../../components/atoms/ActTab';
-import OrganizationNewsItem from '../../components/organisms/OrganizationNewsItem';
-import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
-import DisclosureItem from '../../components/organisms/DisclosureItem';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
+import SettlementItemCheckbox from '../../components/organisms/SettlementItemCheckbox';
+import SettlementPaymentHistory from '../../components/organisms/SettlementPaymentHistory';
 
 const SettlementHistory = ({ setOption }) => {
   const [buttonName, setButtonName] = useState('전체선택');
@@ -22,27 +22,76 @@ const SettlementHistory = ({ setOption }) => {
     });
   }, [setOption, buttonName]);
 
-  const { isSuccessPre, dataPre, refetchPre } = useReactQuery('settlement-pre', api.my.settlementPre);
-  const { isSuccessPost, dataPost, refetchPost } = useReactQuery('settlement-post', api.my.settlementPost);
+  const { isSuccess: isSuccessPre, data: dataPre, refetch: refetchPre } = useReactQuery('settlement-pre', api.my.settlementPre);
+  const { isSuccess: isSuccessPost, data: dataPost, refetch: refetchPost } = useReactQuery('settlement-post', api.my.settlementPost);
 
-  const list1 = [{ amount: 1_000 }, { amount: 2_000 }, { amount: 3_000 }, { amount: 4_000 }];
-  const list2 = [{ amount: 10_000 }, { amount: 20_000 }, { amount: 30_000 }];
+  const settlementHistoryForm = {
+    withdrawItems: isSuccessPre && dataPre?.list.NOT_YET,
+  };
+
+  const formOptions = {
+    mode: 'onChange',
+    defaultValues: settlementHistoryForm,
+  };
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    getValues,
+    watch,
+    formState: { isValid, isSubmitting, errors },
+  } = useForm(formOptions);
+
+  const withdrawItemsValues = getValues('withdrawItems');
+  useEffect(() => {
+    setButtonName(withdrawItemsValues.every(field => field.checked) ? '선택해제' : '전체선택');
+  }, [withdrawItemsValues]);
+  const { fields, replace } = useFieldArray({
+    control,
+    name: 'withdrawItems',
+  });
+
+  const onClickCheckAll = () => {
+    if (getValues('withdrawItems').every(field => field.checked)) {
+      replace(
+        fields.map(field => {
+          return { ...field, checked: false };
+        }),
+      );
+    } else {
+      replace(
+        fields.map(field => {
+          return { ...field, checked: true };
+        }),
+      );
+    }
+  };
+  const onChangeHandler = async () => {
+    setButtonName(withdrawItemsValues.every(field => field.checked) ? '선택해제' : '전체선택');
+  };
+
+  const requestWithdraw = data => {
+    console.log(
+      'requestWithdraw checked',
+      data.withdrawItems.filter(item => item.checked),
+    );
+  };
 
   const parseData = [
     {
       index: 0,
       label: '정산내역',
       header: (
-        <>
-          <div className="row gap-8">
-            <ActButton className="button-small-outline" handleOnClick={() => console.log('')} label={buttonName} />
-            <ActButton className="button-small-outline" disabled={true} handleOnClick={() => console.log('')} label="삭제" />
+        <div className="settlement-history-header-wrapper">
+          <div className="row gap-8 justify-end">
+            <ActButton className="button-small-outline" handleOnClick={onClickCheckAll} label={buttonName} />
           </div>
-          <div className="settlement-history-header-wrapper">
-            <div>정산가능금액</div>
-            <div>{list1.reduce((a, b) => a + b.amount, 0).toLocaleString()}</div>
+          <div className="settlement-history-header">
+            <div className="label">정산가능금액</div>
+            <div className="content">{dataPre.amount.NOT_YET.toLocaleString()}원</div>
           </div>
-        </>
+        </div>
       ),
       footer: (
         <div className="settlement-history-footer-wrapper">
@@ -53,58 +102,99 @@ const SettlementHistory = ({ setOption }) => {
             <div className="bordered-dashed" />
             <div className="settlement-history-footer-amount-wrapper">
               <div className="settlement-history-footer-amount-label">정산요청금액</div>
-              <div className="settlement-history-footer-amount">20,000</div>
+              <div className="settlement-history-footer-amount">
+                {`${getValues('withdrawItems')
+                  .filter(item => item.checked)
+                  .reduce((a, b) => a + b.amount, 0)
+                  .toLocaleString()}원`}
+              </div>
             </div>
           </div>
           <div className="settlement-history-footer-button-wrapper">
-            <div className="settlement-history-footer-cancel-button link" onClick={() => console.log('취소하기')}>
-              <div>취소하기</div>
+            <div className="max-width">
+              <ActButton radius={0} className="primary-button-x-large-outline" label="취소하기" handleOnClick={() => console.log('취소하기')} />
             </div>
-            <div className="settlement-history-footer-confirm-button link" onClick={() => console.log('정산요청하기')}>
-              <div>정산요청하기</div>
+            <div className="max-width">
+              <ActButton radius={0} className="primary-button-x-large" label="정산요청하기" handleOnClick={handleSubmit(requestWithdraw)} />
             </div>
           </div>
         </div>
       ),
-      list: list1.map((item, index) => {
-        return (
-          <div key={index}>
-            <SettlementItem item={item} clickHandler={item => console.log('onClick', item)} />
-            {index !== list1.length && <div className="divider" />}
-          </div>
-        );
-      }),
+      list: (
+        <div className="settlement-history-list-wrapper">
+          {fields.map((field, index) => {
+            return (
+              <div key={index}>
+                <div className="settlement-history-list">
+                  <SettlementItemCheckbox id="withdrawItems" item={field} index={index} control={control} register={register} errors={errors} watch={watch} changeHandler={onChangeHandler} />
+                </div>
+                {index !== fields.length && <div className="divider" />}
+              </div>
+            );
+          })}
+          {dataPre?.list.REQUESTED.length > 0 && (
+            <div>
+              <div className="divider-thick-12" />
+              <div className="list-title">정산요청완료</div>
+              {dataPre?.list.REQUESTED.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <div className="settlement-history-list">
+                      <SettlementItem item={item} />
+                    </div>
+                    {index !== dataPre?.list.REQUESTED.length && <div className="divider" />}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ),
     },
     {
       index: 1,
       label: '지급내역',
       header: (
-        <>
-          <div className="row gap-8">
-            <ActButton className="button-small-outline" handleOnClick={() => console.log('')} label={buttonName} />
-            <ActButton className="button-small-outline" disabled={true} handleOnClick={() => console.log('')} label="삭제" />
+        <div className="settlement-history-header-wrapper">
+          <div className="settlement-history-header">
+            <div className="label">지급대기</div>
+            <div className="content">{dataPost.amount.PENDING.toLocaleString()}원</div>
           </div>
-          <div className="row">
-            <div>지급대기</div>
-            <div>560,000</div>
-          </div>
-        </>
+        </div>
       ),
-      list: list2.map((item, index) => {
-        return (
-          <div key={index}>
-            <SettlementItem item={item} clickHandler={item => console.log('onClick', item)} />
-            {index !== list2.length && <div className="divider" />}
-          </div>
-        );
-      }),
+      list: (
+        <div className="settlement-history-list-wrapper">
+          {dataPost?.list.PENDING.map((item, index) => {
+            return (
+              <div key={index}>
+                <div className="settlement-history-list">
+                  <SettlementPaymentHistory item={item} clickHandler={item => console.log('onClick', item)} />
+                </div>
+                {index !== dataPost?.list.PENDING.length && <div className="divider" />}
+              </div>
+            );
+          })}
+          {dataPost?.list.COMPLETE.length > 0 && (
+            <div>
+              <div className="divider-thick-12" />
+              <div className="list-title">지급완료</div>
+              {dataPost?.list.COMPLETE.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <div className="settlement-history-list">
+                      <SettlementPaymentHistory item={item} clickHandler={item => console.log('onClick', item)} />
+                    </div>
+                    {index !== dataPost?.list.PENDING.length && <div className="divider" />}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      ),
     },
   ];
 
-  return (
-    <div className="settlement-history-wrapper">
-      <ActTab data={parseData} />
-    </div>
-  );
+  return <div className="settlement-history-wrapper">{isSuccessPre && isSuccessPost && dataPre && dataPost && <ActTab data={parseData} />}</div>;
 };
 export default SettlementHistory;

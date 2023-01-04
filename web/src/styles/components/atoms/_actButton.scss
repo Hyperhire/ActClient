@@ -19,6 +19,18 @@
     background: $disable-bg;
   }
 }
+.primary-button-x-large-outline {
+  @extend .act-button;
+  width: 100%;
+  height: 3.5rem;
+  @extend .body-large;
+  color: $primary;
+  background: $out-line;
+  &:disabled {
+    color: $title-text;
+    background: $disable-bg;
+  }
+}
 .primary-button-large {
   @extend .act-button;
   @extend .max-width;

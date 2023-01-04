@@ -1,0 +1,42 @@
+.org-information-wrapper {
+  @extend .col;
+  @extend .padding-top-24;
+  .org-information-divider {
+    @extend .left-24;
+    @include dividerCustom(2, black);
+  }
+  .org-information-content-wrapper {
+    @extend .padding-24;
+    @extend .col;
+    @extend .gap-24;
+    .org-information-logo-wrapper {
+      @extend .col;
+      @extend .gap-12;
+      .org-information-logo {
+
+      }
+    }
+    .org-information-image-wrapper {
+      @extend .col;
+      @extend .gap-12;
+      .org-information-image-view {
+
+      }
+      .org-information-thumbnail {
+
+      }
+    }
+    .org-information-shortDescription-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+    .org-information-description-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+  }
+  .org-information-label {
+    @extend .title-small;
+    color: $title-text;
+  }
+}

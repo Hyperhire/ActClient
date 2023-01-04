@@ -4,9 +4,9 @@ import { Controller } from 'react-hook-form';
 
 const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
 
-const UPLOAD_LIMIT = 1;
+const UPLOAD_LIMIT = 3;
 
-const ActImageUploadButton = ({ children, register, id, control, inputRef, imageFiles, setImageFiles, setImages }) => {
+const ActImageUploadButton = ({ children, register, id, control, inputRef, imageFiles, setImageFiles, setImages, multiple = false }) => {
   const { ref, ...rest } = register;
 
   useEffect(() => {
@@ -56,7 +56,11 @@ const ActImageUploadButton = ({ children, register, id, control, inputRef, image
 
   const changeHandler = e => {
     const { files } = e.target;
-    const uploadedImageFiles = [];
+    const uploadedImageFiles = [...imageFiles];
+    if (uploadedImageFiles.length >= UPLOAD_LIMIT) {
+      alert(`이미지는 ${UPLOAD_LIMIT}개 까지만 업로드 가능합니다`);
+      return;
+    }
     for (let i = 0; i < files.length; i++) {
       if (i === UPLOAD_LIMIT) {
         alert(`이미지는 ${UPLOAD_LIMIT}개 까지만 업로드 가능합니다`);
@@ -93,6 +97,7 @@ const ActImageUploadButton = ({ children, register, id, control, inputRef, image
               onChange(e);
             }}
             accept="image/png, image/jpg, image/jpeg"
+            multiple={multiple}
           />
         )}
       />

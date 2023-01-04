@@ -134,29 +134,31 @@ const DonationHistory = ({ setOption }) => {
       {isSuccess && data && (
         <>
           <ActTab initialTab={location.state?.type} data={parseData} />
-          <div className="donation-history-footer-wrapper">
-            <div className="donation-history-footer-item-wrapper">
-              <div className="donation-history-footer-item-label">누적 총 후원금액</div>
-              <div className="donation-history-footer-item-content">{`${(data.orgs.reduce((a, b) => a + b.amount, 0) + data.campaigns.reduce((a, b) => a + b.amount, 0)).toLocaleString()}`}</div>
+          {user.userType === MEMBER_TYPE.ORGANIZATION && (
+            <div className="donation-history-footer-wrapper">
+              <div className="donation-history-footer-item-wrapper">
+                <div className="donation-history-footer-item-label">누적 총 후원금액</div>
+                <div className="donation-history-footer-item-content">{`${(data.orgs.reduce((a, b) => a + b.amount, 0) + data.campaigns.reduce((a, b) => a + b.amount, 0)).toLocaleString()}원`}</div>
+              </div>
+              <div className="donation-history-footer-item-wrapper">
+                <div className="donation-history-footer-item-label">단체 정기후원/일반후원 건수</div>
+                <div className="donation-history-footer-item-content">{`${data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION).length}/${
+                  data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SINGLE).length
+                } 건`}</div>
+              </div>
+              <div className="donation-history-footer-item-wrapper">
+                <div className="donation-history-footer-item-label">단체 정기후원금액(진행중)</div>
+                <div className="donation-history-footer-item-content">{`${data.orgs
+                  .filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && item.active)
+                  .reduce((a, b) => a + b.amount, 0)
+                  .toLocaleString()}(${data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && item.active).length}건)`}</div>
+              </div>
+              <div className="donation-history-footer-item-wrapper">
+                <div className="donation-history-footer-item-label">캠페인 후원</div>
+                <div className="donation-history-footer-item-content">{`${data.campaigns.reduce((a, b) => a + b.amount, 0).toLocaleString()}(${data.campaigns.length}건)`}</div>
+              </div>
             </div>
-            <div className="donation-history-footer-item-wrapper">
-              <div className="donation-history-footer-item-label">단체 정기후원/일반후원 건수</div>
-              <div className="donation-history-footer-item-content">{`${data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION).length}/${
-                data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SINGLE).length
-              } 건`}</div>
-            </div>
-            <div className="donation-history-footer-item-wrapper">
-              <div className="donation-history-footer-item-label">단체 정기후원금액(진행중)</div>
-              <div className="donation-history-footer-item-content">{`${data.orgs
-                .filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && item.active)
-                .reduce((a, b) => a + b.amount, 0)
-                .toLocaleString()}(${data.orgs.filter(item => item.paymentType === DONATION_PAYMENT_TYPE.SUBSCRIPTION && item.active).length}건)`}</div>
-            </div>
-            <div className="donation-history-footer-item-wrapper">
-              <div className="donation-history-footer-item-label">캠페인 후원</div>
-              <div className="donation-history-footer-item-content">{`${data.campaigns.reduce((a, b) => a + b.amount, 0).toLocaleString()}(${data.campaigns.length}건)`}</div>
-            </div>
-          </div>
+          )}
         </>
       )}
     </div>

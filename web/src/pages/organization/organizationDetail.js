@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import ActButton from 'components/atoms/ActButton';
-import { ReactComponent as Holt } from 'styles/assets/images/organizationLogo/circle/holt.svg';
-import { ReactComponent as WorldVision } from 'styles/assets/images/organizationLogo/circle/world-vision.svg';
-import { ReactComponent as WeBridge } from 'styles/assets/images/organizationLogo/circle/we-bridge.svg';
-import { ReactComponent as Ksfp } from 'styles/assets/images/organizationLogo/circle/ksfp.svg';
-import { ReactComponent as GoodNeighbors } from 'styles/assets/images/organizationLogo/circle/good-neighbors.svg';
 import { ReactComponent as Home } from 'styles/assets/icons/home.svg';
 import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
 import OrganizationCover from 'components/organisms/organization/OrganizationCover';
 import OrganizationCampaign from 'components/organisms/organization/OrganizationCampaign';
-import { DONATION_TYPE, ORGANIZATION_ID } from 'constants/constant';
+import { DONATION_TYPE, MEMBER_TYPE, ORGANIZATION_ID } from 'constants/constant';
 import OrganizationNews from 'components/organisms/organization/OrganizationNews';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
+import { usersAtom } from '../../state';
+import useModal from '../../hooks/useModal';
 
 const OrganizationDetail = ({ setOption }) => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const user = useRecoilValue(usersAtom);
+  const { showModal } = useModal();
   const { isLoading, isSuccess, data, isError, error } = useReactQuery(`org-detail-${id}`, api.organization.detail(id));
   // const [data, setData] = useState(undefined);
   useEffect(() => {
@@ -25,6 +25,25 @@ const OrganizationDetail = ({ setOption }) => {
   }, [setOption]);
 
   const onClickHandler = () => {
+    if (user?.userType !== MEMBER_TYPE.INDIVIDUAL) return;
+    if (!user.info.constant.isEmailVerified) {
+      showModal({
+        open: true,
+        message: `이메일 인증이 필요합니다.`,
+        handleConfirm: () => navigate('/verify'),
+        handleCancel: () => {},
+      });
+      return;
+    }
+    if (!user.info.indInfo.dateOfBirth && user.info.indInfo.mobile && user.info.indInfo.name && user.info.indInfo.sex) {
+      showModal({
+        open: true,
+        message: `개인정보 입력이 필요합니다.`,
+        handleConfirm: () => navigate('/my/profile'),
+        handleCancel: () => {},
+      });
+      return;
+    }
     navigate(`/donation`, { state: { item: data, type: DONATION_TYPE.ORGANIZATION } });
   };
 
@@ -44,7 +63,7 @@ const OrganizationDetail = ({ setOption }) => {
                 홈페이지 바로가기
               </div>
             </div>
-            <ActButton className="tertiary-button-x-large" handleOnClick={onClickHandler} label="후원하기" isDonating={data.isDonating} />
+            {user?.userType === MEMBER_TYPE.INDIVIDUAL && <ActButton className="tertiary-button-x-large" handleOnClick={onClickHandler} label="후원하기" isDonating={data.isDonating} />}
           </div>
         </div>
       )}

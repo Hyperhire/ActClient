@@ -97,3 +97,31 @@ export const useEditProfile = queryKey => {
     },
   });
 };
+
+export const useEditOrgInformation = queryKey => {
+  const queryClient = useQueryClient();
+  const editOrgInfo = async orgInfo => {
+    return request({
+      data: orgInfo,
+      url: api.auth.editProfile,
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  };
+
+  return useMutation(editOrgInfo, {
+    onSuccess: async data => {
+      if (data.status === 200 || data.status === 201) {
+        await queryClient.invalidateQueries(queryKey);
+      }
+    },
+    onError: (error, variable, context) => {
+      console.log('onError', error, variable, context);
+    },
+    onSettled: () => {
+      console.log('onSettled useEditProfile');
+    },
+  });
+};

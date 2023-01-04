@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import ActImageUploadButton from '../atoms/ActImageUploadButton';
 import { ReactComponent as PlusIcon } from '../../styles/assets/icons/plus.svg';
-const ActUploadLicenseButton = ({ register, id, errors, control, imageFiles, setImageFiles }) => {
+const ActUploadLicenseButton = ({ register, id, errors, control, imageFiles, setImageFiles, label }) => {
   const [images, setImages] = useState([]);
   const inputRef = useRef(null);
 
@@ -26,7 +26,7 @@ const ActUploadLicenseButton = ({ register, id, errors, control, imageFiles, set
           {images?.length > 0 ? (
             <>
               <div className="button-label">
-                <span>사업자등록증</span> 업로드 완료
+                <span>{label}</span> 업로드 완료
               </div>
               {images?.map((image, idx) => {
                 return (
@@ -46,7 +46,7 @@ const ActUploadLicenseButton = ({ register, id, errors, control, imageFiles, set
           ) : (
             <>
               <div className="button-label">
-                <span>사업자등록증</span>을 업로드 해주세요
+                <span>{label}</span> 업로드 해주세요
               </div>
               <div className="button-upload" onClick={handleOnClick}>
                 <PlusIcon />
