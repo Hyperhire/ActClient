@@ -11,7 +11,7 @@ const DuplicateButton = (props, ref) => {
       url: id === 'duplicateEmail' ? api.auth.duplicateEmail(testValue) : id === 'duplicateNickname' && api.auth.duplicateNickname(testValue),
       method: 'get',
     });
-    resultCallBack({ result: true, data: { status: res.data.data.duplicated, message: res.data.data.duplicated ? '사용 중입니다.' : '사용할 수 있습니다.' } });
+    resultCallBack({ result: true, data: { status: res.data.data.duplicated, message: res.data.data.duplicated ? '이미 사용 중입니다.' : '사용할 수 있습니다.' } });
   };
   return <Controller control={control} name={id} render={props => <ActButton className="button-small" label={label} disabled={disabled} handleOnClick={checkDuplicated} {...props} />} />;
 };

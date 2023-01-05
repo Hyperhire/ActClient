@@ -22,10 +22,11 @@ const OrgInformation = ({ setOption }) => {
   const [organizationImageFiles, setOrganizationImageFiles] = useState([]);
 
   useEffect(() => {
+    if (!user) return;
     urlToFile(user.info.logoUrl).then(file => {
       setLogoFiles([file]);
     });
-  }, [user.info.logoUrl]);
+  }, [user]);
 
   useEffect(() => {
     const imageArr = user.info.imageUrls.map(url => {

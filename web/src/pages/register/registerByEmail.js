@@ -137,6 +137,7 @@ const RegisterByEmail = ({ setOption }) => {
             duplicate={{ register, label: '중복확인', id: 'duplicateEmail', setValue: setValue }}
             fieldInvalid={!!getFieldState('email').error}
           />
+
           <div className="register-by-email-form-half-row-wrapper">
             <div className="row flex-auto">
               <ActInput {...register('password')} label="비밀번호" type="password" id="password" placeholder="새로운 비밀번호 " errors={errors} control={control} />
@@ -153,7 +154,13 @@ const RegisterByEmail = ({ setOption }) => {
             placeholder="닉네임을 입력하세요"
             errors={errors}
             control={control}
-            duplicate={{ register, label: '중복확인', id: 'duplicateNickname', setValue: setValue }}
+            duplicate={{
+              register,
+              label: '중복확인',
+              id: 'duplicateNickname',
+              setValue: setValue,
+              defaultValue: undefined,
+            }}
             fieldInvalid={!!getFieldState('nickname').error}
             regExp={/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g}
           />

@@ -77,7 +77,24 @@ export const profileUpdateYup = yup.object().shape({
     .required('')
     .matches(/^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/, 'Phone number is not valid'),
 });
+export const profileUpdateOrgYup = yup.object().shape({
+  email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  nickname: yup.string().required('').max(12, '닉네임은 12자리 이하여야 합니다.').min(4, '닉네임는 4자리 이상이어야 합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
+  password: yup
+    .string()
+    .max(15, '비밀번호는 15자리 이하여야 합니다.')
+    .min(8, '비밀번호는 8자리 이상이어야 합니다.')
+    .matches(/^.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?].*$/, '특수문자가 포함되어야 합니다.'),
+  passwordCheck: yup.string().oneOf([yup.ref('password'), null], '동일한 비밀번호를 입력해주세요.'),
 
+  managerName: yup.string().required('담당자 이름을 입력해주세요.'),
+  homepageUrl: yup.string().required('홈페이지 URL을 입력해주세요.'),
+  managerMobile: yup
+    .string()
+    .required('')
+    .matches(/^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/, 'Phone number is not valid'),
+});
 // login
 export const loginYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),

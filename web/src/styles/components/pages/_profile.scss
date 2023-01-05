@@ -67,12 +67,33 @@
       @extend .align-center;
     }
     .profile-form-private-info-wrapper {
+      @extend .col;
       @extend .padding-row-24;
+      .label-wrapper {
+        display: flex;
+        align-items: center;
+        @extend .gap-4;
+        .label {
+          @extend .label-large;
+          color: $title-text;
+        }
+      }
     }
     .profile-form-submit-wrapper {
       @extend .padding-row-24;
     }
+    .profile-form-org-bank-account-info-wrapper {
+      @extend .col;
+      @extend .padding-row-24;
+      @extend .gap-24;
+      @extend .top-16;
+      .profile-form-org-bank-account-info-title {
+        @extend .headline-medium;
+        color: $title-text;
+      }
+    }
   }
+
 }
 .profile-form-resign-membership-wrapper {
   @extend .row;

@@ -1,12 +1,9 @@
 import React, { forwardRef, useState, useEffect } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 import { Controller } from 'react-hook-form';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
-import ActButton from './ActButton';
 import { ReactComponent as RedStar } from 'styles/assets/icons/star/red.svg';
 import { ReactComponent as ToolTip } from 'styles/assets/icons/tooltip.svg';
 import DuplicateButton from './duplicateButton';
@@ -40,7 +37,7 @@ const ActInput = (props, ref) => {
   const isEmptyObj = obj => {
     return obj.constructor === Object && Object.keys(obj).length === 0;
   };
-  const isError = !isEmptyObj(errors);
+  const isError = !isEmptyObj(errors) && errors[id];
 
   const [duplicatedResult, setDuplicatedResult] = useState(duplicate?.defaultValue ? duplicate.defaultValue : { result: undefined, data: { status: undefined, message: '' } });
 
@@ -148,7 +145,7 @@ const ActInput = (props, ref) => {
                           control={control}
                           label={duplicate.label}
                           resultCallBack={onResultCallBack}
-                          disabled={duplicatedResult.result === true || fieldInvalid || !field.value}
+                          disabled={(duplicatedResult.result && !duplicatedResult.data.status) || fieldInvalid || !field.value}
                           testValue={field.value}
                         />
                       </div>

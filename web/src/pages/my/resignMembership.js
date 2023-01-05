@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
 import ActCheckBox from 'components/atoms/ActCheckBox';
 import { resignMembershipYup } from '../../utils/yupSchema';
 import ActButton from 'components/atoms/ActButton';
+import { usersAtom } from '../../state';
 const ResignMembership = ({ setOption }) => {
   const navigate = useNavigate();
+  const user = useRecoilValue(usersAtom);
 
   useEffect(() => {
     setOption({
@@ -21,7 +24,7 @@ const ResignMembership = ({ setOption }) => {
 
   const getNote = () => {
     return [
-      '사용하고 계신 ID( abc@gmaii.com)은 탈퇴시 재사용 및 복구가 불가합니다.',
+      `사용하고 계신 ID(${user.info.email})는 탈퇴시 재사용 및 복구가 불가합니다.`,
       '탈퇴 후 개인정보 및 결제, 후원기부 내역 모두 사라집니다.',
       '탈퇴 이후 연말정산 신청 및 내역 조회가 불가능합니다.',
     ];
