@@ -72,7 +72,7 @@ const Profile = ({ setOption }) => {
   }, [data, isSuccess]);
 
   const onClickResignMembership = () => {
-    navigate('/my/resign-membership');
+    navigate('/resign-membership');
   };
 
   const profileUpdateDefaultForm =

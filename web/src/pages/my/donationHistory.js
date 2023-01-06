@@ -60,7 +60,7 @@ const DonationHistory = ({ setOption }) => {
   };
 
   const onHandleClickNFT = item => {
-    navigate(`../nft`, { state: { item } });
+    navigate(`/nft`, { state: { item } });
   };
   let currentList = [];
   const getList = () => {

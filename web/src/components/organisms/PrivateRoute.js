@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { authAtom } from 'state';
+import { authAtom, usersAtom } from 'state';
+import ActSpinner from '../atoms/ActSpinner';
 
-const PrivateRoute = ({ outlet }) => {
+const PrivateRoute = ({ outlet, role }) => {
   const location = useLocation();
   const auth = useRecoilValue(authAtom);
+  const user = useRecoilValue(usersAtom);
 
-  useEffect(() => {
-    console.log('auth', auth);
-  }, [auth]);
-  return auth?.authenticated ? outlet : <Navigate to={{ pathname: '/login' }} replace state={{ ...location.state, to: location.pathname }} />;
+  if (!auth.authenticated) return <Navigate to="/login" replace state={{ ...location.state, to: location.pathname }} />;
+  if (role && !user) return <ActSpinner />;
+  if (role && user?.userType !== role) return <Navigate to="/" replace />;
+
+  return outlet;
 };
 export default PrivateRoute;

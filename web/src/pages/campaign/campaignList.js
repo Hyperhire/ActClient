@@ -16,7 +16,7 @@ const CampaignList = ({ setOption }) => {
   const { isSuccess, data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useReactInfiniteQuery([searchKeyword, api.campaign.list]);
   const user = useRecoilValue(usersAtom);
   useEffect(() => {
-    setOption({ title: '', subtitle: '진행중인 캠페인', description: '', back: true, menu: false });
+    setOption({ title: '', subtitle: user?.userType === MEMBER_TYPE.INDIVIDUAL ? '진행중인 캠페인' : '진행중인 단체 캠페인', description: '', back: true, menu: true });
   }, [setOption]);
   const navigate = useNavigate();
 

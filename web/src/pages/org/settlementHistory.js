@@ -122,7 +122,7 @@ const SettlementHistory = ({ setOption }) => {
           </div>
           <div className="settlement-history-header">
             <div className="label">정산가능금액</div>
-            <div className="content">{dataPre.amount.NOT_YET.toLocaleString()}원</div>
+            <div className="content">{dataPre?.amount?.NOT_YET.toLocaleString()}원</div>
           </div>
         </div>
       ),

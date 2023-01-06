@@ -2,6 +2,7 @@ import React, { lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from '@mui/material';
 import PrivateRoute from './components/organisms/PrivateRoute';
+import { MEMBER_TYPE } from './constants/constant';
 
 const Nav = lazy(() => import('components/organisms/Nav'));
 const Main = lazy(() => import('pages/main'));
@@ -39,6 +40,7 @@ const SettlementHistory = lazy(() => import('pages/org/settlementHistory'));
 const Verify = lazy(() => import('pages/login/verify'));
 const NewsPost = lazy(() => import('pages/news/newsPost'));
 const CampaignPost = lazy(() => import('pages/campaign/campaignPost'));
+
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
   return (
@@ -63,39 +65,34 @@ const RouteSwitch = () => {
             <Route path="/campaign" element={<CampaignBase setOption={setOption} />}>
               <Route path="" element={<CampaignList setOption={setOption} />} />
               <Route path=":id" element={<CampaignDetail setOption={setOption} />} />
-              <Route path="post" element={<CampaignPost setOption={setOption} />} />
+              <Route path="post" element={<PrivateRoute role={MEMBER_TYPE.ORGANIZATION} outlet={<CampaignPost setOption={setOption} />} path="/login" />} />
             </Route>
             <Route path="/news" element={<NewsBase setOption={setOption} />}>
               <Route path="list" element={<NewsList setOption={setOption} />} />
               <Route path=":id" element={<NewsDetail setOption={setOption} />} />
-              <Route path="post" element={<NewsPost setOption={setOption} />} />
+              <Route path="post" element={<PrivateRoute role={MEMBER_TYPE.ORGANIZATION} outlet={<NewsPost setOption={setOption} />} path="/login" />} />
             </Route>
             <Route path="/donation" element={<DonationBase setOption={setOption} />}>
               <Route path="" element={<PrivateRoute outlet={<Donation setOption={setOption} />} path="/login" />} />
               <Route path="payment" element={<DonationPayment setOption={setOption} />} />
             </Route>
             <Route path="/faq" element={<Faq setOption={setOption} />} />
-            <Route path="my" element={<PrivateRoute outlet={<MyBase setOption={setOption} />} path="/login" />}>
+            <Route path="/my" element={<PrivateRoute role={MEMBER_TYPE.INDIVIDUAL} outlet={<MyBase setOption={setOption} />} path="/login" />}>
               <Route path="profile" element={<Profile setOption={setOption} />} />
               <Route path="profile-information" element={<ProfileInformation setOption={setOption} />} />
-              <Route path="resign-membership" element={<ResignMembership setOption={setOption} />} />
               <Route path="paymentHistory" element={<PaymentHistory setOption={setOption} />} />
               <Route path="donationHistory" element={<DonationHistory setOption={setOption} />} />
-              <Route path="nft" element={<NftDetail setOption={setOption} />} />
             </Route>
-            <Route path="/redirect" element={<Redirect />} />
-            <Route path="/payment/:orderId/:status" element={<Payment />} />
-            <Route path="/org" element={<OrgBase setOption={setOption} />}>
+            <Route path="/org" element={<PrivateRoute role={MEMBER_TYPE.ORGANIZATION} outlet={<OrgBase setOption={setOption} />} path="/login" />}>
               <Route path="profile" element={<Profile setOption={setOption} />} />
               <Route path="settlementHistory" element={<SettlementHistory setOption={setOption} />} />
               <Route path="organization-information" element={<OrgInformation setOption={setOption} />} />
-              {/*<Route path="donationHistory" element={<PaymentHistory setOption={setOption} />} />*/}
-              {/*<Route path="campaign" element={<ResignMembership setOption={setOption} />} />*/}
-              {/*<Route path="news" element={<PaymentHistory setOption={setOption} />} />*/}
-              {/*<Route path="disclosure" element={<DonationHistory setOption={setOption} />} />*/}
-              {/*<Route path="faq" element={<NftDetail setOption={setOption} />} />*/}
             </Route>
+            <Route path="/redirect" element={<Redirect />} />
+            <Route path="/payment/:orderId/:status" element={<Payment />} />
             <Route path="/verify" element={<PrivateRoute outlet={<Verify setOption={setOption} />} path="/login" />} />
+            <Route path="/resign-membership" element={<PrivateRoute outlet={<ResignMembership setOption={setOption} />} path="/login" />} />
+            <Route path="/nft" element={<PrivateRoute outlet={<NftDetail setOption={setOption} />} path="/login" />} />
           </Routes>
         </div>
       </div>
