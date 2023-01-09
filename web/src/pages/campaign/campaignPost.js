@@ -86,6 +86,9 @@ const CampaignPost = ({ setOption }) => {
     const params = {
       title: data.title,
       description: data.description,
+      startedAt: data.startedAt,
+      endedAt: data.endedAt,
+      targetAmount: data.goal,
     };
     formData.append('data', JSON.stringify(params));
 

@@ -129,10 +129,10 @@ const SettlementHistory = ({ setOption }) => {
       footer: (
         <div className="settlement-history-footer-wrapper">
           <div className="settlement-history-footer-info-wrapper">
-            <div className="settlement-history-footer-guide">
-              정산금액이&nbsp;<span>500,000원 이상</span>일때만 정산요청 가능합니다.
-            </div>
-            <div className="bordered-dashed" />
+            {/*<div className="settlement-history-footer-guide">*/}
+            {/*  정산금액이&nbsp;<span>500,000원 이상</span>일때만 정산요청 가능합니다.*/}
+            {/*</div>*/}
+            {/*<div className="bordered-dashed" />*/}
             <div className="settlement-history-footer-amount-wrapper">
               <div className="settlement-history-footer-amount-label">정산요청금액</div>
               <div className="settlement-history-footer-amount">

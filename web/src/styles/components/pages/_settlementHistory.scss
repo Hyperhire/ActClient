@@ -25,7 +25,7 @@
     }
   }
   .settlement-history-list-wrapper {
-    padding-bottom: 12.25rem;
+    padding-bottom: 9.125rem;
     .settlement-history-list{
       @extend .padding-24;
     }
@@ -39,7 +39,7 @@
   .settlement-history-footer-wrapper {
     @extend .col;
     @extend .max-width;
-    height: 12.25rem;
+    height: 9.125rem;
     position : fixed;
     bottom: 0;
     background-color: #FAFAFA;

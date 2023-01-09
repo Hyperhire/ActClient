@@ -64,7 +64,7 @@ const OrgInformation = ({ setOption }) => {
 
   const orgInformationDefaultForm = {
     shortDescription: user.info.shortDescription,
-    description: user.info.description,
+    description: user.info.longDescription,
   };
 
   const formOptions = { mode: 'onChange', defaultValues: orgInformationDefaultForm, resolver: yupResolver(orgInformationYup) };
@@ -86,7 +86,7 @@ const OrgInformation = ({ setOption }) => {
     });
     const params = {
       shortDescription: data.shortDescription,
-      description: data.description,
+      longDescription: data.description,
     };
     formData.append('data', JSON.stringify(params));
     editOrgInfo(formData);

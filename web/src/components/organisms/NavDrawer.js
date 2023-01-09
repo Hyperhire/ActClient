@@ -116,7 +116,7 @@ const NavDrawer = ({ setOpen }) => {
               <div
                 className="side-menu-donation-icon-menu link"
                 onClick={() => {
-                  navigate('my/donationHistory');
+                  navigate(user?.userType === MEMBER_TYPE.INDIVIDUAL ? 'my/donationHistory' : 'org/donationHistory');
                 }}
               >
                 <HeartIcon />

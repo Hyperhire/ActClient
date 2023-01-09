@@ -6,12 +6,15 @@
   @extend .gap-20;
   .item-image {
     width: 4.5rem;
+    height: 4.5rem;;
     border-radius: 4px;
     background: #548fcc;
     img {
+      border-radius: 4px;
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
   }
   .item-info-wrapper {

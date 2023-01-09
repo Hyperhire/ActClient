@@ -30,14 +30,14 @@ const MainSummaryOrganization = () => {
                 <div key={index} className="item-wrapper link" onClick={() => onClickItemHandler(item)}>
                   {index % 2 ? (
                     <div className="item-image-top">
-                      <img src={item?.image} alt="" />
+                      <img src={item?.imageUrls[0]} alt="" />
                       <div className="organization-icon-bottom">
                         <img src={item?.logoUrl} alt="" />
                       </div>
                     </div>
                   ) : (
                     <div className="item-image-bottom">
-                      <img src={item?.image} alt="" />
+                      <img src={item?.imageUrls[0]} alt="" />
                       <div className="organization-icon-top">
                         <img src={item?.logoUrl} alt="" />
                       </div>

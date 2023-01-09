@@ -87,6 +87,7 @@ const RouteSwitch = () => {
               <Route path="profile" element={<Profile setOption={setOption} />} />
               <Route path="settlementHistory" element={<SettlementHistory setOption={setOption} />} />
               <Route path="organization-information" element={<OrgInformation setOption={setOption} />} />
+              <Route path="donationHistory" element={<DonationHistory setOption={setOption} />} />
             </Route>
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/payment/:orderId/:status" element={<Payment />} />

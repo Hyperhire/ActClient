@@ -83,15 +83,21 @@ const DonationHistory = ({ setOption }) => {
         list = data.orgs;
         break;
     }
-    return list.map((item, index) => {
-      currentList.push(item);
-      return (
-        <div key={index}>
-          <OrgDonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={item => onHandleClickNFT(item)} />
-          <div className="divider" />
-        </div>
-      );
-    });
+    return list.length === 0 ? (
+      <div className="row align-center justify-center">
+        <div>후원 내역이 없습니다.</div>
+      </div>
+    ) : (
+      list.map((item, index) => {
+        currentList.push(item);
+        return (
+          <div key={index}>
+            <OrgDonationListItem key={index} item={item} handleCancelRegularPayment={id => onHandleCancelRegularPayment(id)} handleClickNFT={item => onHandleClickNFT(item)} />
+            <div className="divider" />
+          </div>
+        );
+      })
+    );
   };
 
   const parseData = [

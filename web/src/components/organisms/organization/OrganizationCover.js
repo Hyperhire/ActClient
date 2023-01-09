@@ -2,10 +2,10 @@ import React from 'react';
 
 const OrganizationCover = props => {
   const { item } = props;
-  const { icon, name, shortDescription } = item;
+  const { logoUrl, imageUrls } = item;
   return (
     <div className="organization-cover-wrapper">
-      <div className="organization-cover-image-wrapper">
+      <div className="organization-cover-image-wrapper" style={{ background: `url(${imageUrls[0]})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="organization-cover-label-wrapper">
           <div className="organization-cover-common-label-wrapper">
             <div className="organization-cover-common-label">DONOR ORGANIZATION</div>
@@ -13,10 +13,8 @@ const OrganizationCover = props => {
           </div>
           <div className="organization-cover-info-wrapper ">
             <div className="organization-cover-icon">
-              <img src={icon} alt="" />
+              <img src={logoUrl} alt="" />
             </div>
-            <div className="organization-cover-title">{name}</div>
-            <div className="organization-cover-subtitle">{shortDescription}</div>
           </div>
         </div>
       </div>
