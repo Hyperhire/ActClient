@@ -17,6 +17,9 @@ import { ReactComponent as EyeClose } from 'styles/assets/icons/eye/eye-off.svg'
 import { useLogin } from 'hooks/useReactMutation';
 import { TokenContext } from 'utils/TokenContext';
 import { MEMBER_TYPE } from '../../constants/constant';
+import useModal from '../../hooks/useModal';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
 const Login = ({ setOption }) => {
   const navigate = useNavigate();
@@ -24,7 +27,7 @@ const Login = ({ setOption }) => {
   const locationState = location.state;
   const { data, mutate: login, isLoading, isSuccess } = useLogin('login');
   const { onRefreshSuccess } = useContext(TokenContext);
-
+  const { showModal } = useModal();
   useEffect(() => {
     if (isSuccess && data?.status === 200) {
       onRefreshSuccess({ token: data.data.data.token });
@@ -86,6 +89,22 @@ const Login = ({ setOption }) => {
     }
     return <Eye />;
   };
+  const kakaoLogin = () => {
+    request({
+      url: api.auth.getKakaoCode,
+      method: 'get',
+    })
+      .then(response => {
+        console.log('response', response);
+        // navigate('/redirect', { state: { url: isMobile ? response.data.data.redirectURLS.mobile : response.data.data.redirectURLS.web }, replace: true });
+      })
+      .catch(() => {
+        showModal({
+          open: true,
+          message: `로그인에 실패하였습니다.`,
+        });
+      });
+  };
 
   return (
     <div className="login-wrapper">
@@ -109,10 +128,42 @@ const Login = ({ setOption }) => {
       <div className="login-form-sns-login-wrapper">
         <div className="login-form-sns-login-label">SNS 로그인</div>
         <div className="login-form-sns-login-logos">
-          <Naver />
-          <Kakao />
-          <Apple />
-          <Google />
+          <div
+            className="link"
+            onClick={() =>
+              showModal({
+                open: true,
+                message: `현재 카카오 로그인만 지원합니다.`,
+              })
+            }
+          >
+            <Naver />
+          </div>
+          <div className="link" onClick={kakaoLogin}>
+            <Kakao />
+          </div>
+          <div
+            className="link"
+            onClick={() =>
+              showModal({
+                open: true,
+                message: `현재 카카오 로그인만 지원합니다.`,
+              })
+            }
+          >
+            <Apple />
+          </div>
+          <div
+            className="link"
+            onClick={() =>
+              showModal({
+                open: true,
+                message: `현재 카카오 로그인만 지원합니다.`,
+              })
+            }
+          >
+            <Google />
+          </div>
         </div>
       </div>
       <div className="login-form-text-button-wrapper">

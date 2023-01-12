@@ -15,6 +15,7 @@ export const api = {
     reIssueToken: '/api/v1/auth/reissue-token',
     editProfile: '/api/v1/auth/edit-profile',
     editOrgProfile: '/api/v1/org/edit-my-org-detail',
+    getKakaoCode: 'api/v1/auth/kakao/code',
   },
   my: {
     update: '',
