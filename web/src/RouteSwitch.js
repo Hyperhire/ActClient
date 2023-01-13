@@ -1,8 +1,8 @@
 import React, { lazy, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Container } from '@mui/material';
-import PrivateRoute from './components/organisms/PrivateRoute';
-import { MEMBER_TYPE } from './constants/constant';
+import PrivateRoute from 'components/organisms/PrivateRoute';
+import { MEMBER_TYPE } from 'constants/constant';
 
 const Nav = lazy(() => import('components/organisms/Nav'));
 const Main = lazy(() => import('pages/main'));
@@ -34,12 +34,13 @@ const DonationPayment = lazy(() => import('pages/donation/donationPayment'));
 const Faq = lazy(() => import('pages/faq'));
 const Redirect = lazy(() => import('pages/redirect'));
 const NftDetail = lazy(() => import('pages/my/nftDetail'));
-const Payment = lazy(() => import('pages/payment'));
 const OrgBase = lazy(() => import('pages/org'));
 const SettlementHistory = lazy(() => import('pages/org/settlementHistory'));
 const Verify = lazy(() => import('pages/login/verify'));
 const NewsPost = lazy(() => import('pages/news/newsPost'));
 const CampaignPost = lazy(() => import('pages/campaign/campaignPost'));
+const Payment = lazy(() => import('pages/payment'));
+const SocialLogin = lazy(() => import('pages/socialLogin'));
 
 const RouteSwitch = () => {
   const [option, setOption] = useState({ title: '', back: false });
@@ -91,6 +92,7 @@ const RouteSwitch = () => {
             </Route>
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/payment/:orderId/:status" element={<Payment />} />
+            <Route path="/auth/:sns/redirect" element={<SocialLogin />} />
             <Route path="/verify" element={<PrivateRoute outlet={<Verify setOption={setOption} />} path="/login" />} />
             <Route path="/resign-membership" element={<PrivateRoute outlet={<ResignMembership setOption={setOption} />} path="/login" />} />
             <Route path="/nft" element={<PrivateRoute outlet={<NftDetail setOption={setOption} />} path="/login" />} />

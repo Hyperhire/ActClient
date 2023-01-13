@@ -16,6 +16,7 @@ export const api = {
     editProfile: '/api/v1/auth/edit-profile',
     editOrgProfile: '/api/v1/org/edit-my-org-detail',
     getKakaoCode: 'api/v1/auth/kakao/code',
+    socialLogin: loginType => `/api/v1/auth/login/social/${loginType}`,
   },
   my: {
     update: '',
