@@ -30,16 +30,17 @@ const Login = ({ setOption }) => {
   const { showModal } = useModal();
   useEffect(() => {
     if (isSuccess && data?.status === 200) {
-      onRefreshSuccess({ token: data.data.data.token });
-      if (data.data.data.userType === MEMBER_TYPE.INDIVIDUAL ? data.data.data.user.constant.isEmailVerified : data.data.data.org.constant.isEmailVerified) {
-        if (locationState && locationState.to) {
-          navigate(locationState.to, { state: { ...locationState }, replace: true });
+      onRefreshSuccess({ token: data.data.data.token }).then(() => {
+        if (data.data.data.userType === MEMBER_TYPE.INDIVIDUAL ? data.data.data.user.constant.isEmailVerified : data.data.data.org.constant.isEmailVerified) {
+          if (locationState && locationState.to) {
+            navigate(locationState.to, { state: { ...locationState }, replace: true });
+          } else {
+            navigate(`/`, { replace: true });
+          }
         } else {
-          navigate(`/`, { replace: true });
+          navigate(`/verify`, { replace: true });
         }
-      } else {
-        navigate(`/verify`, { replace: true });
-      }
+      });
     }
   }, [data, isSuccess, locationState]);
 
@@ -96,7 +97,7 @@ const Login = ({ setOption }) => {
     })
       .then(response => {
         console.log('response', response);
-        // navigate('/redirect', { state: { url: isMobile ? response.data.data.redirectURLS.mobile : response.data.data.redirectURLS.web }, replace: true });
+        navigate('/redirect', { state: { url: response.data.data.url }, replace: true });
       })
       .catch(() => {
         showModal({
@@ -170,7 +171,7 @@ const Login = ({ setOption }) => {
         <div
           className="login-form-signup-button-wrapper link"
           onClick={() => {
-            navigate('/register');
+            navigate('/register', { state: { loginType: 'EMAIL' }, replace: true });
           }}
         >
           <Signup />

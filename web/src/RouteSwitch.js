@@ -10,8 +10,8 @@ const LoginBase = lazy(() => import('pages/login'));
 const Login = lazy(() => import('pages/login/login'));
 const FindPassword = lazy(() => import('pages/login/findPassword'));
 const RegisterBase = lazy(() => import('pages/register'));
-const Register = lazy(() => import('pages/register/register'));
-const RegisterByEmail = lazy(() => import('pages/register/registerByEmail'));
+const RegisterSelectType = lazy(() => import('pages/register/selectType'));
+const Registration = lazy(() => import('pages/register/registration'));
 const MyBase = lazy(() => import('pages/my'));
 const Profile = lazy(() => import('pages/my/profile'));
 const ProfileInformation = lazy(() => import('pages/my/profileInformation'));
@@ -55,8 +55,8 @@ const RouteSwitch = () => {
               <Route path="" element={<Login setOption={setOption} />} />
             </Route>
             <Route path="/register" element={<RegisterBase setOption={setOption} />}>
-              <Route path="" element={<Register setOption={setOption} />} />
-              <Route path=":type" element={<RegisterByEmail setOption={setOption} />} />
+              <Route path="" element={<RegisterSelectType setOption={setOption} />} />
+              <Route path=":type" element={<Registration setOption={setOption} />} />
             </Route>
             <Route path="/find-password" element={<FindPassword setOption={setOption} />} />
             <Route path="/organization" element={<OrganizationBase setOption={setOption} />}>

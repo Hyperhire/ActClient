@@ -4,7 +4,9 @@ export const api = {
   auth: {
     login: '/api/v1/auth/login',
     registerInd: '/api/v1/auth/user/register',
+    registerIndSocial: '/api/v1/auth/user/register/social',
     registerOrg: '/api/v1/auth/org/register',
+    registerOrgSocial: '/api/v1/auth/org/register/social',
     forgotPassword: '/api/v1/auth/forgot-password',
     verifyEmail: '/api/v1/auth/verify-email',
     reSendVerification: '/api/v1/auth/resend-verification-email',

@@ -27,21 +27,29 @@ const TokenProvider = ({ children }) => {
     }
   };
 
-  const onRefreshSuccess = async ({ token }) => {
-    setCookie(COOKIES.REFRESH_TOKEN, { content: token.refreshToken, expires: token.refreshTokenExpiresAt });
-    setAuth({ authenticated: true, accessToken: token.accessToken, expires: token.accessTokenExpiresAt });
-    setAuthorization(token.accessToken);
-    const myRes = await request({ url: api.auth.my, method: 'get', headers: { Authorization: token.accessToken } });
-    if (myRes.status === 200) {
-      setUser(myRes.data.data);
-    } else {
-      logout();
-    }
-    const expires = dayjs(token.accessTokenExpiresAt);
-    const now = dayjs(new Date());
-    setTimeout(() => {
-      reIssueToken();
-    }, Math.round(expires.diff(now)) - 60000);
+  const onRefreshSuccess = ({ token }) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        setCookie(COOKIES.REFRESH_TOKEN, { content: token.refreshToken, expires: token.refreshTokenExpiresAt });
+        setAuth({ authenticated: true, accessToken: token.accessToken, expires: token.accessTokenExpiresAt });
+        setAuthorization(token.accessToken);
+        const myRes = await request({ url: api.auth.my, method: 'get', headers: { Authorization: token.accessToken } });
+        if (myRes.status === 200) {
+          setUser(myRes.data.data);
+        } else {
+          logout();
+        }
+        const expires = dayjs(token.accessTokenExpiresAt);
+        const now = dayjs(new Date());
+        setTimeout(() => {
+          reIssueToken();
+        }, Math.round(expires.diff(now)) - 60000);
+        resolve();
+      } catch (e) {
+        console.log('e', e);
+        reject();
+      }
+    });
   };
 
   const logout = () => {

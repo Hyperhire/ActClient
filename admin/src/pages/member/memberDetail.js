@@ -1,7 +1,9 @@
 import React from 'react';
+import {useOutletContext} from "react-router-dom";
 
 const MemberDetail = () => {
-  console.log('MemberDetail');
+  const con = useOutletContext();
+  console.log('MemberDetail', con);
   return <div>MemberDetail</div>;
 };
 export default MemberDetail;

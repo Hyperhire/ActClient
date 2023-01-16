@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 
@@ -16,13 +16,14 @@ import ActUploadLicenseButton from 'components/organisms/ActUploadLicenseButton'
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
 
-const RegisterByEmail = ({ setOption }) => {
+const Registration = ({ setOption }) => {
   const { type } = useParams();
   const navigate = useNavigate();
+  const { state: locationState } = useLocation();
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
   const { data, mutate: doRegister, isLoading, isError, error, isSuccess } = useRegisterByEmail('register');
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && data.status === 201) {
       request({ url: api.auth.login, method: 'post', data: loginInfo }).then(res => {
         if (res.status === 200) {
           navigate('/verify', { replace: true });
@@ -32,9 +33,15 @@ const RegisterByEmail = ({ setOption }) => {
   }, [data, isLoading, isError, error, isSuccess, navigate]);
 
   useEffect(() => {
-    setOption({ title: '이메일로 회원가입', subtitle: `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`, description: '', back: true, menu: false });
+    setOption({
+      title: `${locationState.loginType}로 회원가입`,
+      subtitle: `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`,
+      description: '',
+      back: true,
+      menu: false,
+    });
     return () => setOption({});
-  }, [setOption]);
+  }, [locationState.loginType, setOption, type]);
 
   const [activeGuard, setActiveGuard] = useState(false);
   const [imageFiles, setImageFiles] = useState([]);
@@ -52,11 +59,6 @@ const RegisterByEmail = ({ setOption }) => {
       checked: false,
     },
   ]);
-
-  useEffect(() => {
-    setOption({ title: '이메일로 회원가입', subtitle: `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`, description: '', back: true, menu: false });
-    return () => setOption({});
-  }, [setOption]);
 
   const signUpDefaultForm = {
     email: '',
@@ -86,18 +88,19 @@ const RegisterByEmail = ({ setOption }) => {
   }, [isDirty]);
 
   const onSubmit = data => {
-    //todo 단체회원 구분을 위한 타입 추가(서버 작업 필요)
     const { email, password, nickname } = data;
 
     setLoginInfo({ email, password });
     const defaultParams = {
-      loginType: 'EMAIL',
+      loginType: locationState.loginType,
       email,
       nickname,
       password,
     };
+
     const formData = new FormData();
     let params;
+
     if (type === MEMBER_TYPE.ORGANIZATION) {
       params = {
         ...defaultParams,
@@ -115,9 +118,16 @@ const RegisterByEmail = ({ setOption }) => {
         constant: { agreeTnc: data.terms, agreePrivacyPolicy: data.privacy, getGovernmentReceiptService: data.receiveReceipt },
       };
     }
-
+    if (locationState.loginType !== 'EMAIL') {
+      console.log('1', params);
+      params = {
+        ...defaultParams,
+        socialProfile: { clientId: locationState.clientId },
+      };
+      console.log('2', params);
+    }
     formData.append('data', JSON.stringify(params));
-    doRegister({ type, data: formData });
+    doRegister({ loginType: locationState.loginType, type, data: formData });
     setActiveGuard(false);
   };
 
@@ -242,4 +252,4 @@ const RegisterByEmail = ({ setOption }) => {
     </div>
   );
 };
-export default RegisterByEmail;
+export default Registration;

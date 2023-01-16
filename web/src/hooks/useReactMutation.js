@@ -42,7 +42,14 @@ export const useRegisterByEmail = queryKey => {
   const register = async registerInfo => {
     return request({
       data: registerInfo.data,
-      url: registerInfo.type === MEMBER_TYPE.ORGANIZATION ? api.auth.registerOrg : api.auth.registerInd,
+      url:
+        registerInfo.loginType === 'EMAIL'
+          ? registerInfo.type === MEMBER_TYPE.ORGANIZATION
+            ? api.auth.registerOrg
+            : api.auth.registerInd
+          : registerInfo.type === MEMBER_TYPE.ORGANIZATION
+          ? api.auth.registerOrgSocial
+          : api.auth.registerIndSocial,
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -52,7 +59,7 @@ export const useRegisterByEmail = queryKey => {
 
   return useMutation(register, {
     onSuccess: async data => {
-      if (data.status === 200 || data.status === 201) {
+      if (data.status === 201) {
         await queryClient.invalidateQueries(queryKey);
       } else {
         showModal({

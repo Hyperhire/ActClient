@@ -7,6 +7,7 @@
     @extend .col;
     @extend .gap-16;
     .profile-information-image-wrapper {
+      @extend .row;
       align-self: center;
       @extend .width-240;
       @extend .height-240;

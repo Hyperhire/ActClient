@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MEMBER_TYPE } from 'constants/constant';
 import { ReactComponent as IndividualIcon } from 'styles/assets/icons/user_signup_1.svg';
 import { ReactComponent as OrganizationIcon } from 'styles/assets/icons/user_signup_2.svg';
 import { ReactComponent as UserCheckIcon } from 'styles/assets/icons/user_check.svg';
 import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line_right_lg.svg';
-const Register = ({ setOption }) => {
+
+const RegisterSelectType = ({ setOption }) => {
   useEffect(() => {
     setOption({ title: '회원가입', subtitle: 'ACT에\n오신 것을 환영합니다.', description: '회원유형을 선택해주세요', back: true, menu: true });
     return () => setOption({});
   }, [setOption]);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const onClickRegisterHandler = type => {
-    navigate(`${type}`);
+    navigate(`${type}`, { state: { ...location.state } });
   };
   return (
     <div className="register-wrapper">
@@ -45,4 +47,4 @@ const Register = ({ setOption }) => {
   );
 };
 
-export default Register;
+export default RegisterSelectType;

@@ -80,10 +80,10 @@ const Profile = ({ setOption }) => {
       ? {
           email: user.info.email,
           nickname: user.info.nickname,
-          name: user.info.indInfo.name,
-          dateOfBirth: dayjs(user.info.indInfo.dateOfBirth, 'YY/MM/DD'),
-          gender: user.info.indInfo.sex,
-          mobile: user.info.indInfo.mobile,
+          name: user.info.indInfo?.name,
+          dateOfBirth: user.info.indInfo && dayjs(user.info.indInfo.dateOfBirth, 'YY/MM/DD'),
+          gender: user.info.indInfo?.sex,
+          mobile: user.info.indInfo?.mobile,
           duplicateNickname: undefined,
         }
       : {
@@ -114,7 +114,6 @@ const Profile = ({ setOption }) => {
   }, [watch('nickname')]);
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
     let formData = new FormData();
     if (user.userType === MEMBER_TYPE.INDIVIDUAL) {
       formData.append('image', imageFiles[0]);
