@@ -35,7 +35,8 @@ const OrganizationDetail = ({ setOption }) => {
       });
       return;
     }
-    if (!user.info.indInfo.dateOfBirth && user.info.indInfo.mobile && user.info.indInfo.name && user.info.indInfo.sex) {
+
+    if (!(user.info.indInfo?.dateOfBirth && user.info.indInfo.mobile && user.info.indInfo.name && user.info.indInfo.sex)) {
       showModal({
         open: true,
         message: `개인정보 입력이 필요합니다.`,

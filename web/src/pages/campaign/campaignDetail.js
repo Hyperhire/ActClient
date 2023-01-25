@@ -11,11 +11,14 @@ import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import { usersAtom } from '../../state';
+import useModal from '../../hooks/useModal';
 
 const CampaignDetail = ({ setOption }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const user = useRecoilValue(usersAtom);
+  const { showModal } = useModal();
+
   const { isLoading, isSuccess, data, isError, error } = useReactQuery(`campaign-detail-${id}`, api.campaign.detail(id));
 
   useEffect(() => {
@@ -23,6 +26,26 @@ const CampaignDetail = ({ setOption }) => {
   }, [data, setOption]);
 
   const onClickHandler = () => {
+    if (user?.userType !== MEMBER_TYPE.INDIVIDUAL) return;
+    if (!user.info.constant.isEmailVerified) {
+      showModal({
+        open: true,
+        message: `이메일 인증이 필요합니다.`,
+        handleConfirm: () => navigate('/verify'),
+        handleCancel: () => {},
+      });
+      return;
+    }
+
+    if (!(user.info.indInfo?.dateOfBirth && user.info.indInfo.mobile && user.info.indInfo.name && user.info.indInfo.sex)) {
+      showModal({
+        open: true,
+        message: `개인정보 입력이 필요합니다.`,
+        handleConfirm: () => navigate('/my/profile'),
+        handleCancel: () => {},
+      });
+      return;
+    }
     navigate(`/donation`, { state: { item: data, type: DONATION_TYPE.CAMPAIGN } });
   };
 
