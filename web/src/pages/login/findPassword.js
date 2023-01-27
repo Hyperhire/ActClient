@@ -7,8 +7,10 @@ import ActButton from 'components/atoms/ActButton';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
+import ActSpinner from '../../components/atoms/ActSpinner';
 
 const FindPassword = ({ setOption }) => {
+  const [loading, setLoading] = useState(false);
   const { showModal } = useModal();
   useEffect(() => {
     setOption({ title: '비밀번호 찾기', subtitle: '임시 비밀번호를\n이메일로 보내드립니다.', description: '회원가입시 등록한 이메일 주소를 입력해주세요.', back: true, menu: false });
@@ -29,11 +31,13 @@ const FindPassword = ({ setOption }) => {
   } = useForm(formOptions);
 
   const onSubmit = async data => {
+    setLoading(true);
     const res = await request({
       url: api.auth.forgotPassword,
       method: 'post',
       data: { email: data.email },
     });
+    setLoading(false);
     if (res.status === 200) {
       showModal({
         open: true,
@@ -46,10 +50,11 @@ const FindPassword = ({ setOption }) => {
 
   return (
     <div className="find-password-wrapper">
+      {loading && <ActSpinner />}
       <form className="find-password-form" onSubmit={handleSubmit(onSubmit)}>
         <ActInput {...register('email')} id="email" placeholder="아이디(이메일 주소)를 입력해 주세요" errors={errors} control={control} />
         <div className="find-password-submit-wrapper">
-          <ActButton className="button-medium" type="submit" disabled={!isValid} label="임시 비밀번호 보내기" />
+          <ActButton className="button-medium" type="submit" disabled={!isValid || loading} label="임시 비밀번호 보내기" />
         </div>
       </form>
     </div>
