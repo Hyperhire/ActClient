@@ -87,3 +87,11 @@ export const SEARCH_TYPE = {
 export const COOKIES = {
   REFRESH_TOKEN: 'refresh-token',
 };
+
+export const LOGIN_TYPE = {
+  EMAIL: 'EMAIL',
+  KAKAO: 'KAKAO',
+  GOOGLE: 'GOOGLE',
+  NAVER: 'NAVER',
+  APPLE: 'APPLE',
+};

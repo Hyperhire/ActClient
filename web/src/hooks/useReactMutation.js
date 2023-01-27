@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import useModal from './useModal';
-import { MEMBER_TYPE, ORGANIZATION_NEWS_TYPE } from 'constants/constant';
+import { LOGIN_TYPE, MEMBER_TYPE, ORGANIZATION_NEWS_TYPE } from 'constants/constant';
 import { TokenContext } from '../utils/TokenContext';
 
 export const useLogin = queryKey => {
@@ -43,7 +43,7 @@ export const useRegisterByEmail = queryKey => {
     return request({
       data: registerInfo.data,
       url:
-        registerInfo.loginType === 'EMAIL'
+        registerInfo.loginType === LOGIN_TYPE.EMAIL
           ? registerInfo.type === MEMBER_TYPE.ORGANIZATION
             ? api.auth.registerOrg
             : api.auth.registerInd

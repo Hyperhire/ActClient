@@ -1,41 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { useForm } from 'react-hook-form';
 
-import { MEMBER_TYPE } from 'constants/constant';
+import { LOGIN_TYPE, MEMBER_TYPE } from 'constants/constant';
 import ActInput from 'components/atoms/ActInput';
-import { individualSignUpYup, organizationSignUpYup } from 'utils/yupSchema';
+import { individualSignUpYup, individualSnsSignUpYup, organizationSignUpYup, organizationSnsSignUpYup } from 'utils/yupSchema';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActButton from 'components/atoms/ActButton';
 import ActCheckBoxGroup from 'components/atoms/ActCheckBoxGroup';
 import ActToggleButton from 'components/atoms/ActToggleButton';
 import { useRegisterByEmail } from 'hooks/useReactMutation';
 import { ReactComponent as ReceiptIcon } from 'styles/assets/icons/receipt.svg';
+
+import { ReactComponent as GoogleLogo } from 'styles/assets/images/snsLogo/google.svg';
+import { ReactComponent as AppleLogo } from 'styles/assets/images/snsLogo/apple.svg';
+import { ReactComponent as KakaoLogo } from 'styles/assets/images/snsLogo/kakao.svg';
+import { ReactComponent as NaverLogo } from 'styles/assets/images/snsLogo/naver.svg';
+
 import ActUploadLicenseButton from 'components/organisms/ActUploadLicenseButton';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
+import { TokenContext } from '../../utils/TokenContext';
 
 const Registration = ({ setOption }) => {
   const { type } = useParams();
   const navigate = useNavigate();
   const { state: locationState } = useLocation();
   const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
+  const { onRefreshSuccess } = useContext(TokenContext);
   const { data, mutate: doRegister, isLoading, isError, error, isSuccess } = useRegisterByEmail('register');
   useEffect(() => {
     if (isSuccess && data.status === 201) {
-      request({ url: api.auth.login, method: 'post', data: loginInfo }).then(res => {
-        if (res.status === 200) {
-          navigate('/verify', { replace: true });
-        }
-      });
+      data.data.data.loginType === LOGIN_TYPE.EMAIL
+        ? request({ url: api.auth.login, method: 'post', data: loginInfo }).then(res => {
+            if (res.status === 200) {
+              onRefreshSuccess({ token: res.data.data.token }).then(() => {
+                if (res.data.data.userType === MEMBER_TYPE.INDIVIDUAL ? res.data.data.user.constant.isEmailVerified : res.data.data.org.constant.isEmailVerified) {
+                  if (locationState && locationState.to) {
+                    navigate(locationState.to, { state: { ...locationState }, replace: true });
+                  } else {
+                    navigate(`/`, { replace: true });
+                  }
+                } else {
+                  navigate(`/verify`, { replace: true });
+                }
+              });
+            }
+          })
+        : navigate('/', { replace: true });
     }
   }, [data, isLoading, isError, error, isSuccess, navigate]);
 
   useEffect(() => {
     setOption({
-      title: `${locationState.loginType}로 회원가입`,
-      subtitle: `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`,
+      title: `${locationState.loginType} 회원가입`,
+      subtitle: locationState.loginType === LOGIN_TYPE.EMAIL && `${type === MEMBER_TYPE.INDIVIDUAL ? '개인' : '단체'} 회원가입`,
       description: '',
       back: true,
       menu: false,
@@ -61,7 +81,7 @@ const Registration = ({ setOption }) => {
   ]);
 
   const signUpDefaultForm = {
-    email: '',
+    email: locationState.loginType !== LOGIN_TYPE.EMAIL ? locationState.email : '',
     password: '',
     passwordCheck: '',
     nickname: '',
@@ -72,7 +92,19 @@ const Registration = ({ setOption }) => {
     // terms: undefined,
     // privacy: undefined,
   };
-  const formOptions = { mode: 'onChange', defaultValues: signUpDefaultForm, resolver: yupResolver(type === MEMBER_TYPE.INDIVIDUAL ? individualSignUpYup : organizationSignUpYup) };
+  const formOptions = {
+    mode: 'onChange',
+    defaultValues: signUpDefaultForm,
+    resolver: yupResolver(
+      locationState.loginType === LOGIN_TYPE.EMAIL
+        ? type === MEMBER_TYPE.INDIVIDUAL
+          ? individualSignUpYup
+          : organizationSignUpYup
+        : type === MEMBER_TYPE.INDIVIDUAL
+        ? individualSnsSignUpYup
+        : organizationSnsSignUpYup,
+    ),
+  };
 
   const {
     control,
@@ -118,7 +150,7 @@ const Registration = ({ setOption }) => {
         constant: { agreeTnc: data.terms, agreePrivacyPolicy: data.privacy, getGovernmentReceiptService: data.receiveReceipt },
       };
     }
-    if (locationState.loginType !== 'EMAIL') {
+    if (locationState.loginType !== LOGIN_TYPE.EMAIL) {
       console.log('1', params);
       params = {
         ...defaultParams,
@@ -131,10 +163,23 @@ const Registration = ({ setOption }) => {
     setActiveGuard(false);
   };
 
+  const getSnsLogo = type => {
+    switch (type) {
+      case 'GOOGLE':
+        return <GoogleLogo />;
+      case 'APPLE':
+        return <AppleLogo />;
+      case 'KAKAO':
+        return <KakaoLogo />;
+      case 'NAVER':
+        return <NaverLogo />;
+    }
+  };
   return (
     <div>
       <NavigationGuard when={activeGuard} message="저장되지 않은 정보가 있습니다. 정말 나가시겠습니까?" />
       <form className="register-by-email-wrapper" onSubmit={handleSubmit(onSubmit)}>
+        <div className="max-width row align-center justify-center">{getSnsLogo(locationState.loginType)}</div>
         <div className="register-by-email-form-input-wrapper">
           <ActInput
             {...register('email')}
@@ -148,14 +193,16 @@ const Registration = ({ setOption }) => {
             fieldInvalid={!!getFieldState('email').error}
           />
 
-          <div className="register-by-email-form-half-row-wrapper">
-            <div className="row flex-auto">
-              <ActInput {...register('password')} label="비밀번호" type="password" id="password" placeholder="새로운 비밀번호 " errors={errors} control={control} />
+          {locationState.loginType === LOGIN_TYPE.EMAIL && (
+            <div className="register-by-email-form-half-row-wrapper">
+              <div className="row flex-auto">
+                <ActInput {...register('password')} label="비밀번호" type="password" id="password" placeholder="새로운 비밀번호 " errors={errors} control={control} />
+              </div>
+              <div className="row flex-auto">
+                <ActInput {...register('passwordCheck')} label="비밀번호 확인" type="password" id="passwordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
+              </div>
             </div>
-            <div className="row flex-auto">
-              <ActInput {...register('passwordCheck')} label="비밀번호 확인" type="password" id="passwordCheck" placeholder="비밀번호 재입력" errors={errors} control={control} />
-            </div>
-          </div>
+          )}
           <ActInput
             {...register('nickname')}
             id="nickname"

@@ -16,7 +16,7 @@ import { ReactComponent as Eye } from 'styles/assets/icons/eye/eye.svg';
 import { ReactComponent as EyeClose } from 'styles/assets/icons/eye/eye-off.svg';
 import { useLogin } from 'hooks/useReactMutation';
 import { TokenContext } from 'utils/TokenContext';
-import { MEMBER_TYPE } from '../../constants/constant';
+import { LOGIN_TYPE, MEMBER_TYPE } from '../../constants/constant';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
@@ -90,21 +90,29 @@ const Login = ({ setOption }) => {
     }
     return <Eye />;
   };
-  const kakaoLogin = () => {
-    request({
-      url: api.auth.getKakaoCode,
-      method: 'get',
-    })
-      .then(response => {
-        console.log('response', response);
-        navigate('/redirect', { state: { url: response.data.data.url }, replace: true });
-      })
-      .catch(() => {
+  const socialLogin = type => {
+    switch (type) {
+      case 'kakao':
+        navigate(`/redirect`, {
+          state: {
+            url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URL}&response_type=code&scope=account_email`,
+          },
+        });
+        break;
+      case 'google':
+        navigate(`/redirect`, {
+          state: {
+            url: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URL}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
+          },
+        });
+        break;
+      default:
         showModal({
           open: true,
-          message: `로그인에 실패하였습니다.`,
+          message: `현재 지원하지 않는 기능입니다.`,
         });
-      });
+        break;
+    }
   };
 
   return (
@@ -129,40 +137,16 @@ const Login = ({ setOption }) => {
       <div className="login-form-sns-login-wrapper">
         <div className="login-form-sns-login-label">SNS 로그인</div>
         <div className="login-form-sns-login-logos">
-          <div
-            className="link"
-            onClick={() =>
-              showModal({
-                open: true,
-                message: `현재 카카오 로그인만 지원합니다.`,
-              })
-            }
-          >
+          <div className="link" onClick={() => socialLogin('naver')}>
             <Naver />
           </div>
-          <div className="link" onClick={kakaoLogin}>
+          <div className="link" onClick={() => socialLogin('kakao')}>
             <Kakao />
           </div>
-          <div
-            className="link"
-            onClick={() =>
-              showModal({
-                open: true,
-                message: `현재 카카오 로그인만 지원합니다.`,
-              })
-            }
-          >
+          <div className="link" onClick={() => socialLogin('apple')}>
             <Apple />
           </div>
-          <div
-            className="link"
-            onClick={() =>
-              showModal({
-                open: true,
-                message: `현재 카카오 로그인만 지원합니다.`,
-              })
-            }
-          >
+          <div className="link" onClick={() => socialLogin('google')}>
             <Google />
           </div>
         </div>
@@ -171,7 +155,7 @@ const Login = ({ setOption }) => {
         <div
           className="login-form-signup-button-wrapper link"
           onClick={() => {
-            navigate('/register', { state: { loginType: 'EMAIL' }, replace: true });
+            navigate('/register', { state: { loginType: LOGIN_TYPE.EMAIL }, replace: true });
           }}
         >
           <Signup />

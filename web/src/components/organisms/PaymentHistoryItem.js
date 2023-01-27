@@ -6,19 +6,19 @@ import 'dayjs/locale/ko';
 const PaymentHistoryItem = ({ id, item, index, control, register, errors, watch, changeHandler }) => {
   return (
     <div className="payment-history-item-wrapper">
-      <div className="payment-history-item-checkbox-wrapper">
-        <ActCheckBox
-          {...register(`${id}.${index}`)}
-          id={`${id}.${index}`}
-          checked={watch(`${id}.${index}`).checked}
-          label=""
-          errors={errors}
-          control={control}
-          item={item}
-          handleChange={changeHandler}
-          labelStyle={{ padding: 0 }}
-        />
-      </div>
+      {/*<div className="payment-history-item-checkbox-wrapper">*/}
+      {/*  <ActCheckBox*/}
+      {/*    {...register(`${id}.${index}`)}*/}
+      {/*    id={`${id}.${index}`}*/}
+      {/*    checked={watch(`${id}.${index}`).checked}*/}
+      {/*    label=""*/}
+      {/*    errors={errors}*/}
+      {/*    control={control}*/}
+      {/*    item={item}*/}
+      {/*    handleChange={changeHandler}*/}
+      {/*    labelStyle={{ padding: 0 }}*/}
+      {/*  />*/}
+      {/*</div>*/}
       <div className="payment-history-item-in-wrapper">
         <div className="payment-history-item-label-wrapper">
           <div className="payment-history-item-label">결제방법</div>

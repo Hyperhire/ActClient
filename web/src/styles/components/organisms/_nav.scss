@@ -50,7 +50,7 @@
 .side-menu-wrap {
   @extend .col;
   @extend .max-width;
-  @extend .height-vh-100;
+  @extend .max-height;
   @extend .gap-24;
   @extend .padding-col-24;
   .side-menu-login-menu-wrap {

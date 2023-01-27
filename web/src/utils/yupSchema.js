@@ -24,7 +24,20 @@ export const individualSignUpYup = yup.object().shape({
   agreement: yup.boolean().oneOf([true], '약관에 동의해주세요'),
   receiveReceipt: yup.boolean().oneOf([true], '기부금 영수증 발급 동의가 필요합니다.'),
 });
-// export const individualSignUpYup = yup.object().shape({ ...signUpYup, receiveReceipt: yup.string().required('영수증 발급여부를 선택해주세요.') });
+
+export const individualSnsSignUpYup = yup.object().shape({
+  email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  duplicateEmail: yup.boolean().oneOf([false], ''),
+  nickname: yup
+    .string()
+    .required('필수 입력값 입니다.')
+    .max(12, '닉네임은 12자리 이하여야 합니다.')
+    .min(4, '닉네임는 4자리 이상이어야 합니다.')
+    .matches(/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g, '닉네임은 한글과 영문만 사용가능합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
+  agreement: yup.boolean().oneOf([true], '약관에 동의해주세요'),
+  receiveReceipt: yup.boolean().oneOf([true], '기부금 영수증 발급 동의가 필요합니다.'),
+});
 
 export const organizationSignUpYup = yup.object().shape({
   email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
@@ -46,6 +59,24 @@ export const organizationSignUpYup = yup.object().shape({
     .string()
     .required('필수 입력값 입니다.')
     .oneOf([yup.ref('password'), null], '동일한 비밀번호를 입력해주세요.'),
+  agreement: yup.boolean().oneOf([true], '약관에 동의해주세요'),
+  organizationName: yup.string().required('필수 입력값 입니다.'),
+  organizationLicenseNumber: yup.string().required('필수 입력값 입니다.'),
+  managerName: yup.string().required('필수 입력값 입니다.'),
+  managerMobile: yup.string().required('필수 입력값 입니다.'),
+  website: yup.string(),
+});
+
+export const organizationSnsSignUpYup = yup.object().shape({
+  email: yup.string().required('').email('! 이메일 형식이 올바르지 않습니다.'),
+  duplicateEmail: yup.boolean().oneOf([false], ''),
+  nickname: yup
+    .string()
+    .required('필수 입력값 입니다.')
+    .max(12, '닉네임은 12자리 이하여야 합니다.')
+    .min(4, '닉네임는 4자리 이상이어야 합니다.')
+    .matches(/^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/g, '닉네임은 한글과 영문만 사용가능합니다.'),
+  duplicateNickname: yup.boolean().oneOf([false], ''),
   agreement: yup.boolean().oneOf([true], '약관에 동의해주세요'),
   organizationName: yup.string().required('필수 입력값 입니다.'),
   organizationLicenseNumber: yup.string().required('필수 입력값 입니다.'),

@@ -104,7 +104,7 @@ const DonationHistory = ({ setOption }) => {
     {
       index: 0,
       label: '단체후원',
-      header: (
+      header: user.userType === MEMBER_TYPE.ORGANIZATION && (
         <div className="padding-row-24 padding-top-24">
           <BasicSelect selectedValue={selectedValue} setSelectedValue={setSelectedValue} options={DONATION_STATUS} />
         </div>

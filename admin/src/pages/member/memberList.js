@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import {Outlet, useNavigate, useOutletContext, useParams} from 'react-router-dom';
 import ActTable from '../../components/atoms/ActTable';
 import ActMemberIndFilter from '../../components/organisms/ActMemberIndFilter';
 import { MEMBER_TYPE } from '../../constants/constant';
@@ -8,6 +8,9 @@ import ActMemberOrgFilter from '../../components/organisms/ActMemberOrgFilter';
 const MemberList = () => {
   const con = useOutletContext();
   const [filter, setFilter] = useState();
+  const navigate = useNavigate();
+  const { id=undefined } = useParams();
+
   useEffect(() => {
     console.log('filter', filter);
   }, [filter]);
@@ -156,14 +159,18 @@ const MemberList = () => {
     return data;
   };
 
+  const onHandleClickItem = (item) => {
+    navigate(item.id);
+  }
+
   return (
     <div className="col max-height">
-      {con === MEMBER_TYPE.INDIVIDUAL ? (
+      {id ? <Outlet /> : con === MEMBER_TYPE.INDIVIDUAL ? (
         <div className="col max-height ">
           <div className="max-height flex-1">
             <ActMemberIndFilter type={con} handleFilter={setFilter} />
           </div>
-          <ActTable data={indDummy()} />
+          <ActTable data={indDummy()} handleClickItem={onHandleClickItem}/>
         </div>
       ) : (
         <div className="col max-height ">

@@ -1,3 +1,7 @@
+:root {
+  --vh: 100%;
+}
+
 html,
 body {
   // 기본 font-size값 변경 제어
@@ -61,8 +65,9 @@ body {
 .top-140x {
   margin-top: 140px;
 }
+
 html, body, #root, .App {
-  height: 100%;
+  min-height: -webkit-fill-available
 }
 
 @for $i from 0 through 1200 {

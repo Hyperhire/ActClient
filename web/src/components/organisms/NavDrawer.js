@@ -50,7 +50,7 @@ const NavDrawer = ({ setOpen }) => {
         ];
 
   return (
-    <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+    <Box role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} sx={{ width: '100%', height: '100%' }}>
       <div className="side-menu-wrap">
         {auth.authenticated ? (
           <div className="side-menu-login-menu-wrap">

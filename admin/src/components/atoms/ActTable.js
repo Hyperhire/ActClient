@@ -73,7 +73,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function ActTable({ data }) {
+export default function ActTable({ data, handleClickItem = ()=>{} }) {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -108,6 +108,7 @@ export default function ActTable({ data }) {
     }
 
     setSelected(newSelected);
+    event.stopPropagation();
   };
 
   const handleChangePage = (event, newPage) => {
@@ -140,8 +141,8 @@ export default function ActTable({ data }) {
               const labelId = `enhanced-table-checkbox-${index}`;
               const rowKeys = Object.keys(data.rows[0]);
               return (
-                <TableRow hover onClick={event => handleClick(event, row.index)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.index} selected={isItemSelected}>
-                  <TableCell padding="checkbox">
+                <TableRow hover tabIndex={-1} key={row.index} selected={isItemSelected} onClick={()=>handleClickItem(row)}>
+                  <TableCell padding="checkbox" onClick={event => handleClick(event, row.index)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.index} >
                     <Checkbox
                       color="primary"
                       checked={isItemSelected}

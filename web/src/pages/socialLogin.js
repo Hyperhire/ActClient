@@ -1,4 +1,4 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import useModal from 'hooks/useModal';
 import ActSpinner from 'components/atoms/ActSpinner';
@@ -14,66 +14,59 @@ const SocialLogin = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
   const { onRefreshSuccess } = useContext(TokenContext);
+  const location = useLocation();
 
   useEffect(() => {
-    switch (sns) {
-      case 'kakao':
-        request({
-          url: api.auth.socialLogin('kakao'),
-          method: 'post',
-          data: { code },
-        })
-          .then(res => {
-            if (res.status === 200) {
-              onRefreshSuccess({ token: res.data.data.token }).then(() => {
-                navigate(`/`, { replace: true });
-              });
-            } else {
-              switch (res.response.status) {
-                case 401:
-                  showModal({
-                    open: true,
-                    message: `회원가입 페이지로 이동합니다.`,
-                    handleConfirm: () =>
-                      navigate('/register', {
-                        state: {
-                          loginType: res.response.data.data.loginType,
-                          clientId: res.response.data.data.clientId,
-                        },
-                        replace: true,
-                      }),
-                  });
-                  break;
-                default:
-                  showModal({
-                    open: true,
-                    message: `카카오 로그인 실패.`,
-                    handleConfirm: () => {
-                      navigate('/', { replace: true });
-                    },
-                  });
-                  break;
-              }
-            }
-          })
-          .catch(() => {
-            showModal({
-              open: true,
-              message: `로그인 실패`,
-              handleConfirm: () => navigate('/'),
-            });
+    console.log('SocialLogin1', location.host);
+    console.log('SocialLogin2', location.href);
+    console.log('SocialLogin3', location.pathname);
+    request({
+      url: api.auth.socialLogin(sns),
+      method: 'post',
+      data: { code, redirectUrl: `${process.env.REACT_APP_BASE_URL}${location.pathname}` },
+    })
+      .then(res => {
+        if (res.status === 200) {
+          onRefreshSuccess({ token: res.data.data.token }).then(() => {
+            navigate(`/`, { replace: true });
           });
-        break;
-
-      default:
+        } else {
+          switch (res.response.status) {
+            case 401:
+              showModal({
+                open: true,
+                message: `회원가입 페이지로 이동합니다.`,
+                handleConfirm: () =>
+                  navigate('/register', {
+                    state: {
+                      loginType: res.response.data.data.loginType,
+                      clientId: res.response.data.data.clientId,
+                      email: res.response.data.data.email,
+                    },
+                    replace: true,
+                  }),
+              });
+              break;
+            default:
+              showModal({
+                open: true,
+                message: `${sns} 로그인 실패.`,
+                handleConfirm: () => {
+                  navigate('/', { replace: true });
+                },
+              });
+              break;
+          }
+        }
+      })
+      .catch(() => {
         showModal({
           open: true,
-          message: `로그인 실패`,
+          message: `${sns} 로그인 실패.`,
           handleConfirm: () => navigate('/'),
         });
-        break;
-    }
-  }, [sns]);
+      });
+  }, [location]);
   return <ActSpinner />;
 };
 export default SocialLogin;

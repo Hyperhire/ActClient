@@ -84,12 +84,12 @@ const PaymentHistory = ({ setOption }) => {
       description: '',
       back: true,
       menu: true,
-      button: (
-        <div className="row gap-8">
-          <ActButton className="button-small-outline" handleOnClick={onClickCheckAll} label={buttonName} />
-          <ActButton className="button-small-outline" disabled={true} handleOnClick={handleSubmit(confirmDeleteItems)} label="삭제" />
-        </div>
-      ),
+      // button: (
+      //   <div className="row gap-8">
+      //     <ActButton className="button-small-outline" handleOnClick={onClickCheckAll} label={buttonName} />
+      //     <ActButton className="button-small-outline" disabled={true} handleOnClick={handleSubmit(confirmDeleteItems)} label="삭제" />
+      //   </div>
+      // ),
     });
   }, [setOption, buttonName]);
 

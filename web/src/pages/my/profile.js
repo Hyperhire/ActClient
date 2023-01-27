@@ -13,6 +13,9 @@ import ActDatePicker from 'components/atoms/ActDatePicker';
 import { GENDER, MEMBER_TYPE } from 'constants/constant';
 import ActSelect from 'components/atoms/ActSelect';
 import { ReactComponent as NaverIcon } from 'styles/assets/images/icons/naver.svg';
+import { ReactComponent as KakaoIcon } from 'styles/assets/images/icons/kakao.svg';
+import { ReactComponent as GoogleIcon } from 'styles/assets/images/icons/google.svg';
+import { ReactComponent as AppleIcon } from 'styles/assets/images/icons/apple.svg';
 import { ReactComponent as ArrowRightIcon } from 'styles/assets/icons/arrow_line_right_sm.svg';
 import ActUploadProfileButton from 'components/organisms/ActUploadProfileButton';
 import { ReactComponent as ActIcon } from 'styles/assets/icons/label/act_aqua.svg';
@@ -199,6 +202,20 @@ const Profile = ({ setOption }) => {
       </div>
     </InputAdornment>
   );
+  const getLoginTypeIcon = type => {
+    switch (type) {
+      case 'KAKAO':
+        return <KakaoIcon width={24} height={24} />;
+      case 'NAVER':
+        return <NaverIcon width={24} height={24} />;
+      case 'GOOGLE':
+        return <GoogleIcon width={24} height={24} />;
+      case 'APPLE':
+        return <AppleIcon width={24} height={24} />;
+      default:
+        console.log('getLoginTypeIcon unknown login type');
+    }
+  };
   return (
     <div className="profile-wrapper">
       {user.userType === MEMBER_TYPE.INDIVIDUAL && (
@@ -207,14 +224,15 @@ const Profile = ({ setOption }) => {
           <ActIcon />
         </div>
       )}
-
-      <div className="profile-login-info-wrapper">
-        <div className="profile-login-info-label">회원가입 ID</div>
-        <div className="profile-login-info-content-wrapper">
-          <NaverIcon width={24} height={24} />
-          <div className="profile-login-info-content-email">{user.email}</div>
+      {user.info.loginType !== LOGIN_TYPE.EMAIL && (
+        <div className="profile-login-info-wrapper">
+          <div className="profile-login-info-label">회원가입 ID</div>
+          <div className="profile-login-info-content-wrapper">
+            {getLoginTypeIcon(user.info.loginType)}
+            <div className="profile-login-info-content-email">{user.info.email}</div>
+          </div>
         </div>
-      </div>
+      )}
       <form className="profile_form-wrapper" onSubmit={handleSubmit(onSubmit)}>
         <div className="profile-form-default-info-wrapper">
           <ActInput {...register('email')} id="email" label="이메일주소" required={true} info={true} placeholder="아이디를 입력하세요" errors={errors} control={control} disabled={true} />
