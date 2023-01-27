@@ -10,7 +10,7 @@ import ActInput from 'components/atoms/ActInput';
 import ActButton from 'components/atoms/ActButton';
 import NavigationGuard from 'components/organisms/NavigationGuard';
 import ActDatePicker from 'components/atoms/ActDatePicker';
-import { GENDER, MEMBER_TYPE } from 'constants/constant';
+import { GENDER, LOGIN_TYPE, MEMBER_TYPE } from 'constants/constant';
 import ActSelect from 'components/atoms/ActSelect';
 import { ReactComponent as NaverIcon } from 'styles/assets/images/icons/naver.svg';
 import { ReactComponent as KakaoIcon } from 'styles/assets/images/icons/kakao.svg';
