@@ -322,6 +322,13 @@ html, body, #root, .App {
   border-bottom: solid 1px $out-line;
 }
 
+.border-left {
+  border-left: solid 1px $out-line;
+}
+
+.border-right {
+  border-right: solid 1px $out-line;
+}
 .border-bottom-thicker {
   border-bottom: solid 2px $out-line;
 }

@@ -1,37 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import {Outlet, useNavigate, useOutletContext, useParams} from 'react-router-dom';
+import { Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 import ActTable from '../../components/atoms/ActTable';
 import ActMemberIndFilter from '../../components/organisms/ActMemberIndFilter';
 import { MEMBER_TYPE } from '../../constants/constant';
 import ActMemberOrgFilter from '../../components/organisms/ActMemberOrgFilter';
+import { useReactQuery } from '../../hooks/useReactQuery';
+import { api } from '../../repository';
 
 const MemberList = () => {
-  const con = useOutletContext();
+  const memberType = useOutletContext();
   const [filter, setFilter] = useState();
   const navigate = useNavigate();
-  const { id=undefined } = useParams();
+  const { id = undefined } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({});
+  const [list, setList] = useState([]);
+  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const url = `${memberType === MEMBER_TYPE.INDIVIDUAL ? api.user.list : api.organization.list}${query}`;
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`user-list`, currentPage], url, {
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
+  });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setList(data.list);
+      setPagination(data.pagination);
+    }
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    refetch();
+  }, [memberType, id, refetch]);
 
   useEffect(() => {
     console.log('filter', filter);
   }, [filter]);
 
-  const indDummy = () => {
-    let index = 0;
+  const indData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 500) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        registrationDate: `registrationDate ${index}`,
-        id: `id ${index}`,
-        type: `type ${index}`,
-        email: `email ${index}`,
-        nickname: `nickname ${index}`,
-        name: `name ${index}`,
-        mobile: `mobile ${index}`,
-        state: `state ${index}`,
+        index: i,
+        registrationDate: v.createdAt,
+        id: v._id,
+        type: v.loginType,
+        email: v.email,
+        nickname: v.nickname,
+        name: v.nickname,
+        mobile: v.indInfo?.mobile || '',
+        state: v.status,
       });
-    }
+    });
     data.headers = [
       {
         id: 'index',
@@ -90,22 +111,20 @@ const MemberList = () => {
     ];
     return data;
   };
-  const orgDummy = () => {
-    let index = 0;
+  const orgList = () => {
     const data = { rows: [], headers: [] };
-    while (index < 500) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        registrationData: `registrationData ${index}`,
-        id: `id ${index}`,
-        nickname: `nickname ${index}`,
-        orgName: `orgName ${index}`,
-        managerName: `managerName ${index}`,
-        managerMobile: `managerMobile ${index}`,
-        state: `state ${index}`,
+        index: i,
+        registrationDate: v.createdAt,
+        id: v._id,
+        nickname: v.nickname,
+        orgName: v.name,
+        managerName: v.manager?.name,
+        managerMobile: v.manager?.mobile,
+        state: v.status,
       });
-    }
+    });
     data.headers = [
       {
         id: 'index',
@@ -117,67 +136,80 @@ const MemberList = () => {
         id: 'registrationData',
         numeric: false,
         disablePadding: true,
-        label: 'registrationData',
+        label: '가입일시',
       },
       {
         id: 'id',
         numeric: false,
         disablePadding: true,
-        label: 'id',
+        label: 'ID',
       },
       {
         id: 'nickname',
         numeric: false,
         disablePadding: true,
-        label: 'nickname',
+        label: '닉네임',
       },
       {
         id: 'orgName',
         numeric: false,
         disablePadding: true,
-        label: 'orgName',
+        label: '단체명',
       },
       {
         id: 'managerName',
         numeric: false,
         disablePadding: true,
-        label: 'managerName',
+        label: '담당자성함',
       },
       {
         id: 'managerMobile',
         numeric: false,
         disablePadding: true,
-        label: 'managerMobile',
+        label: '담당자연락처',
       },
       {
         id: 'state',
         numeric: false,
         disablePadding: true,
-        label: 'state',
+        label: '회원상태',
       },
     ];
     return data;
   };
 
-  const onHandleClickItem = (item) => {
-    navigate(item.id);
-  }
+  const onHandleClickItem = item => {
+    navigate(item.id, { state: { memberType } });
+  };
 
-  return (
+  const onHandleChangePage = (e, page) => {
+    setCurrentPage(page);
+  };
+  return isLoading || isFetching ? (
+    <div>loading...</div>
+  ) : (
     <div className="col max-height">
-      {id ? <Outlet /> : con === MEMBER_TYPE.INDIVIDUAL ? (
+      {id ? (
+        <Outlet />
+      ) : memberType === MEMBER_TYPE.INDIVIDUAL ? (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberIndFilter type={con} handleFilter={setFilter} />
+            <ActMemberIndFilter type={memberType} handleFilter={setFilter} />
           </div>
-          <ActTable data={indDummy()} handleClickItem={onHandleClickItem}/>
+          <ActTable data={indData()} handleClickItem={onHandleClickItem} />
+          <div className="row align-center justify-center">
+            <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+          </div>
         </div>
       ) : (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberOrgFilter type={con} handleFilter={setFilter} />
+            <ActMemberOrgFilter type={memberType} handleFilter={setFilter} />
           </div>
-          <ActTable data={orgDummy()} />
+          <ActTable data={orgList()} handleClickItem={onHandleClickItem} />
+          <div className="row align-center justify-center">
+            <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+          </div>
         </div>
       )}
     </div>

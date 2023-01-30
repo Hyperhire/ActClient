@@ -73,13 +73,11 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function ActTable({ data, handleClickItem = ()=>{} }) {
+export default function ActTable({ data, handleClickItem = () => {} }) {
   const [selected, setSelected] = useState([]);
-  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    setPage(0);
     setRowsPerPage(10);
     setSelected([]);
   }, [data]);
@@ -111,15 +109,6 @@ export default function ActTable({ data, handleClickItem = ()=>{} }) {
     event.stopPropagation();
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const isSelected = id => selected.indexOf(id) !== -1;
 
   return (
@@ -136,13 +125,13 @@ export default function ActTable({ data, handleClickItem = ()=>{} }) {
         >
           <EnhancedTableHead headers={data.headers} numSelected={selected.length} onSelectAllClick={handleSelectAllClick} rowCount={data.rows.length} />
           <TableBody>
-            {data.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+            {data.rows.map((row, index) => {
               const isItemSelected = isSelected(row.index);
               const labelId = `enhanced-table-checkbox-${index}`;
               const rowKeys = Object.keys(data.rows[0]);
               return (
-                <TableRow hover tabIndex={-1} key={row.index} selected={isItemSelected} onClick={()=>handleClickItem(row)}>
-                  <TableCell padding="checkbox" onClick={event => handleClick(event, row.index)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.index} >
+                <TableRow hover tabIndex={-1} key={row.index} selected={isItemSelected} onClick={() => handleClickItem(row)}>
+                  <TableCell padding="checkbox" onClick={event => handleClick(event, row.index)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.index}>
                     <Checkbox
                       color="primary"
                       checked={isItemSelected}
@@ -174,15 +163,6 @@ export default function ActTable({ data, handleClickItem = ()=>{} }) {
       </TableContainer>
       <div className="col max-width">
         <EnhancedTableToolbar selectedItems={selected} />
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
-          component="div"
-          count={data.rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </div>
     </div>
   );

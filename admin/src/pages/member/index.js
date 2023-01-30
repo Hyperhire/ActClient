@@ -5,7 +5,6 @@ import { MEMBER_MENU } from '../../constants/constant';
 
 const MemberBase = () => {
   const { type } = useParams();
-  console.log("MemberBase", Outlet)
   return (
     <div className="row max-width max-height">
       <VerticalTabs options={MEMBER_MENU} defaultValue={MEMBER_MENU[0].value} />

@@ -17,7 +17,7 @@ export default function VerticalTabs({ options, defaultValue }) {
   };
 
   return (
-    <div className="row">
+    <div className="row max-height">
       <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: 'divider' }}>
         {options.map((item, index) => {
           return <Tab key={index} label={item.label} value={item.value} />;

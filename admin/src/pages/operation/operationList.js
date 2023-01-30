@@ -1,29 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import ActTable from 'components/atoms/ActTable';
-import { OPERATION_MENU_TYPE } from 'constants/constant';
+import { MEMBER_TYPE, OPERATION_MENU_TYPE } from 'constants/constant';
 import ActOperationFilter from '../../components/organisms/ActOperationFilter';
+import { api } from '../../repository';
+import { useReactQuery } from '../../hooks/useReactQuery';
 
 const OperationList = () => {
-  const con = useOutletContext();
-  console.log('OperationList', con);
+  const operationType = useOutletContext();
   const [filter, setFilter] = useState();
+  const { id = undefined } = useParams();
+  const [list, setList] = useState([]);
+  const query = `?keyword=${filter?.search || ''}`;
+  const url = `${operationType === OPERATION_MENU_TYPE.FAQ ? api.faq.list : api.banner.list}${query}`;
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(`${operationType}-list`, url, {
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
+  });
+  useEffect(() => {
+    if (isSuccess && data) {
+      setList(data);
+    }
+  }, [data, isSuccess]);
 
+  useEffect(() => {
+    refetch();
+  }, [operationType, id, refetch]);
   useEffect(() => {
     console.log('filter', filter);
   }, [filter]);
-  const FAQDummy = () => {
-    let index = 0;
+
+  const parseData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 51) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        createdAt: `createdAt ${index}`,
-        title: `title ${index}`,
-        displayState: `displayState ${index}`,
+        index: i,
+        createdAt: v.createdAt,
+        title: v.question,
+        displayState: v.show ? '노출' : '비노출',
       });
-    }
+    });
     data.headers = [
       {
         id: 'index',
@@ -60,9 +76,9 @@ const OperationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActOperationFilter type={con} handleFilter={setFilter} />
+              <ActOperationFilter type={type} handleFilter={setFilter} />
             </div>
-            <ActTable data={FAQDummy()} />
+            <ActTable data={parseData()} />
           </div>
         );
 
@@ -74,6 +90,6 @@ const OperationList = () => {
         );
     }
   };
-  return <div className="col max-height">{getList(con)}</div>;
+  return isFetching || isLoading ? <div>loading...</div> : <div className="col max-height">{getList(operationType)}</div>;
 };
 export default OperationList;

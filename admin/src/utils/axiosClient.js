@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const { REACT_APP_BASE_URL } = process.env;
+const { REACT_APP_API_SERVER_BASE_URL } = process.env;
 
-const client = axios.create({ baseURL: REACT_APP_BASE_URL });
+const client = axios.create({ baseURL: REACT_APP_API_SERVER_BASE_URL });
 
 const onRequest = config => {
   const { headers, method, url, data } = config;
