@@ -106,6 +106,21 @@ const Login = ({ setOption }) => {
           },
         });
         break;
+      case 'naver':
+        console.log(`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URL}&state=RANDOM_STATE`)
+        navigate(`/redirect`, {
+          state: {
+            url: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URL}&state=RANDOM_STATE`,
+          },
+        });
+        break;
+      case 'apple':
+        navigate(`/redirect`, {
+          state: {
+            url: `https://appleid.apple.com/auth/authorize?redirect_uri=${process.env.REACT_APP_APPLE_REDIRECT_URL}&client_id=${process.env.REACT_APP_APPLE_CLIENT_ID}&response_type=code&state=origin:web&scope=email&response_mode=form_post`,
+          },
+        });
+        break;
       default:
         showModal({
           open: true,

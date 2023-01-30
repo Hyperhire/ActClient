@@ -13,6 +13,7 @@ const SocialLogin = () => {
   const { sns } = useParams();
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
+  // const code = searchParams.get('code');
   const { onRefreshSuccess } = useContext(TokenContext);
   const location = useLocation();
 
