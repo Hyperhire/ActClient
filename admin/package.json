@@ -19,6 +19,7 @@
     "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^1.1.3",
     "dayjs": "^1.11.6",
+    "env-cmd": "^10.1.0",
     "file-saver": "^2.0.5",
     "framer-motion": "6.2.4",
     "hammerjs": "^2.0.8",
