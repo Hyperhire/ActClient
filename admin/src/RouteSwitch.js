@@ -23,16 +23,18 @@ const RouteSwitch = () => {
       <Routes>
         <Route path="/" element={<PrivateRoute outlet={<Navigate to="/member" />} path="/login" />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/member" element={<PrivateRoute outlet={<MemberBase />} path="/" />}>
           <Route path=":type" element={<MemberList />}>
             <Route path=":id" element={<MemberDetail />} />
           </Route>
         </Route>
+
         <Route path="/organization" element={<PrivateRoute outlet={<OrganizationBase />} path="/" />}>
-          <Route path=":postType" element={<OrganizationList />}>
-            <Route path=":postId" element={<OrganizationDetail />} />
-          </Route>
+          <Route path=":type" element={<OrganizationList />} />
+          <Route path=":type/:id" element={<OrganizationDetail />} />
         </Route>
+
         <Route path="/payment" element={<PrivateRoute outlet={<PaymentBase />} path="/" />}>
           <Route path=":type" element={<PaymentList />}>
             <Route path=":id" element={<PaymentDetail />} />
@@ -44,9 +46,8 @@ const RouteSwitch = () => {
           </Route>
         </Route>
         <Route path="/operation" element={<PrivateRoute outlet={<OperationBase />} path="/" />}>
-          <Route path=":type" element={<OperationList />}>
-            <Route path=":id" element={<OperationDetail />} />
-          </Route>
+          <Route path=":type" element={<OperationList />} />
+          <Route path=":type/:id" element={<OperationDetail />} />
         </Route>
       </Routes>
     </div>

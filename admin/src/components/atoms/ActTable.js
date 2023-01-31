@@ -113,7 +113,7 @@ export default function ActTable({ data, handleClickItem = () => {} }) {
 
   return (
     <div className="col">
-      <TableContainer sx={{ minHeight: '60vh', maxHeight: '60vh' }}>
+      <TableContainer sx={{ minHeight: '50vh', maxHeight: '50vh' }}>
         <Table
           stickyHeader
           aria-label="sticky table"

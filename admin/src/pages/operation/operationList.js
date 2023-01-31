@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import ActTable from 'components/atoms/ActTable';
 import { MEMBER_TYPE, OPERATION_MENU_TYPE } from 'constants/constant';
 import ActOperationFilter from '../../components/organisms/ActOperationFilter';
@@ -8,6 +8,7 @@ import { useReactQuery } from '../../hooks/useReactQuery';
 
 const OperationList = () => {
   const operationType = useOutletContext();
+  const navigate = useNavigate();
   const [filter, setFilter] = useState();
   const { id = undefined } = useParams();
   const [list, setList] = useState([]);
@@ -35,6 +36,7 @@ const OperationList = () => {
     list.forEach((v, i) => {
       data.rows.push({
         index: i,
+        id: v._id,
         createdAt: v.createdAt,
         title: v.question,
         displayState: v.show ? '노출' : '비노출',
@@ -46,6 +48,12 @@ const OperationList = () => {
         numeric: false,
         disablePadding: true,
         label: 'NO',
+      },
+      {
+        id: 'index',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
       },
       {
         id: 'createdAt',
@@ -68,7 +76,11 @@ const OperationList = () => {
     ];
     return data;
   };
-
+  const onHandleClickItem = item => {
+    console.log('onHandleClickItem', item);
+    navigate(item.id);
+    // navigate(`/organization/${postType}/${item.id}`);
+  };
   const getList = type => {
     // eslint-disable-next-line default-case
     switch (type) {
@@ -78,7 +90,7 @@ const OperationList = () => {
             <div className="max-height flex-1">
               <ActOperationFilter type={type} handleFilter={setFilter} />
             </div>
-            <ActTable data={parseData()} />
+            <ActTable data={parseData()} handleClickItem={onHandleClickItem} />
           </div>
         );
 

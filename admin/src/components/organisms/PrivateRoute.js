@@ -5,6 +5,7 @@ import { authAtom } from 'state';
 import Header from './Header';
 
 const PrivateRoute = ({ outlet }) => {
+  console.log('PrivateRoute', outlet);
   const location = useLocation();
   const auth = useRecoilValue(authAtom);
   if (!auth.authenticated) return <Navigate to="/login" replace state={{ ...location.state, to: location.pathname }} />;
