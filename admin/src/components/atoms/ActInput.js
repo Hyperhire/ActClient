@@ -31,18 +31,18 @@ const ActInput = (props, ref) => {
   const isError = !isEmptyObj(errors) && errors[id];
 
   return (
-    <div className="act-input-wrapper">
+    <div className="max-width">
       {label && (
         <div className="label-wrapper">
           <div className="label">{label}</div>
         </div>
       )}
-      <div className="text-field-area-wrapper">
+      <div className="max-width">
         <Controller
           control={control}
           name={id}
           render={({ field }) => (
-            <div className="text-field-wrapper" ref={params && params.inputRef}>
+            <div className="max-width" ref={params && params.inputRef}>
               <TextField
                 ref={ref}
                 select={type === 'select'}
@@ -118,9 +118,9 @@ const ActInput = (props, ref) => {
           )}
         />
       </div>
-      {!hideErrorMessage && (
-        <div className="height-24">{isError && <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />}</div>
-      )}
+      {/*{!hideErrorMessage && (*/}
+      {/*  <div className="height-24">{isError && <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />}</div>*/}
+      {/*)}*/}
     </div>
   );
 };

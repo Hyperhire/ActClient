@@ -6,7 +6,6 @@ import ActSpinner from 'components/atoms/ActSpinner';
 import { TokenContext } from './utils/TokenContext';
 
 const Routers = () => {
-  const location = useLocation();
   const { reIssueToken } = useContext(TokenContext);
   const [loginCheck, setLoginCheck] = useState(false);
   useEffect(() => {
@@ -14,10 +13,6 @@ const Routers = () => {
       setLoginCheck(true);
     });
   }, []);
-
-  useEffect(() => {
-    if (location.pathname !== '/list') document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [location]);
 
   return loginCheck ? (
     <Suspense fallback={<ActSpinner />}>

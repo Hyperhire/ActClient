@@ -13,8 +13,8 @@ export default function ActTabs({ initialValue }) {
   }, [value]);
 
   const MENU = [
-    { label: '회원관리', value: 'member' },
-    { label: '단체관리', value: 'organization' },
+    { label: '회원관리', value: 'member/individual' },
+    { label: '단체관리', value: 'organization/notice' },
     { label: '결제/정산', value: 'payment' },
     { label: '후원관리', value: 'donation' },
     { label: '운영관리', value: 'operation' },

@@ -94,6 +94,7 @@ const OrganizationList = () => {
   const onHandleClickItem = item => {
     console.log('onHandleClickItem', item);
     navigate(item.id);
+    // navigate(`/organization/${postType}/${item.id}`);
   };
   const getList = type => {
     // eslint-disable-next-line default-case

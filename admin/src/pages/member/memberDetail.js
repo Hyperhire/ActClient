@@ -7,6 +7,7 @@ import { MEMBER_TYPE } from '../../constants/constant';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { downloadFile } from '../../utils/downloadFile';
+import ActButton from '../../components/atoms/ActButton';
 
 const MemberDetail = () => {
   const navigate = useNavigate();
@@ -23,25 +24,20 @@ const MemberDetail = () => {
 
   const shortDescriptionEditorRef = useRef(null);
   const longDescriptionEditorRef = useRef(null);
-  const handleConfirm = () => {
-    if (shortDescriptionEditorRef.current) {
-      console.log(shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''));
-    }
-    if (longDescriptionEditorRef.current) {
-      console.log(longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''));
-    }
-
-    request({
-      url: type === MEMBER_TYPE.INDIVIDUAL ? api.user.detail(id) : api.organization.detail(id),
-      method: 'patch',
-      data: {
-        ...data,
-        shortDescription: shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
-        longDescription: longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
-      },
-    });
+  const handleConfirm = type => {
+    type === MEMBER_TYPE.INDIVIDUAL
+      ? navigate(-1)
+      : request({
+          url: api.organization.patch(id),
+          method: 'patch',
+          data: {
+            ...data,
+            shortDescription: shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
+            longDescription: longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
+          },
+        });
   };
-  const handleDelete = () => {
+  const handleDelete = type => {
     showModal({
       open: true,
       message: {
@@ -49,7 +45,10 @@ const MemberDetail = () => {
         content: '삭제하시겠습니까?',
       },
       handleConfirm: () => {
-        console.log('confirm delete ');
+        request({
+          url: type === MEMBER_TYPE.INDIVIDUAL ? api.user.delete(id) : api.organization.delete(id),
+          method: 'delete',
+        });
       },
       handleCancel: () => {
         console.log('cancel delete ');
@@ -79,89 +78,86 @@ const MemberDetail = () => {
       <div className="col">
         <div>계정정보</div>
         <div className="bordered">
-          <div className="row max-width">
+          <div className="row max-width border-bottom">
             <div className="flex-1">
-              <div className="row align-center">사진</div>
-              <div
-                className="width-120 height-120 link"
-                onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
-              >
-                <img
-                  className="display-block object-fit-cover width-120 height-120"
-                  src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
+              <div className="flex-1 row align-center background-box justify-center">사진</div>
+              <div className="flex-1 row align-center justify-around">
+                <div
+                  className="width-120 height-120 link"
+                  onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
+                >
+                  <img
+                    className="display-block object-fit-cover width-120 height-120"
+                    src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
+                  />
+                </div>
+                <ActButton
+                  label="다운로드"
+                  handleOnClick={() => onHandleClickDownload('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
                 />
               </div>
             </div>
             <div className="flex-1 col">
-              <div className="row">
-                <div className="flex-1">가입일시</div>
-                <div className="flex-1">{data.createdAt}</div>
+              <div className="row border-bottom">
+                <div className="flex-1 row padding-16 align-center background-box justify-center">가입일시</div>
+                <div className="flex-1 row padding-16">{data.createdAt}</div>
               </div>
               <div className="row">
-                <div className="flex-1">닉네임</div>
-                <div className="flex-1">{}</div>
+                <div className="flex-1 row padding-16 align-center background-box justify-center">닉네임</div>
+                <div className="flex-1 padding-16">{data.nickname}</div>
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row border-bottom">
             <div className="flex-1">
-              <div className="flex-1">ID</div>
-              <div className="flex-1">{data._id}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">ID</div>
+              <div className="flex-1 row padding-16">{data._id}</div>
             </div>
             <div className="flex-1">
-              <div className="flex-1">실명</div>
-              <div className="flex-1">{data.indInfo?.name || ''}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">실명</div>
+              <div className="flex-1 row padding-16">{data.indInfo?.name || ''}</div>
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">계정유형</div>
+              <div className="flex-1 padding-16 row">{data.loginType}</div>
+            </div>
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">생년월일</div>
+              <div className="flex-1 padding-16 row">{data.indInfo?.dateOfBirth || ''}</div>
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">이메일</div>
+              <div className="flex-1 padding-16 row">{data.email}</div>
+            </div>
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">성별</div>
+              <div className="flex-1 padding-16 row">{data.indInfo?.sex || ''}</div>
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">회원상태</div>
+              <div className="flex-1 padding-16 row">{data.status}</div>
+            </div>
+            <div className="flex-1">
+              <div className="flex-1 padding-16 row align-center background-box justify-center">휴대폰번호</div>
+              <div className="flex-1 padding-16 row">{data.indInfo?.mobile || ''}</div>
             </div>
           </div>
           <div className="row">
             <div className="flex-1">
-              <div className="flex-1">계정유형</div>
-              <div className="flex-1">{data.loginType}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">탈퇴일</div>
+              <div className="flex-1 padding-16 row">{data.deleteAt || ''}</div>
             </div>
             <div className="flex-1">
-              <div className="flex-1">생년월일</div>
-              <div className="flex-1">{data.indInfo?.dateOfBirth || ''}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center" />
+              <div className="flex-1 padding-16 row" />
             </div>
           </div>
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">이메일</div>
-              <div className="flex-1">{data.email}</div>
-            </div>
-            <div className="flex-1">
-              <div className="flex-1">성별</div>
-              <div className="flex-1">{data.indInfo?.sex || ''}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">회원상태</div>
-              <div className="flex-1">{data.status}</div>
-            </div>
-            <div className="flex-1">
-              <div className="flex-1">휴대폰번호</div>
-              <div className="flex-1">{data.indInfo?.mobile || ''}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">탈퇴일</div>
-              <div className="flex-1">{data.deleteAt || ''}</div>
-            </div>
-            <div className="flex-1">
-              <div />
-              <div />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="flex-1 link" onClick={handleDelete}>
-            삭제
-          </div>
-          <div className="flex-1 row align-center justify-center link" onClick={handleConfirm}>
-            확인
-          </div>
-          <div className="flex-1" />
         </div>
       </div>
     ) : (
@@ -324,18 +320,23 @@ const MemberDetail = () => {
             }}
           />
         </div>
-        <div className="row">
-          <div className="flex-1 link" onClick={handleDelete}>
-            삭제
-          </div>
-          <div className="flex-1 row align-center justify-center link" onClick={handleConfirm}>
-            저장
-          </div>
-          <div className="flex-1" />
-        </div>
       </div>
     );
   };
-  return <div className="col">{renderColumn(type)}</div>;
+  return (
+    <div className="col gap-16">
+      {renderColumn(type)}
+      <div className="divider-thick-primary-4" />
+      <div className="row">
+        <div className="flex-1 align-center justify-start">
+          <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete()} />
+        </div>
+        <div className="flex-1 align-center justify-center">
+          <ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />
+        </div>
+        <div className="flex-1" />
+      </div>
+    </div>
+  );
 };
 export default MemberDetail;

@@ -1,13 +1,14 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import ActDatePicker from './ActDatePicker';
+import ActButton from './ActButton';
 
 export default function ActFilter({ data, children, handleConfirm, handleInit }) {
   const current = new Date();
   return (
-    <div className="col gap-16 max-height">
-      <div className="col gap-16 background-box max-width">
-        <div className="row align-center">
+    <div className="col gap-16 max-height max-width">
+      <div className="col gap-16 background-box max-width padding-8">
+        <div className="row align-center justify-center">
           <div className="flex-1 align-center justify-start row gap-16">
             <div className="bold">{data.date.label}</div>
             <ActDatePicker value={data.date.state.startDateState.value} setValue={data.date.state.startDateState.setValue} maxDate={new Date()} />
@@ -60,12 +61,8 @@ export default function ActFilter({ data, children, handleConfirm, handleInit })
         {children}
       </div>
       <div className="row align-center justify-center gap-16 flex-1">
-        <div className="link" onClick={handleInit}>
-          기본설정
-        </div>
-        <div className="link" onClick={handleConfirm}>
-          확인
-        </div>
+        <ActButton label="기본설정" handleOnClick={() => handleInit()} />
+        <ActButton label="확인" handleOnClick={() => handleConfirm()} />
       </div>
     </div>
   );
