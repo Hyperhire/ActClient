@@ -158,9 +158,9 @@ const Login = ({ setOption }) => {
           <div className="link" onClick={() => socialLogin('kakao')}>
             <Kakao />
           </div>
-          <div className="link" onClick={() => socialLogin('apple')}>
+          {/* <div className="link" onClick={() => socialLogin('apple')}>
             <Apple />
-          </div>
+          </div> */}
           <div className="link" onClick={() => socialLogin('google')}>
             <Google />
           </div>
