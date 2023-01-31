@@ -1,0 +1,82 @@
+.campaign-detail-wrapper {
+  @extend .col;
+  @extend .max-width;
+  .campaign-detail-content-wrapper {
+    @extend .col;
+    .campaign-detail-content-organization-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .top-12;
+      @extend .bottom-16;
+      @extend .padding-row-24;
+      @extend .gap-2;
+      .campaign-detail-content-organization-label {
+        @extend .body-small;
+        color: $title-text;
+      }
+    }
+  }
+  .campaign-detail-content-carousel-wrapper {
+    @extend .row;
+    @extend .left-24;
+    @extend .padding-col-8;
+  }
+  .campaign-detail-content-rate-wrapper {
+    @extend .row;
+    @extend .padding-row-24;
+    @extend .padding-col-8;
+    @extend .align-center;
+    @extend .justify-between;
+    .campaign-detail-content-rate-content {
+      @extend .headline-large;
+      color: $title-text;
+    }
+  }
+  .campaign-detail-divider {
+    @extend .left-24;
+    @include dividerCustom(2, black);
+  }
+  .campaign-detail-content-total-amount-wrapper {
+    @extend .row;
+    @extend .padding-row-24;
+    @extend .padding-col-8;
+    .campaign-detail-content-amount-content {
+      @extend .body-medium;
+      color: $title-text;
+    }
+  }
+  .campaign-detail-content-target-wrapper {
+    margin: 1.5rem;
+    @extend .padding-row-24;
+    @extend .padding-col-8;
+    @extend .col;
+    @extend .border-radius-8;
+    @extend .gap-8;
+    background-color: #EDEEF2;
+    .campaign-detail-content-target-content-wrapper {
+      @extend .row;
+      @extend .gap-16;
+      .campaign-detail-content-target-label {
+        @extend .body-medium;
+        color: $caption;
+      }
+      .campaign-detail-content-target-content {
+        @extend .body-medium;
+        color: $title-text;
+      }
+    }
+  }
+  .campaign-detail-content-description-wrapper {
+    @extend .row;
+    @extend .padding-row-24;
+    @extend .padding-col-8;
+    @extend .pre-wrap;
+    .campaign-detail-content-description {
+      @extend .body-large;
+      color: $title-text;
+    }
+  }
+  .campaign-detail-button-wrapper {
+    @extend .padding-24;
+  }
+}

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Outlet, useParams } from 'react-router-dom';
 
-const Organization = ({ setOption }) => {
-  useEffect(() => {
-    setOption({ title: '기부 단체', back: true, hideMenu: false });
-  }, [setOption]);
-  return <div className="header-zindex">Organization page</div>;
+const OrganizationBase = ({ setOption }) => {
+  return (
+    <div className="max-width max-height">
+      <Outlet setOption={setOption} />
+    </div>
+  );
 };
-export default Organization;
+export default OrganizationBase;

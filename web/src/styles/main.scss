@@ -1,36 +1,137 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+//@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+/*
+Copyright (c) 2021 Kil Hyung-jin, with Reserved Font Name Pretendard.
+https://github.com/orioncactus/pretendard
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+*/
+
 @font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
+  font-family: 'Pretendard';
+  font-weight: 900;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff) format('woff'),
-  url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2'),
-  url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecnFHGPc.ttf) format('truetype');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: local('Pretendard Black'), url('./assets/font/woff2/Pretendard-Black.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Black.woff') format('woff');
 }
+
 @font-face {
-  font-family: 'Poppins';
-  font-style: normal;
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-display: swap;
+  src: local('Pretendard ExtraBold'), url('./assets/font/woff2/Pretendard-ExtraBold.woff2') format('woff2'), url('./assets/font/woff/Pretendard-ExtraBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-display: swap;
+  src: local('Pretendard Bold'), url('./assets/font/woff2/Pretendard-Bold.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
   font-weight: 600;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.woff) format('woff'),
-  url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.woff2) format('woff2'),
-  url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk.ttf) format('truetype');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: local('Pretendard SemiBold'), url('./assets/font/woff2/Pretendard-SemiBold.woff2') format('woff2'), url('./assets/font/woff/Pretendard-SemiBold.woff') format('woff');
 }
-@import './reset';
-@import './constants';
-@import './mixins';
-@import './common';
-@import './flexbox';
-@import './gridbox';
-@import './typography';
-@import './overrides';
-@import './animation';
-@import './background';
 
-@import './components/atoms/loading';
-@import './components/organisms/nav';
-@import './components/organisms/footer';
-@import './components/atoms/actText';
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-display: swap;
+  src: local('Pretendard Medium'), url('./assets/font/woff2/Pretendard-Medium.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-display: swap;
+  src: local('Pretendard Regular'), url('./assets/font/woff2/Pretendard-Regular.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-display: swap;
+  src: local('Pretendard Light'), url('./assets/font/woff2/Pretendard-Light.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 200;
+  font-display: swap;
+  src: local('Pretendard ExtraLight'), url('./assets/font/woff2/Pretendard-ExtraLight.woff2') format('woff2'), url('./assets/font/woff/Pretendard-ExtraLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 100;
+  font-display: swap;
+  src: local('Pretendard Thin'), url('./assets/font/woff2/Pretendard-Thin.woff2') format('woff2'), url('./assets/font/woff/Pretendard-Thin.woff') format('woff');
+}
+
+@import 'reset';
+@import 'constants';
+@import 'mixins';
+@import 'common';
+@import 'flexbox';
+@import 'gridbox';
+@import 'typography';
+@import 'overrides';
+@import 'animation';
+@import 'background';
+
+@import 'components/atoms/loading';
+@import 'components/atoms/actButton';
+@import 'components/atoms/actInput';
+@import 'components/atoms/actToggleButton';
+@import 'components/atoms/actDropDown';
+@import 'components/atoms/actCheckBox';
+@import 'components/atoms/actCheckBoxGroup';
+@import 'components/atoms/actCarousel';
+@import 'components/atoms/actSpinner';
+@import 'components/atoms/actSearchBar';
+@import 'components/atoms/actDatePicker';
+
+@import 'components/organisms/nav';
+@import 'components/organisms/footer';
+@import 'components/organisms/confirmModal';
+@import 'components/organisms/donationListItem';
+@import 'components/organisms/campaignItem';
+@import 'components/organisms/campaignList';
+@import 'components/organisms/actFaq';
+@import 'components/organisms/disclosureItem';
+@import 'components/organisms/actModal';
+@import 'components/organisms/actUploadProfileButton';
+@import 'components/organisms/actUploadLicenseButton';
+@import 'components/organisms/organizationNewsItem';
+@import 'components/organisms/organization/organizationItem';
+@import 'components/organisms/organization/organizationCover';
+@import 'components/organisms/main/mainCarousel';
+@import 'components/organisms/main/mainSummaryOrganization';
+@import 'components/organisms/main/mainDisclosure';
+@import 'components/organisms/main/mainFaq';
+@import 'components/organisms/paymentHistoryItem';
+@import 'components/organisms/settlementItem';
+@import 'components/organisms/actImageViewer';
+
+@import 'components/pages/login';
+@import 'components/pages/organizationDetail';
+@import 'components/pages/donation';
+@import 'components/pages/donationPayment';
+@import 'components/pages/campaignDetail';
+@import 'components/pages/newsDetail';
+@import 'components/pages/register';
+@import 'components/pages/registerByEmail';
+@import 'components/pages/findPassword';
+@import 'components/pages/profile';
+@import 'components/pages/resignMembership';
+@import 'components/pages/paymentHistory';
+@import 'components/pages/nftDetail';
+@import 'components/pages/verify';
+@import 'components/pages/settlementHistory';
+@import 'components/pages/donationHistory';
+@import 'components/pages/profileInformation';
+@import 'components/pages/orgInformation';
+@import 'components/pages/newsPost';

@@ -1,0 +1,34 @@
+.act-date-picker-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .align-start;
+  @extend .justify-center;
+  .act-date-picker-label-wrapper {
+    display: flex;
+    align-items: center;
+    @extend .gap-4;
+    .act-date-picker-label {
+      @extend .label-large;
+      color: $title-text;
+    }
+  }
+  .act-date-picker-text-field-area-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    .act-date-picker-text-field-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  }
+  .error-text {
+    @extend .top-4;
+    @extend .body-small;
+    @include result(true);
+  }
+  .success-text {
+    @include result(false);
+  }
+}

@@ -1,0 +1,80 @@
+.donation-wrapper {
+  @extend .col;
+  .donation-campaign-wrapper {
+    @extend .col;
+    border-radius: 8px;
+    background-color: #EDEEF2;
+    margin: 1.5rem 1.5rem 0;
+    @extend .padding-24;
+    @extend .gap-4;
+    .donation-campaign-label {
+      @extend .body-small;
+      color: $caption;
+    }
+    .donation-campaign-title {
+      @extend .headline-small;
+      color: $title-text;
+    }
+  }
+  .donation-form-wrapper {
+    @extend .col;
+    .donation-form-toggle-wrapper {
+      @extend .col;
+      @extend .gap-24;
+      @extend .padding-24;
+    }
+    .donation-form-summary-wrapper {
+      @extend .row;
+      @extend .justify-between;
+      @extend .padding-24;
+      .donation-form-summary-chip-wrapper {
+        @extend .row;
+        @extend .align-center;
+      }
+      .donation-form-summary-amount-wrapper {
+        @extend .row;
+        @extend .gap-16;
+        @extend .align-end;
+        .donation-form-summary-regular-payment {
+          padding-bottom: 0.25rem;
+          @extend .title-small;
+          color: $title-text;
+        }
+        .donation-form-summary-amount {
+          @extend .headline-medium;
+          color: $title-text;
+        }
+      }
+    }
+    .donation-form-submit-wrapper {
+      @extend .max-width;
+      @extend .row;
+    }
+  }
+  .donation-note-wrapper {
+    @extend .col;
+    @extend .padding-24;
+    @extend .gap-4;
+    .donation-note-item {
+      @extend .row;
+      @extend .max-width;
+      @extend .align-start;
+      @extend .gap-4;
+      .donation-note-item-icon-wrapper {
+        width: 2px;
+        height: 1rem;
+        @extend .relative;
+        .donation-note-item-icon {
+          position: absolute;
+          left: 0;
+          bottom: 0.1rem;
+        }
+      }
+      .donation-note-item-content {
+        @extend .body-medium;
+        color: $body-text;
+      }
+    }
+  }
+
+}

@@ -1,3 +1,7 @@
+:root {
+  --vh: 100%;
+}
+
 html,
 body {
   // 기본 font-size값 변경 제어
@@ -17,7 +21,7 @@ body {
 
   overscroll-behavior-y: none;
   scroll-behavior: smooth;
-  color: $neutrals-1;
+  color: $primary;
 }
 
 ::-webkit-scrollbar {
@@ -41,6 +45,10 @@ body {
   display: inline-block;
 }
 
+.display-flex {
+  display: flex;
+}
+
 .display-block {
   display: block;
 }
@@ -56,6 +64,10 @@ body {
 
 .top-140x {
   margin-top: 140px;
+}
+
+html, body, #root, .App {
+  min-height: -webkit-fill-available
 }
 
 @for $i from 0 through 1200 {
@@ -129,12 +141,23 @@ body {
     width: #{$i * 0.125}rem;
   }
 
+  .width-vw-#{$i} {
+    width: #{$i}vw;
+  }
+
   .height-#{$i * 2} {
     height: #{$i * 0.125}rem;
   }
 
+  .height-vh-#{$i} {
+    height: #{$i}vh;
+  }
+
   .font-#{$i * 2} {
     font-size: #{$i * 0.125}rem;
+  }
+  .gap-#{$i * 2} {
+    gap: #{$i * 0.125}rem;
   }
 }
 
@@ -165,6 +188,10 @@ body {
 
 .max-height {
   height: 100%;
+}
+
+.max-height-vh {
+  height: 100vh;
 }
 
 .padded-top {
@@ -200,6 +227,17 @@ body {
   white-space: nowrap;
 }
 
+@for $i from 0 through 10 {
+  .overflow-ellipsis-line-#{$i} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: #{$i};
+    -webkit-box-orient: vertical
+  }
+}
+
 .overflow-visible {
   overflow: visible;
 }
@@ -221,15 +259,31 @@ body {
   overflow-y: scroll;
 }
 
-.overflow-x-scrollbar {
+.overflow-y-scrollbar {
   &::-webkit-scrollbar {
-    width: 1px;
+    width: 2px;
+    background: white;
   }
 
   &::-webkit-scrollbar-thumb {
     height: 10%;
-    border-radius: 10px;
-    background: $neutrals-4;
+    background: black;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+.overflow-x-scrollbar {
+  &::-webkit-scrollbar {
+    height: 4px;
+    background: white;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 4px;
+    background: black;
   }
 
   &::-webkit-scrollbar-track {
@@ -246,19 +300,15 @@ body {
 }
 
 .bordered {
-  border: solid 2px $primary;
+  border: solid 1px $out-line;
 }
 
-.light-bordered {
-  border: solid 1px $primary;
+.bordered-dotted {
+  border: dotted 1px $out-line;
 }
 
-.bordered-light-grey {
-  border: solid 1px $neutrals-2;
-}
-
-.bordered-line-light-grey {
-  border: solid 1px $neutrals-5;
+.bordered-dashed {
+  border: dashed 1px $out-line;
 }
 
 .bordered-line-placeholder {
@@ -270,27 +320,52 @@ body {
 }
 
 .border-top {
-  border-top: solid 1px $neutrals-5;
+  border-top: solid 1px $out-line;
 }
 
 .border-bottom {
-  border-bottom: solid 1px $neutrals-5;
+  border-bottom: solid 1px $out-line;
 }
 
 .border-bottom-thicker {
-  border-bottom: solid 2px $neutrals-5;
+  border-bottom: solid 2px $out-line;
 }
 
 .border-50 {
   border-radius: 50%;
 }
 
+.border-row {
+  border-left: solid 1px $divider;
+  border-right: solid 1px $divider;
+}
+
 .divider {
-  border-bottom: solid 1px #000000;
+  border-bottom: solid 1px $divider;
+}
+
+@for $i from 0 through 100 {
+  .divider-thick-#{$i} {
+    border-bottom: solid #{$i}px $divider;
+  }
+}
+
+@for $i from 0 through 100 {
+  .divider-thick-primary-#{$i} {
+    border-bottom: solid #{$i}px $primary;
+  }
+}
+
+.divider-light-grey {
+  border-bottom: solid 1px lightgrey;
+}
+
+.divider-light-red {
+  border-bottom: solid 1px red;
 }
 
 .vertical-divider {
-  border-right: solid 2px #000000;
+  border-right: solid 1px $divider;
 }
 
 .object-fit-cover {
@@ -376,83 +451,41 @@ body {
 .background-white {
   background-color: #ffffff;
 }
-
-.background-primary {
-  background-color: $primary;
+.background-black {
+  background-color: black;
 }
-
 .background-secondary {
   background-color: $secondary;
 }
-
-.background-neutrals-2 {
-  background-color: $neutrals-2;
+.background-tertiary {
+  background-color: $tertiary;
 }
-
-.background-neutrals-4 {
-  background-color: $neutrals-4;
+.background-box {
+  background-color: $out-line;
 }
-
-.background-neutrals-5 {
-  background-color: $neutrals-5;
-}
-
-.background-neutrals-6 {
-  background-color: $neutrals-6;
-}
-
-.background-neutrals-7 {
-  background-color: $neutrals-7;
-}
-
-.background-featured-background {
-  background-color: $featured-background;
-}
-
-.background-kakao {
-  background-color: $kakao-yellow;
-}
-
-.background-user-board-list-title {
-  background-color: $user-board-list-title-bg;
-}
-
 .background-test1 {
-  background-color: $clicked-heart;
+  background-color: yellow;
 }
 
 .background-test2 {
-  background-color: $bsc;
+  background-color: yellowgreen;
 }
 
 .background-test3 {
-  background-color: $hunt;
+  background-color: cadetblue;
 }
 .background-test4 {
-  background-color: $pancake;
+  background-color: indianred;
 }
 .background-test5 {
-  background-color: $eth;
+  background-color: forestgreen;
 }
-
-.list-divider {
-  background-color: $list-divider;
-}
-
 
 .background-primary-hover {
   transition: 150ms background-color ease-in;
 
   &:hover {
-    background-color: $primary-dark;
-  }
-}
-
-.background-white-hover {
-  transition: 150ms background-color ease-in;
-
-  &:hover {
-    background-color: $neutrals-6;
+    background-color: $dimmed-bg;
   }
 }
 
@@ -478,35 +511,21 @@ body {
   height: 1px;
 }
 
-.placeholder-neutrals-4 {
+.placeholder {
   &::placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
     opacity: 1;
   }
 
   &:-ms-input-placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
   }
 
   &::-ms-input-placeholder {
-    color: $neutrals-4;
+    color: $placeholder;
   }
 }
 
-.placeholder-neutrals-1 {
-  &::placeholder {
-    color: $neutrals-1;
-    opacity: 1;
-  }
-
-  &:-ms-input-placeholder {
-    color: $neutrals-1;
-  }
-
-  &::-ms-input-placeholder {
-    color: $neutrals-1;
-  }
-}
 
 .button-focused-none {
   &:focus {
@@ -514,9 +533,9 @@ body {
   }
 }
 
-.bottun-focused-neutrals-1 {
+.button-focused {
   &:focus {
-    outline: $neutrals-1 2px solid;
+    outline: $placeholder 2px solid;
   }
 }
 
@@ -532,17 +551,6 @@ body {
   &:hover {
     box-shadow: rgba(100, 100, 100, 0.2) 0px 1px 8px 0px;
   }
-}
-
-.full-screen-invisible {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: 'red';
 }
 
 .z-1 {
@@ -578,14 +586,52 @@ body {
   transform: translateX(-50%);
 }
 
-.header-zindex {
-  z-index: $header-zindex;
-}
-
-.modal-zindex {
-  z-index: $modal-zindex;
-}
-
 .sign-up-hover:hover {
   color: $white !important
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+
+
+.splash {
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  color: white;
+  z-index: 9999;
+}
+
+.fade-out {
+  animation: fadeOut 200ms ease-in forwards;
+  opacity: 1;
+}
+
+.active-main {
+  z-index: -1;
+  opacity: 0;
+}
+.search-bar-wrapper {
+  margin: 1.5rem;
+  @extend .border-radius-4;
+  background-color: $divider;
+}
+.error-text {
+  @extend .top-4;
+  @extend .body-small;
+  @include result(true);
+}
+.success-text {
+  @include result(false);
 }

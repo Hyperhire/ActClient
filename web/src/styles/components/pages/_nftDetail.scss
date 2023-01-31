@@ -1,0 +1,50 @@
+.nft-detail-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .max-height;
+  .nft-detail-image-wrapper {
+    @extend .row;
+    @extend .align-center;
+    @extend .justify-center;
+    .nft-detail-image {
+      width: 240px;
+      height: 240px;
+      @extend .padding-24;
+      @extend .align-center;
+      @extend .justify-center;
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .nft-detail-divider {
+    @include dividerCustom(12, $divider);
+  }
+  .nft-detail-content-wrapper {
+    @extend .col;
+    @extend .padding-24;
+    .nft-detail-content {
+      @extend .row;
+      @extend .gap-32;
+      .nft-detail-content-label {
+        @extend .flex-1;
+        @extend .body-medium;
+        color: $body-text;
+      }
+      .nft-detail-content-data {
+        @extend .flex-4;
+        @extend .body-medium;
+        color: $title-text;
+      }
+    }
+  }
+  .nft-detail-button-wrapper {
+    @extend .flex-1;
+    @extend .col;
+    @extend .justify-end;
+  }
+}

@@ -1,0 +1,13 @@
+.act-check-box-group {
+  @extend .col;
+  @extend .align-start;
+  @extend .justify-center;
+  @extend .max-width;
+  .act-check-boxes-wrapper {
+    @extend .padding-row-24;
+  }
+  .act-check-box-group-divider {
+    @extend .max-width;
+    @include dividerCustom(1, $out-line);
+  }
+}

@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
-import { Container } from '@mui/material';
 import App from './App';
-import Faq from './pages/faq';
+import ActModal from 'components/organisms/ActModal';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Container maxWidth="sm" style={{ padding: 0 }}>
-        <App />
-      </Container>
+      <App />
+      <ActModal />
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root'),

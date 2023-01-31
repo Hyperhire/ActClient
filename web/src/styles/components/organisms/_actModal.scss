@@ -1,0 +1,27 @@
+.act-modal-wrapper {
+  @extend .col;
+  @extend .max-width;
+  height: max-content;
+  min-height: 30vh;
+  @extend .align-center;
+  @extend .justify-between;
+  @extend .padding-24;
+  z-Index: 12;
+  .act-modal-message-wrapper {
+    @extend .row;
+    @extend .flex-1;
+    @extend .align-center;
+    @extend .justify-center;
+    .act-modal-message {
+      @extend .pre-wrap;
+      @extend .text-center;
+    }
+  }
+  .act-modal-button-wrapper {
+    @extend .row;
+    @extend .gap-16;
+    @extend .max-width;
+    @extend .align-center;
+    @extend .justify-around;
+  }
+}

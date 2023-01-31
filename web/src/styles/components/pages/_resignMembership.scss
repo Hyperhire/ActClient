@@ -1,0 +1,53 @@
+.resign-membership-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .padding-col-24;
+  .resign-membership-divider {
+    @extend .left-24;
+    @include dividerCustom(2, black);
+  }
+  .resign-membership-content-wrapper {
+    @extend .col;
+    @extend .padding-24;
+    @extend .gap-24;
+    @extend .max-width;
+    .resign-membership-content-note-wrapper {
+      @extend .col;
+      @extend .gap-16;
+      .resign-membership-content-note-item {
+        @extend .row;
+        @extend .max-width;
+        @extend .align-start;
+        @extend .gap-4;
+        .resign-membership-content-note-item-icon-wrapper {
+          width: 2px;
+          height: 1rem;
+          @extend .relative;
+          .resign-membership-content-note-item-icon {
+            position: absolute;
+            left: 0;
+            bottom: 0.1rem;
+          }
+        }
+        .resign-membership-content-note-item-content {
+          @extend .body-large;
+          color: $title-text;
+        }
+      }
+    }
+    .resign-membership-content-form {
+      @extend .col;
+      @extend .gap-24;
+      .resign-membership-content-confirm-checkbox-label {
+        @extend .title-medium;
+        color: $title-text;
+      }
+      .resign-membership-content-confirm-button-wrapper {
+        @extend .row;
+        @extend .align-center;
+        @extend .gap-16;
+      }
+    }
+
+  }
+}

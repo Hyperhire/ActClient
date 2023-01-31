@@ -1,0 +1,16 @@
+.act-toggle-button-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  .act-toggle-button-label {
+    @extend .body-medium;
+    color: $title-text;
+    @extend .bottom-8;
+  }
+  .act-toggle-button-error-wrapper {
+    @extend .row;
+    @extend .max-width;
+  }
+}

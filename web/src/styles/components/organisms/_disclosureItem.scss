@@ -1,0 +1,23 @@
+.disclosure-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  @extend .gap-4;
+  .disclosure-item-title {
+    @extend .title-small;
+    color: $title-text;
+  }
+  .disclosure-item-description-wrapper {
+    display: flex;
+    .disclosure-item-description {
+      flex:1;
+      @extend .body-small;
+      color: $body-text;
+    }
+    .disclosure-item-date {
+      @extend .body-small;
+      color: $body-text;
+    }
+  }
+
+}

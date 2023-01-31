@@ -1,0 +1,38 @@
+.organization-item-wrapper {
+  display: flex;
+  @extend .padding-24;
+  @extend .gap-24;
+  .organization-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    @extend .gap-8;
+    .organization-item-label-wrapper {
+      display: flex;
+      @extend .gap-6;
+      .organization-item-label {
+        @extend .title-small;
+        color: $title-text;
+      }
+    }
+    .organization-item-description {
+      @extend .overflow-ellipsis-line-2;
+      @extend .body-small;
+      color: $body-text;
+    }
+  }
+  .organization-item-logo {
+    width: 30vw;
+    height: 16vw;
+    align-items: center;
+    justify-content: center;
+    img {
+      @extend .border-radius-8;
+      object-fit: cover;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+}

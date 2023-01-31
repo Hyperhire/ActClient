@@ -1,0 +1,38 @@
+.payment-history-item-wrapper {
+  @extend .row;
+  .payment-history-item-checkbox-wrapper {
+    @extend .row;
+    @extend .align-start;
+  }
+  .payment-history-item-in-wrapper {
+    @extend .flex-1;
+    @extend .gap-24;
+    .payment-history-item-label-wrapper {
+      @extend .gap-4;
+      @extend .col;
+      .payment-history-item-label {
+        @extend .body-medium;
+        color: $body-text;
+      }
+    }
+    .payment-history-item-content-wrapper {
+      @extend .col;
+      @extend .flex-1;
+      @extend .gap-4;
+      .payment-history-item-content {
+        @extend .gap-4;
+        @extend .body-medium;
+        color: $title-text;
+      }
+      .payment-history-item-type-regular-label {
+        @extend .body-medium;
+        color: #15A7D6;
+      }
+      .payment-history-item-type-temp-label {
+        @extend .body-medium;
+        color: #FF82DC;
+      }
+    }
+  }
+
+}

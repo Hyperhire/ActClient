@@ -1,47 +1,18 @@
-import React, { lazy, Suspense, useEffect, useState, useRef } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import { ReactComponent as Logo } from 'assets/images/logos/cojam_logo.svg';
-import { ReactComponent as Hamburger } from 'assets/images/icons/hamburger.svg';
-import useResize from 'hooks/useResize';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import { ReactComponent as Logo } from 'styles/assets/icons/logo/act.svg';
+import { ReactComponent as Hamburger } from 'styles/assets/images/icons/hamburger.svg';
+
 import Back from 'components/atoms/Back';
 
-const Nav = ({ option = { title: '', back: false, hideMenu: false } }) => {
+import NavDrawer from './NavDrawer';
+
+const Nav = ({ option = { title: 'title', subtitle: 'subtitle', description: 'description', back: false, menu: true } }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  console.log('option', option);
-  const rootRef = useRef();
-  const { width, height } = useResize(rootRef);
-
-  const PAGES = [
-    { url: '/login', name: 'Login' },
-    { url: '/organization', name: '단체찾기' },
-    { url: '/disclosure', name: '공시보기' },
-    { url: '/faq', name: 'FAQ' },
-  ];
-
-  const list = () => (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      <List>
-        {PAGES.map((page, index) => (
-          <ListItem key={`page.name${index}`} disablePadding>
-            <ListItemButton>
-              <Link to={page.url} className="title grey font-24 font-weight-700">
-                {page.name}
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
 
   const toggleDrawer = open => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -50,29 +21,54 @@ const Nav = ({ option = { title: '', back: false, hideMenu: false } }) => {
     setOpen(open);
   };
 
+  const onLogoClick = () => {
+    navigate('/');
+  };
+
   return (
-    <div ref={rootRef} className="max-width ">
-      <header className="nav-wrapper row align-center padding-row-8 flex-auto ">
-        <div className="nav max-width flex-auto header-zindex">
-          <div className="nav-inside row align-center justify-between ">
-            <div className="flex-1">{option.back ? <Back size="1rem" /> : <Logo onClick={() => navigate('/')} height={46} className="link" />}</div>
-            <div className="flex-1">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
+    <div className="max-width padding-row-24">
+      <header className="nav-wrapper row align-center flex-auto">
+        <div className="nav max-width flex-auto">
+          <div className="nav-inside row align-center justify-between">
+            <div className="flex-1 link" onClick={onLogoClick}>
+              {option.back ? <Back size="1rem" /> : <Logo width="58" height="28" />}
+            </div>
+            <div className="flex-2">{option.title ? <div className="row max-width align-center justify-center">{option.title}</div> : null}</div>
             <div className="flex-1 row max-width align-center justify-end">
-              {option.hideMenu ? null : (
-                <div>
+              {option.menu ? (
+                <div className="row max-width align-center justify-end">
                   <button className="hamburger link" onClick={toggleDrawer(true)}>
                     <Hamburger />
                   </button>
-                  <SwipeableDrawer anchor="right" open={open} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-                    {list()}
-                  </SwipeableDrawer>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
       </header>
-      <div>{option.title}</div>
+      {option.subtitle && (
+        <div className="subtitle-wrapper col gap-16">
+          <div className="subtitle bold max-width pre-wrap">
+            {option.subtitle}
+            {option.chip && <span className="align-center">{option.chip}</span>}
+            {option.button && <div className="subtitle-optional-button">{option.button}</div>}
+          </div>
+          {option.description && <div className="description">{option.description}</div>}
+        </div>
+      )}
+      {option.date && <div className="subtitle-date">{dayjs(new Date()).locale('ko').format('YYYY.MM.DD a h:mm')}</div>}
+
+      <SwipeableDrawer
+        PaperProps={{
+          sx: { width: '80%' },
+        }}
+        anchor="right"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        <NavDrawer setOpen={setOpen} />
+      </SwipeableDrawer>
     </div>
   );
 };

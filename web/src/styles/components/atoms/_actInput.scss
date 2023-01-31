@@ -1,0 +1,40 @@
+@mixin result($error) {
+  @extend .body-small;
+  @if($error == true) {
+    color: $danger;
+  } @else {
+    color: $success;
+  }
+}
+.act-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  .label-wrapper {
+    display: flex;
+    align-items: center;
+    @extend .gap-4;
+    .label {
+      @extend .label-large;
+      color: $title-text;
+    }
+  }
+  .text-field-area-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 3rem;
+    .text-field-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .duplication-button-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+}

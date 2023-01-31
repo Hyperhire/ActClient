@@ -1,0 +1,26 @@
+.act-upload-profile-button-wrapper {
+  @extend .col;
+  @extend .align-center;
+  @extend .justify-center;
+  .act-upload-profile-icon-profile-wrapper {
+    @extend .width-104;
+    @extend .height-104;
+    @extend .relative;
+    @extend .align-center;
+    @extend .justify-center;
+    @extend .border-50;
+    background: rgba(0, 0, 0, 0.1);
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      @extend .border-50;
+    }
+    .act-upload-profile-icon-close-button {
+      @extend .absolute;
+      right: 0;
+      top:0;
+    }
+  }
+}

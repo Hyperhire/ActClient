@@ -1,0 +1,42 @@
+.register-wrapper {
+  @extend .col;
+  @extend .max-width;
+  @extend .padding-24;
+  @extend .gap-16;
+  .register-button-wrapper {
+    @extend .row;
+    @extend .max-width;
+    @extend .link;
+    @extend .padding-32;
+    @extend .border-radius-8;
+    @extend .align-center;
+    background-color: #FCF9ED;
+    .register-button-label-wrapper {
+      @extend .col;
+      @extend .flex-1;
+      .register-button-info-label {
+        @extend .body-medium;
+        color: $body-text;
+      }
+      .register-button-title-label-wrapper {
+        @extend .row;
+        .register-button-label {
+          @extend .title-large;
+          color: $title-text;
+        }
+      }
+    }
+  }
+  .register-organization-button-wrapper {
+    @extend .register-button-wrapper;
+    background-color: #EAFCF2;
+  }
+  .register-existing-member-wrapper {
+    @extend .row;
+    @extend .align-center;
+    .register-existing-member-label {
+      @extend .body-medium;
+      color: $title-text;
+    }
+  }
+}

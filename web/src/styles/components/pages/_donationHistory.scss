@@ -1,0 +1,31 @@
+.donation-history-wrapper {
+  @extend .col;
+  @extend .max-height;
+  padding-bottom: 10rem;
+  .donation-history-footer-wrapper {
+    @extend .col;
+    @extend .max-width;
+    height: 10rem;
+    position : fixed;
+    bottom: 0;
+    background-color: #FAFAFA;
+    @extend .align-center;
+    @extend .justify-center;
+    @extend .gap-8;
+    @extend .padding-row-24;
+    .donation-history-footer-item-wrapper {
+      @extend .row;
+      @extend .align-center;
+      @extend .justify-between;
+      @extend .max-width;
+      .donation-history-footer-item-label{
+        @extend .body-medium;
+        color: $body-text;
+      }
+      .donation-history-footer-item-content{
+        @extend .title-medium;
+        color: $title-text;
+      }
+    }
+  }
+}

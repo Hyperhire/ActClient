@@ -1,0 +1,19 @@
+.act-check-box-wrapper {
+  @extend .col;
+  @extend .justify-center;
+  .act-check-box-icon {
+    @extend .width-24;
+    @extend .height-24;
+    background: white;
+    @extend .bordered;
+    border-radius: 4px;
+  }
+  .act-check-box-checked-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @extend .act-check-box-icon;
+    @extend .bordered;
+    background: black;
+  }
+}

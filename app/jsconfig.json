@@ -1,0 +1,9 @@
+{
+  "javascript.validate.enable": false,
+  "compilerOptions": {
+    "target": "ES6",
+    "baseUrl": "./src",
+    "module": "es2015"
+  },
+  "exclude": ["**/build/**", "node_modules", "**/node_modules/*"]
+}

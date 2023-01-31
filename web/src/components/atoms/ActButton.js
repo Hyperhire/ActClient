@@ -1,9 +1,20 @@
 import React from 'react';
-const ActButton = ({ label, handleOnClick }) => {
+import { ReactComponent as Give } from 'styles/assets/icons/label/give.svg';
+const ActButton = ({ type = 'button', className = 'button-medium', label, handleOnClick, disabled, isDonating = false, radius = 4 }) => {
+  const handleClick = e => {
+    if (handleOnClick) handleOnClick(e);
+  };
   return (
-    <button onClick={handleOnClick} className="height-40 padding-row-12 padding-col-8 bottom-16 border-none border-radius-10 background-primary white background-primary-hover link">
-      <div>{label}</div>
-    </button>
+    <div>
+      <button type={type} disabled={disabled} onClick={handleClick} className={`border-radius-${radius} ${className && className} `}>
+        <div>{label}</div>
+        {isDonating && (
+          <div className="act-button-chip">
+            <Give />
+          </div>
+        )}
+      </button>
+    </div>
   );
 };
 export default ActButton;

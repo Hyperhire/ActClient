@@ -1,0 +1,53 @@
+.register-by-email-wrapper {
+  @extend .col;
+  @extend .gap-40;
+  @extend .padding-col-40;
+  .register-by-email-form-common-wrapper {
+    @extend .padding-row-24;
+  }
+  .register-by-email-form-input-wrapper {
+    @extend .register-by-email-form-common-wrapper;
+    @extend .col;
+    @extend .gap-32;
+
+    .register-by-email-form-half-row-wrapper {
+      @extend .row;
+      @extend .gap-16;
+      @extend .max-width;
+      @extend .align-center;
+      @extend .justify-around;
+      .register-by-email-form-half-row {
+        @extend .row;
+        @extend .flex-auto;
+      }
+    }
+  }
+
+  .register-by-email-form-receipt-wrapper {
+    @extend .register-by-email-form-common-wrapper;
+    @extend .col;
+    @extend .gap-16;
+    .register-by-email-form-receipt-label-wrapper {
+      @extend .row;
+      @extend .gap-12;
+      @extend .align-center;
+      .register-by-email-form-receipt-label {
+        @extend .body-medium;
+        color: $title-text;
+      }
+    }
+  }
+
+  .register-by-email-form-submit-wrapper {
+    @extend .register-by-email-form-common-wrapper;
+    @extend .max-width;
+  }
+
+  .register-by-email-divider {
+    @include dividerCustom(12, $divider);
+  }
+  .register-by-email-form-checkbox-label {
+    @extend .title-small;
+    color: $title-text;
+  }
+}

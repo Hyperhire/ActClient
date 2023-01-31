@@ -1,0 +1,44 @@
+.news-post-wrapper {
+  @extend .col;
+  @extend .padding-24;
+  .content-wrapper {
+    @extend .col;
+    @extend .gap-24;
+    .title-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+    .image-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+    .period-wrapper {
+      @extend .col;
+      @extend .gap-12;
+      .period-item-wrapper {
+        @extend .row;
+        @extend .gap-12;
+      }
+    }
+    .goal-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+    .description-wrapper {
+      @extend .col;
+      @extend .gap-12;
+    }
+    .button-wrapper {
+      @extend .row;
+      @extend .gap-12;
+    }
+  }
+  .content-label {
+    @extend .title-small;
+    color: $title-text;
+  }
+  .content-sub-label {
+    @extend .body-small;
+    color: $caption;
+  }
+}

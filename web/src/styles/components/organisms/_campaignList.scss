@@ -1,0 +1,37 @@
+.campaign-list-wrapper {
+  @extend .col;
+  @extend .max-height;
+  @extend .max-width;
+  .campaign-list-title-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @extend .padding-col-24;
+    .campaign-list-title {
+      @extend .title-large;
+      color: $title-text;
+    }
+  }
+  .campaign-list-search-bar-wrapper {
+    margin: 1.5rem;
+    @extend .border-radius-4;
+    background-color: $divider;
+  }
+  .campaign-list-no-data-wrapper {
+    @extend .row;
+    @extend .align-center;
+    @extend .justify-center;
+    @extend .max-height;
+    .campaign-list-no-data {
+      @extend .body-medium;
+      color: $title-text;
+    }
+  }
+  .campaign-list-button-wrapper {
+    @extend .row;
+    @extend .max-height;
+    @extend .align-end;
+    @extend .max-width;
+  }
+}
