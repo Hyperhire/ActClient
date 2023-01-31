@@ -1,12 +1,12 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-export default function ActTabs() {
+export default function ActTabs({ initialValue }) {
   const navigate = useNavigate();
-  const [value, setValue] = useState(false);
+  const [value, setValue] = useState(initialValue);
 
   useEffect(() => {
     if (value) navigate(`/${value}`);

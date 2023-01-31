@@ -1,9 +1,11 @@
 import 'styles/main.scss';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
 import useApiError from 'hooks/useApiError';
 import Routers from './Routers';
 import { TokenProvider } from './utils/TokenContext';
+import ActModal from './components/atoms/ActModal';
 
 const { handleError } = useApiError;
 const queryClient = new QueryClient({
@@ -20,6 +22,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TokenProvider>
         <BrowserRouter>
+          <ActModal />
           <Routers />
         </BrowserRouter>
       </TokenProvider>

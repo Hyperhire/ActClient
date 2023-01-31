@@ -1,8 +1,7 @@
 import React, { lazy, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from 'components/organisms/PrivateRoute';
-import Header from './components/organisms/Header';
-const Main = lazy(() => import('pages/main'));
+const Login = lazy(() => import('pages/login'));
 const MemberBase = lazy(() => import('pages/member'));
 const MemberList = lazy(() => import('pages/member/memberList'));
 const MemberDetail = lazy(() => import('pages/member/memberDetail'));
@@ -21,30 +20,30 @@ const OperationDetail = lazy(() => import('pages/operation/operationDetail'));
 const RouteSwitch = () => {
   return (
     <div className="col max-height max-width">
-      <Header />
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/member" element={<MemberBase />}>
+        <Route path="/" element={<PrivateRoute outlet={<Navigate to="/member" />} path="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/member" element={<PrivateRoute outlet={<MemberBase />} path="/" />}>
           <Route path=":type" element={<MemberList />}>
             <Route path=":id" element={<MemberDetail />} />
           </Route>
         </Route>
-        <Route path="/organization" element={<OrganizationBase />}>
-          <Route path=":type" element={<OrganizationList />}>
-            <Route path=":id" element={<OrganizationDetail />} />
+        <Route path="/organization" element={<PrivateRoute outlet={<OrganizationBase />} path="/" />}>
+          <Route path=":postType" element={<OrganizationList />}>
+            <Route path=":postId" element={<OrganizationDetail />} />
           </Route>
         </Route>
-        <Route path="/payment" element={<PaymentBase />}>
+        <Route path="/payment" element={<PrivateRoute outlet={<PaymentBase />} path="/" />}>
           <Route path=":type" element={<PaymentList />}>
             <Route path=":id" element={<PaymentDetail />} />
           </Route>
         </Route>
-        <Route path="/donation" element={<DonationBase />}>
+        <Route path="/donation" element={<PrivateRoute outlet={<DonationBase />} path="/" />}>
           <Route path=":type" element={<DonationList />}>
             <Route path=":id" element={<DonationDetail />} />
           </Route>
         </Route>
-        <Route path="/operation" element={<OperationBase />}>
+        <Route path="/operation" element={<PrivateRoute outlet={<OperationBase />} path="/" />}>
           <Route path=":type" element={<OperationList />}>
             <Route path=":id" element={<OperationDetail />} />
           </Route>
