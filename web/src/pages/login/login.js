@@ -107,7 +107,6 @@ const Login = ({ setOption }) => {
         });
         break;
       case 'naver':
-        console.log(`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URL}&state=RANDOM_STATE`)
         navigate(`/redirect`, {
           state: {
             url: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URL}&state=RANDOM_STATE`,
@@ -158,9 +157,9 @@ const Login = ({ setOption }) => {
           <div className="link" onClick={() => socialLogin('kakao')}>
             <Kakao />
           </div>
-          <div className="link" onClick={() => socialLogin('apple')}>
+          {/* <div className="link" onClick={() => socialLogin('apple')}>
             <Apple />
-          </div>
+          </div> */}
           <div className="link" onClick={() => socialLogin('google')}>
             <Google />
           </div>

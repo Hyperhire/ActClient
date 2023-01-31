@@ -1,0 +1,11 @@
+admin/node_modules
+admin/.env.development
+admin/.env.production
+app/node_modules
+web/node_modules
+web/.env.local
+web/.env.development
+web/.env.production
+
+*.pem
+web/build/
