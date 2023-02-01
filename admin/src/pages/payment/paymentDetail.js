@@ -25,13 +25,13 @@ const PaymentDetail = () => {
   );
   const { showModal } = useModal();
   const [orderType, setOrderType] = useState(data.isRecurring);
-  const [paidStatus, setPaidStatus] = useState(data.paidStatus);
+  const [withdrawRequestStatus, setWithdrawRequestStatus] = useState(data.withdrawRequestStatus);
 
   const orderTypeOptions = [
     { label: '일시후원', value: false },
     { label: '정기후원', value: true },
   ];
-  const paidStatusOptions = [
+  const withdrawRequestStatusOptions = [
     { label: '정산요청대기', value: 'notyet' },
     { label: '정산요청완료', value: 'requested' },
   ];
@@ -44,10 +44,16 @@ const PaymentDetail = () => {
     request({
       url: type === PAYMENT_MENU_TYPE.PAYMENT ? api.order.patch(id) : api.withdraw.patch(id),
       method: 'patch',
-      data: {
-        ...data,
-        status: withdrawStatus,
-      },
+      data:
+        type === PAYMENT_MENU_TYPE.PAYMENT
+          ? {
+              ...data,
+              withdrawRequestStatus,
+            }
+          : {
+              ...data,
+              status: withdrawStatus,
+            },
     }).then(() => navigate(-1));
   };
   const handleDelete = type => {
@@ -122,7 +128,7 @@ const PaymentDetail = () => {
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">결제상태</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={paidStatusOptions} state={paidStatus} setState={setPaidStatus} />
+                <ActRadioGroup options={withdrawRequestStatusOptions} state={withdrawRequestStatus} setState={setWithdrawRequestStatus} />
               </div>
             </div>
           </div>

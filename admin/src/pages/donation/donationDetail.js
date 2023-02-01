@@ -133,7 +133,7 @@ const DonationDetail = () => {
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">정기결제일</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={subscriptionOnOptions} state={subscriptionOn} setState={setSubscriptionOn} />
+                <ActRadioGroup options={subscriptionOnOptions} state={subscriptionOn} setState={setSubscriptionOn} disabled={!data.isRecurring} />
               </div>
             </div>
             <div className="flex-1">
@@ -144,7 +144,7 @@ const DonationDetail = () => {
             </div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '정기후원횟수', content: '' })}</div>
+            <div className="flex-1">{renderItem({ title: '정기후원횟수', content: data.recurringCount })}</div>
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">정기후원상태</div>
               <div className="flex-1 row padding-16">

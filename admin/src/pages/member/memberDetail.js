@@ -27,6 +27,12 @@ const MemberDetail = () => {
   const shortDescriptionEditorRef = useRef(null);
   const longDescriptionEditorRef = useRef(null);
   const handleConfirm = type => {
+    const params = {
+      ...data,
+      shortDescription: shortDescriptionEditorRef.current.getContent().length > 0 ? shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+      longDescription: longDescriptionEditorRef.current.getContent().length > 0 ? longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+    };
+    console.log('params', params);
     type === MEMBER_TYPE.INDIVIDUAL
       ? navigate(-1)
       : request({

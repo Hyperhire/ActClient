@@ -98,7 +98,7 @@ const OperationList = () => {
       case OPERATION_MENU_TYPE.BANNER:
         return (
           <div className="max-height">
-            <ActBannerManager />
+            <ActBannerManager data={data} />
           </div>
         );
     }

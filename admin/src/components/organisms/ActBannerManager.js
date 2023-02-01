@@ -1,6 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BannerManagerTabs from '../atoms/BannerManagerTabs';
-const ActBannerManager = () => {
+import { OPERATION_MENU_TYPE } from '../../constants/constant';
+import { api } from '../../repository';
+import { useReactQuery } from '../../hooks/useReactQuery';
+const ActBannerManager = ({ data }) => {
+  console.log('ActBannerManager', data);
   const MENU = [
     { label: '메인배너1', value: 'banner1' },
     { label: '메인배너2', value: 'banner2' },
@@ -8,7 +12,7 @@ const ActBannerManager = () => {
   ];
   return (
     <div>
-      <BannerManagerTabs menus={MENU} />
+      <BannerManagerTabs data={data} />
     </div>
   );
 };

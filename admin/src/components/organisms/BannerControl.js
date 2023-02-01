@@ -6,17 +6,19 @@ import ActInput from '../atoms/ActInput';
 import ActButton from '../atoms/ActButton';
 import ActRadioGroup from '../atoms/ActRadioGroup';
 import BannerImageViewer from './BannerImageViewer';
+import { urlToFile } from '../../utils/downloadFile';
 
-const BannerControl = ({ value }) => {
+const BannerControl = ({ data }) => {
   const visibleStatusOptions = [
     { label: '노출중', value: true },
     { label: '비노출', value: false },
   ];
   const bannerDefaultForm = {
-    url: '',
-    image: '',
-    visible: false,
+    url: data.clickUrl,
+    image: data.imageUrl,
+    visible: data.show,
   };
+
   const formOptions = { mode: 'onChange', defaultValues: bannerDefaultForm, resolver: yupResolver(bannerYup) };
   const {
     control,
@@ -31,6 +33,13 @@ const BannerControl = ({ value }) => {
   useEffect(() => {
     setValue('visible', visibleStatus, { shouldValidate: true });
   }, [visibleStatus]);
+
+  useEffect(() => {
+    if (!data.imageUrl) return;
+    urlToFile(data.imageUrl).then(file => {
+      setImage([file]);
+    });
+  }, [data.imageUrl]);
 
   const onSubmit = async formData => {
     console.log('onSubmit', formData);

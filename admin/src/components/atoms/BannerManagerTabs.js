@@ -6,8 +6,8 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import BannerControl from '../organisms/BannerControl';
 
-export default function BannerManagerTabs({ menus }) {
-  const [value, setValue] = useState(menus[0].value);
+export default function BannerManagerTabs({ data }) {
+  const [value, setValue] = useState(data[0]._id);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -18,20 +18,18 @@ export default function BannerManagerTabs({ menus }) {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="banner-tabs">
-            {menus.map((menu, index) => {
-              return <Tab key={index} label={menu.label} value={menu.value} />;
+            {data.map((banner, index) => {
+              return <Tab key={index} label={`메인배너${banner.sequence}`} value={banner._id} />;
             })}
           </TabList>
         </Box>
-        <TabPanel value="banner1">
-          <BannerControl value="banner1" />
-        </TabPanel>
-        <TabPanel value="banner2">
-          <BannerControl value="banner2" />
-        </TabPanel>
-        <TabPanel value="banner3">
-          <BannerControl value="banner3" />
-        </TabPanel>
+        {data.map((banner, index) => {
+          return (
+            <TabPanel key={index} value={banner._id}>
+              <BannerControl data={banner} />
+            </TabPanel>
+          );
+        })}
       </TabContext>
     </Box>
   );

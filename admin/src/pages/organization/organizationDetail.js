@@ -33,6 +33,14 @@ const OrganizationDetail = () => {
   const [postState, setPostState] = useState(data.status);
   const [campaignState, setCampaignState] = useState(getCampaignStatus({ startedAt: data.startedAt, endedAt: data.endedAt }));
 
+  useEffect(() => {
+    if (type === ORGANIZATION_MENU_TYPE.CAMPAIGN) {
+      getCampaignStatus({ startedAt: data.startedAt, endedAt: data.endedAt });
+    } else {
+      setPostState(data.status);
+    }
+  }, [data]);
+
   const statusOptions = [
     { label: '대기', value: 'PENDING_APPROVAL' },
     { label: '승인', value: 'APPROVED' },
@@ -63,6 +71,8 @@ const OrganizationDetail = () => {
               status: postState,
               description: descriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
             },
+    }).then(res => {
+      navigate(-1);
     });
   };
 
@@ -178,11 +188,16 @@ const OrganizationDetail = () => {
             </>
           ) : (
             <div className="row border-bottom">
-              <div className="flex-1 row padding-16 align-center background-box justify-center">승인상태</div>
-              <div className="flex-1 row padding-16">
-                <ActRadioGroup options={statusOptions} state={postState} setState={setPostState} />
+              <div className="flex-1">
+                <div className="flex-1 row padding-16 align-center background-box justify-center">승인상태</div>
+                <div className="flex-1 row padding-16">
+                  <ActRadioGroup options={statusOptions} state={postState} setState={setPostState} />
+                </div>
               </div>
-              {renderItem({ title: '등록일시', content: dayjs(data.createdAt).format('YYYY.MM.DD') })}
+              <div className="flex-1">
+                <div className="flex-1 padding-16 row align-center background-box justify-center">등록일시</div>
+                <div className="flex-1 padding-16 row align-center">{dayjs(data.createdAt).format('YYYY.MM.DD')}</div>
+              </div>
             </div>
           )}
         </div>
