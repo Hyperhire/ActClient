@@ -1,42 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 import ActTable from 'components/atoms/ActTable';
-import { PAYMENT_MENU_TYPE } from 'constants/constant';
+import { MEMBER_TYPE, OPERATION_MENU_TYPE, PAYMENT_MENU_TYPE } from 'constants/constant';
 import ActPaymentFilter from 'components/organisms/ActPaymentFilter';
 import ActSettlementFilter from 'components/organisms/ActSettlementFilter';
+import { api } from '../../repository';
+import { useReactQuery } from '../../hooks/useReactQuery';
 
 const PaymentList = () => {
-  const con = useOutletContext();
-  console.log('PaymentList', con);
+  const paymentMenuType = useOutletContext();
+  const { id = undefined } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({});
+  const [list, setList] = useState([]);
   const [filter, setFilter] = useState();
+  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const url = `${paymentMenuType === PAYMENT_MENU_TYPE.PAYMENT ? api.order.list : api.withdraw.list}${query}`;
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${paymentMenuType}-list`, currentPage], url, {
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
+  });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setList(data.list);
+      setPagination(data.pagination);
+    }
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    refetch();
+  }, [paymentMenuType, id, refetch]);
 
   useEffect(() => {
     console.log('filter', filter);
   }, [filter]);
-  const paymentDummy = () => {
-    let index = 0;
+
+  const parseOrderData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 472) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        paymentDate: `paymentDate ${index}`,
-        name: `name ${index}`,
-        id: `id ${index}`,
-        orgName: `orgName ${index}`,
-        donationId: `donationId ${index}`,
-        paymentType: `paymentType ${index}`,
-        donationType: `donationType ${index}`,
-        paymentStatus: `paymentStatus ${index}`,
-        amount: `amount ${index}`,
+        index: i,
+        id: v._id,
+        paymentDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
+        name: v.user?.indInfo?.name || '',
+        donorId: v.user?.email || '',
+        orgName: '',
+        donationId: v._id,
+        paymentType: v.pg,
+        donationType: v.isRecurring ? '정기후원' : '일시후원',
+        paymentStatus: v.paidStatus,
+        amount: v.amount.toLocaleString(),
       });
-    }
+    });
     data.headers = [
       {
         id: 'index',
         numeric: false,
         disablePadding: true,
         label: 'NO',
+      },
+      {
+        id: 'id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
       },
       {
         id: 'paymentDate',
@@ -51,7 +81,7 @@ const PaymentList = () => {
         label: '후원자 실명',
       },
       {
-        id: 'id',
+        id: 'donorId',
         numeric: false,
         disablePadding: true,
         label: '후원자 ID',
@@ -96,26 +126,32 @@ const PaymentList = () => {
     return data;
   };
 
-  const settlementDummy = () => {
-    let index = 0;
+  const parseWithdrawData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 51) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        settlementDate: `settlement ${index}`,
-        orgId: `orgId ${index}`,
-        orgName: `orgName ${index}`,
-        settlementAmount: `settlementAmount ${index}`,
-        settlementStatus: `settlementStatus ${index}`,
+        index: i,
+        id: v._id,
+        settlementDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
+        orgId: v.orgId,
+        orgName: v.org?.name || '',
+        settlementAmount: v.amount.toLocaleString(),
+        settlementStatus: v.status,
       });
-    }
+    });
+
     data.headers = [
       {
         id: 'index',
         numeric: false,
         disablePadding: true,
         label: 'NO',
+      },
+      {
+        id: 'id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
       },
       {
         id: 'paymentDate',
@@ -150,7 +186,11 @@ const PaymentList = () => {
     ];
     return data;
   };
-
+  const onHandleClickItem = item => {
+    console.log('onHandleClickItem', item);
+    navigate(item.id);
+    // navigate(`/organization/${postType}/${item.id}`);
+  };
   const getList = type => {
     // eslint-disable-next-line default-case
     switch (type) {
@@ -158,9 +198,9 @@ const PaymentList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActPaymentFilter type={con} handleFilter={setFilter} />
+              <ActPaymentFilter type={paymentMenuType} handleFilter={setFilter} />
             </div>
-            <ActTable data={paymentDummy()} />
+            <ActTable data={parseOrderData()} handleClickItem={onHandleClickItem} />
           </div>
         );
 
@@ -168,13 +208,13 @@ const PaymentList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActSettlementFilter type={con} handleFilter={setFilter} />
+              <ActSettlementFilter type={paymentMenuType} handleFilter={setFilter} />
             </div>
-            <ActTable data={settlementDummy()} />
+            <ActTable data={parseWithdrawData()} handleClickItem={onHandleClickItem} />
           </div>
         );
     }
   };
-  return <div className="col max-height">{getList(con)}</div>;
+  return <div className="col max-height">{getList(paymentMenuType)}</div>;
 };
 export default PaymentList;

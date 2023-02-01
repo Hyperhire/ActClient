@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -7,7 +7,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import BannerControl from '../organisms/BannerControl';
 
 export default function BannerManagerTabs({ menus }) {
-  const [value, setValue] = React.useState(menus[0].value);
+  const [value, setValue] = useState(menus[0].value);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

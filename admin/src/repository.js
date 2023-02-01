@@ -34,6 +34,26 @@ export const api = {
     patch: id => `/api/admin/v1/campaign/${id}`,
     delete: id => `/api/admin/v1/campaign/${id}`,
   },
+  order: {
+    list: '/api/admin/v1/order',
+    detail: id => `/api/admin/v1/order/${id}`,
+    patch: id => `/api/admin/v1/order/${id}`,
+  },
+  withdraw: {
+    list: '/api/admin/v1/withdraw',
+    detail: id => `/api/admin/v1/withdraw/${id}`,
+    patch: id => `/api/admin/v1/withdraw/${id}`,
+  },
+  donationOrg: {
+    list: '/api/admin/v1/donation/org',
+    detail: id => `/api/admin/v1/donation/org/${id}`,
+    patch: id => `/api/admin/v1/donation/org/${id}`,
+  },
+  donationCampaign: {
+    list: '/api/admin/v1/donation/campaign',
+    detail: id => `/api/admin/v1/donation/campaign/${id}`,
+    patch: id => `/api/admin/v1/donation/campaign/${id}`,
+  },
   faq: {
     list: '/api/admin/v1/faq',
     detail: id => `/api/admin/v1/faq/${id}`,

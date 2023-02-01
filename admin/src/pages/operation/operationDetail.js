@@ -16,6 +16,7 @@ const OperationDetail = () => {
     `${type === OPERATION_MENU_TYPE.FAQ ? 'faq-detail-' : 'banner-detail-'}${id}`,
     type === OPERATION_MENU_TYPE.FAQ ? api.faq.detail(id) : api.banner.detail(id),
     {
+      refetchOnWindowFocus: false,
       staleTime: 2000,
     },
   );

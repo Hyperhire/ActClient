@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
+import dayjs from 'dayjs';
 import ActOrganizationFilter from 'components/organisms/ActOrganizationFilter';
 import ActTable from 'components/atoms/ActTable';
 import { MEMBER_TYPE, ORGANIZATION_MENU_TYPE } from 'constants/constant';
@@ -44,7 +45,7 @@ const OrganizationList = () => {
         data.rows.push({
           index: i,
           id: v._id,
-          registrationDate: v.createdAt,
+          registrationDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
           orgName: v.org.name,
           title: v.title,
           state: v.status,

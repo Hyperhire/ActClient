@@ -1,35 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import Pagination from '@mui/material/Pagination';
 import ActTable from 'components/atoms/ActTable';
 import { DONATION_MENU_TYPE } from 'constants/constant';
 import ActDonationOrgFilter from 'components/organisms/ActDonationOrgFilter';
 import ActDonationCampaignFilter from 'components/organisms/ActDonationCampaignFilter';
+import { api } from '../../repository';
+import { useReactQuery } from '../../hooks/useReactQuery';
 
 const DonationList = () => {
-  const con = useOutletContext();
-  console.log('DonationList', con);
+  const donationType = useOutletContext();
+  const { id = undefined } = useParams();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({});
+  const [list, setList] = useState([]);
   const [filter, setFilter] = useState();
+  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const url = `${donationType === DONATION_MENU_TYPE.ORG ? api.donationOrg.list : api.donationCampaign.list}${query}`;
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${donationType}-list`, currentPage], url, {
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
+  });
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setList(data.list);
+      setPagination(data.pagination);
+    }
+  }, [data, isSuccess]);
+
+  useEffect(() => {
+    refetch();
+  }, [donationType, id, refetch]);
 
   useEffect(() => {
     console.log('filter', filter);
   }, [filter]);
-  const orgDummy = () => {
-    let index = 0;
+  const parseOrgData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 123) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        donationStartedAt: `donationStartedAt ${index}`,
-        id: `id ${index}`,
-        name: `name ${index}`,
-        orgName: `orgName ${index}`,
-        donationType: `donationType ${index}`,
-        amount: `amount ${index}`,
-        donationStatus: `donationStatus ${index}`,
-        nftId: `nftId ${index}`,
+        index: i,
+        id: v._id,
+        donationStartedAt: dayjs(v.startedAt).format('YYYY.MM.DD'),
+        nonorId: v.user?.email,
+        name: v.user?.indInfo?.name,
+        orgName: v.org?.name,
+        donationType: v.isRecurring ? '정기후원' : '일시후원',
+        amount: v.amount.toLocaleString(),
+        donationStatus: v.isRecurring ? (v.isTerminated ? '종료' : '진행중') : '-',
+        nftId: v.nftId || ``,
       });
-    }
+    });
     data.headers = [
       {
         id: 'index',
@@ -38,13 +62,19 @@ const DonationList = () => {
         label: 'NO',
       },
       {
+        id: 'id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
+      },
+      {
         id: 'donationStartedAt',
         numeric: false,
         disablePadding: true,
         label: '후원시작일시',
       },
       {
-        id: 'id',
+        id: 'nonorId',
         numeric: false,
         disablePadding: true,
         label: '후원자 ID',
@@ -88,22 +118,22 @@ const DonationList = () => {
     ];
     return data;
   };
-  const campaignDummy = () => {
-    let index = 0;
+  const parseCampaignData = () => {
     const data = { rows: [], headers: [] };
-    while (index < 91) {
-      index++;
+    list.forEach((v, i) => {
       data.rows.push({
-        index: index,
-        donationStartedAt: `donationStartedAt ${index}`,
-        id: `id ${index}`,
-        name: `name ${index}`,
-        orgName: `orgName ${index}`,
-        campaignTitle: `campaignTitle ${index}`,
-        amount: `amount ${index}`,
-        nftId: `nftId ${index}`,
+        index: i,
+        id: v._id,
+        donationStartedAt: dayjs(v.startedAt).format('YYYY.MM.DD'),
+        donorId: v.user?.email,
+        name: v.user?.indInfo?.name,
+        orgName: v.org?.name,
+        campaignTitle: v.campaign?.title,
+        amount: v.amount.toLocaleString(),
+        nftId: v.nftId || '',
       });
-    }
+    });
+
     data.headers = [
       {
         id: 'index',
@@ -112,13 +142,19 @@ const DonationList = () => {
         label: 'NO',
       },
       {
+        id: 'id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
+      },
+      {
         id: 'donationStartedAt',
         numeric: false,
         disablePadding: true,
         label: '후원시작일시',
       },
       {
-        id: 'id',
+        id: 'donorId',
         numeric: false,
         disablePadding: true,
         label: '후원자 ID',
@@ -156,7 +192,13 @@ const DonationList = () => {
     ];
     return data;
   };
+  const onHandleClickItem = item => {
+    navigate(item.id);
+  };
 
+  const onHandleChangePage = (e, page) => {
+    setCurrentPage(page);
+  };
   const getList = type => {
     // eslint-disable-next-line default-case
     switch (type) {
@@ -164,22 +206,28 @@ const DonationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActDonationOrgFilter type={con} handleFilter={setFilter} />
+              <ActDonationOrgFilter type={donationType} handleFilter={setFilter} />
             </div>
-            <ActTable data={orgDummy()} />
+            <ActTable data={parseOrgData()} handleClickItem={onHandleClickItem} />
+            <div className="row align-center justify-center">
+              <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+            </div>
           </div>
         );
       case DONATION_MENU_TYPE.CAMPAIGN:
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActDonationCampaignFilter type={con} handleFilter={setFilter} />
+              <ActDonationCampaignFilter type={donationType} handleFilter={setFilter} />
             </div>
-            <ActTable data={campaignDummy()} />
+            <ActTable data={parseCampaignData()} handleClickItem={onHandleClickItem} />
+            <div className="row align-center justify-center">
+              <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+            </div>
           </div>
         );
     }
   };
-  return <div className="col max-height">{getList(con)}</div>;
+  return <div className="col max-height">{getList(donationType)}</div>;
 };
 export default DonationList;

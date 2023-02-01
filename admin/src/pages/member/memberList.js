@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
+import dayjs from 'dayjs';
 import ActTable from '../../components/atoms/ActTable';
 import ActMemberIndFilter from '../../components/organisms/ActMemberIndFilter';
 import { MEMBER_TYPE } from '../../constants/constant';
@@ -43,7 +44,7 @@ const MemberList = () => {
     list.forEach((v, i) => {
       data.rows.push({
         index: i,
-        registrationDate: v.createdAt,
+        registrationDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
         id: v._id,
         type: v.loginType,
         email: v.email,
@@ -116,7 +117,7 @@ const MemberList = () => {
     list.forEach((v, i) => {
       data.rows.push({
         index: i,
-        registrationDate: v.createdAt,
+        registrationDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
         id: v._id,
         nickname: v.nickname,
         orgName: v.name,
