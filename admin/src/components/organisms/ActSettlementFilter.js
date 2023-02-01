@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 
-export default function ActSettlementFilter({ handleFilter }) {
+export default function ActSettlementFilter({ filter, handleFilter }) {
   const settlementStatusOptions = [
     { label: '전체', value: 'all' },
     { label: '지급대기', value: 'pending' },
@@ -10,19 +10,15 @@ export default function ActSettlementFilter({ handleFilter }) {
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [search, setSearch] = useState('');
-  const [settlementStatus, setSettlementStatus] = useState(settlementStatusOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [search, setSearch] = useState(filter?.search || '');
+  const [settlementStatus, setSettlementStatus] = useState(filter?.settlementStatus || settlementStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '정산요청일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, settlementStatus });
-  }, [startDate, endDate, search, settlementStatus, handleFilter]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -31,7 +27,7 @@ export default function ActSettlementFilter({ handleFilter }) {
     setSettlementStatus(settlementStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, settlementStatus });
   };
   return (
     <div className="max-height max-width">

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 
-export default function ActMemberIndFilter({ handleFilter }) {
+export default function ActMemberIndFilter({ filter, handleFilter }) {
   const memberStateOptions = [
     { label: '전체', value: 'all' },
     { label: '정상', value: 'normal' },
@@ -15,20 +15,16 @@ export default function ActMemberIndFilter({ handleFilter }) {
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [memberSearch, setMemberSearch] = useState('');
-  const [memberState, setMemberState] = useState(memberStateOptions[0].value);
-  const [memberType, setMemberType] = useState(memberTypeOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [memberSearch, setMemberSearch] = useState(filter?.memberSearch || '');
+  const [memberState, setMemberState] = useState(filter?.memberState || memberStateOptions[0].value);
+  const [memberType, setMemberType] = useState(filter?.memberType || memberTypeOptions[0].value);
 
   const baseFilterData = {
     date: { label: '가입일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: memberSearch, setValue: setMemberSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, memberSearch, memberState, memberType });
-  }, [startDate, endDate, memberSearch, memberState, memberType, handleFilter]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -38,7 +34,7 @@ export default function ActMemberIndFilter({ handleFilter }) {
     setMemberType(memberTypeOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, memberSearch, memberState, memberType });
   };
   return (
     <div className="max-height max-width">

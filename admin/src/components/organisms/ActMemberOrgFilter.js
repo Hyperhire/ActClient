@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 
-export default function ActMemberOrgFilter({ handleFilter }) {
+export default function ActMemberOrgFilter({ filter, handleFilter }) {
   const memberStateOptions = [
     { label: '전체', value: 'all' },
     { label: '대기', value: 'pending' },
@@ -12,19 +12,15 @@ export default function ActMemberOrgFilter({ handleFilter }) {
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [memberSearch, setMemberSearch] = useState('');
-  const [memberState, setMemberState] = useState(memberStateOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [memberSearch, setMemberSearch] = useState(filter?.memberSearch || '');
+  const [memberState, setMemberState] = useState(filter?.memberState || memberStateOptions[0].value);
 
   const baseFilterData = {
     date: { label: '가입일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: memberSearch, setValue: setMemberSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, memberSearch, memberState });
-  }, [startDate, endDate, memberSearch, memberState, handleFilter]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -33,7 +29,7 @@ export default function ActMemberOrgFilter({ handleFilter }) {
     setMemberState(memberStateOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, memberSearch, memberState });
   };
   return (
     <div className="max-height max-width">

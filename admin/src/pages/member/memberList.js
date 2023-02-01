@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import dayjs from 'dayjs';
 import ActTable from '../../components/atoms/ActTable';
 import ActMemberIndFilter from '../../components/organisms/ActMemberIndFilter';
-import { MEMBER_TYPE } from '../../constants/constant';
+import { DONATION_MENU_TYPE, MEMBER_TYPE } from '../../constants/constant';
 import ActMemberOrgFilter from '../../components/organisms/ActMemberOrgFilter';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
-
+// limit, lastIndex, from, to, status, loginType, keyword
 const MemberList = () => {
   const memberType = useOutletContext();
   const [filter, setFilter] = useState();
@@ -17,7 +17,15 @@ const MemberList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
   const [list, setList] = useState([]);
-  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const query =
+    memberType === MEMBER_TYPE.INDIVIDUAL
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? dayjs(filter?.startDate).format('YYYYMMDD') : ''}&to=${filter ? dayjs(filter?.endDate).format('YYYYMMDD') : ''}&status=${
+          filter?.memberState || ''
+        }&loginType=${filter?.memberType || ''}&keyword=${filter?.memberSearch || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? dayjs(filter?.startDate).format('YYYYMMDD') : ''}&to=${filter ? dayjs(filter?.endDate).format('YYYYMMDD') : ''}&status=${
+          filter?.memberState || ''
+        }&keyword=${filter?.memberSearch || ''}`;
+
   const url = `${memberType === MEMBER_TYPE.INDIVIDUAL ? api.user.list : api.organization.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`user-list`, currentPage], url, {
     refetchOnWindowFocus: false,
@@ -33,11 +41,7 @@ const MemberList = () => {
 
   useEffect(() => {
     refetch();
-  }, [memberType, id, refetch]);
-
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
+  }, [memberType, id, refetch, filter]);
 
   const indData = () => {
     const data = { rows: [], headers: [] };
@@ -186,6 +190,7 @@ const MemberList = () => {
   const onHandleChangePage = (e, page) => {
     setCurrentPage(page);
   };
+
   return isLoading || isFetching ? (
     <div>loading...</div>
   ) : (
@@ -195,7 +200,7 @@ const MemberList = () => {
       ) : memberType === MEMBER_TYPE.INDIVIDUAL ? (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberIndFilter type={memberType} handleFilter={setFilter} />
+            <ActMemberIndFilter type={memberType} filter={filter} handleFilter={setFilter} />
           </div>
           <ActTable data={indData()} handleClickItem={onHandleClickItem} />
           <div className="row align-center justify-center">
@@ -205,7 +210,7 @@ const MemberList = () => {
       ) : (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberOrgFilter type={memberType} handleFilter={setFilter} />
+            <ActMemberOrgFilter type={memberType} filter={filter} handleFilter={setFilter} />
           </div>
           <ActTable data={orgList()} handleClickItem={onHandleClickItem} />
           <div className="row align-center justify-center">

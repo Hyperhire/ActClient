@@ -3,7 +3,7 @@ import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 import { DONATION_PAYMENT_TYPE, DONATION_STATUS_VALUE, DONATION_TYPE } from '../../constants/constant';
 
-export default function ActDonationOrgFilter({ handleFilter }) {
+export default function ActDonationOrgFilter({ filter, handleFilter }) {
   const donationTypeOptions = [
     { label: '전체', value: 'all' },
     { label: '정기후원', value: DONATION_PAYMENT_TYPE.SUBSCRIPTION },
@@ -15,20 +15,16 @@ export default function ActDonationOrgFilter({ handleFilter }) {
     { label: '종료', value: DONATION_STATUS_VALUE.INACTIVE },
   ];
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [search, setSearch] = useState('');
-  const [donationType, setDonationType] = useState(donationTypeOptions[0].value);
-  const [donationStatus, setDonationStatus] = useState(donationStatusOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [search, setSearch] = useState(filter?.search || '');
+  const [donationType, setDonationType] = useState(filter?.donationType || donationTypeOptions[0].value);
+  const [donationStatus, setDonationStatus] = useState(filter?.donationStatus || donationStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '정산요청일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, donationType, donationStatus });
-  }, [startDate, endDate, search, donationType, donationStatus, handleFilter]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -38,7 +34,7 @@ export default function ActDonationOrgFilter({ handleFilter }) {
     setDonationStatus(donationStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, donationType, donationStatus });
   };
   return (
     <div className="max-height max-width">

@@ -16,8 +16,17 @@ const DonationList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
   const [list, setList] = useState([]);
-  const [filter, setFilter] = useState();
-  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const [orgFilter, setOrgFilter] = useState();
+  const [campaignFilter, setCampaignFilter] = useState();
+
+  const query =
+    donationType === DONATION_MENU_TYPE.ORG
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${orgFilter ? dayjs(orgFilter?.startDate).format('YYYYMMDD') : ''}&to=${
+          orgFilter ? dayjs(orgFilter?.endDate).format('YYYYMMDD') : ''
+        }&status=${orgFilter?.donationStatus || ''}&keyword=${orgFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? dayjs(campaignFilter?.startDate).format('YYYYMMDD') : ''}&to=${
+          campaignFilter ? dayjs(campaignFilter?.endDate).format('YYYYMMDD') : ''
+        }&keyword=${campaignFilter?.search || ''}`;
   const url = `${donationType === DONATION_MENU_TYPE.ORG ? api.donationOrg.list : api.donationCampaign.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${donationType}-list`, currentPage], url, {
     refetchOnWindowFocus: false,
@@ -33,11 +42,8 @@ const DonationList = () => {
 
   useEffect(() => {
     refetch();
-  }, [donationType, id, refetch]);
+  }, [donationType, id, refetch, orgFilter, campaignFilter]);
 
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
   const parseOrgData = () => {
     const data = { rows: [], headers: [] };
     list.forEach((v, i) => {
@@ -206,7 +212,7 @@ const DonationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActDonationOrgFilter type={donationType} handleFilter={setFilter} />
+              <ActDonationOrgFilter type={donationType} filter={orgFilter} handleFilter={setOrgFilter} />
             </div>
             <ActTable data={parseOrgData()} handleClickItem={onHandleClickItem} />
             <div className="row align-center justify-center">
@@ -218,7 +224,7 @@ const DonationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActDonationCampaignFilter type={donationType} handleFilter={setFilter} />
+              <ActDonationCampaignFilter type={donationType} filter={campaignFilter} handleFilter={setCampaignFilter} />
             </div>
             <ActTable data={parseCampaignData()} handleClickItem={onHandleClickItem} />
             <div className="row align-center justify-center">

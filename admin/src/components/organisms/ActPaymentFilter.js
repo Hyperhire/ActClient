@@ -3,7 +3,7 @@ import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from '../../constants/constant';
 
-export default function ActPaymentFilter({ handleFilter }) {
+export default function ActPaymentFilter({ filter, handleFilter }) {
   const paymentTypeOptions = [
     { label: '전체', value: 'all' },
     { label: '정기', value: DONATION_PAYMENT_TYPE.SUBSCRIPTION },
@@ -21,21 +21,17 @@ export default function ActPaymentFilter({ handleFilter }) {
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [search, setSearch] = useState('');
-  const [paymentType, setPaymentType] = useState(paymentTypeOptions[0].value);
-  const [donationType, setDonationType] = useState(donationTypeOptions[0].value);
-  const [paymentStatus, setPaymentStatus] = useState(paymentStatusOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [search, setSearch] = useState(filter?.search || '');
+  const [paymentType, setPaymentType] = useState(filter?.paymentType || paymentTypeOptions[0].value);
+  const [donationType, setDonationType] = useState(filter?.donationType || donationTypeOptions[0].value);
+  const [paymentStatus, setPaymentStatus] = useState(filter?.paymentStatus || paymentStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '결제일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, paymentType, donationType, paymentStatus });
-  }, [startDate, endDate, search, paymentType, donationType, paymentStatus, handleFilter]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -46,7 +42,7 @@ export default function ActPaymentFilter({ handleFilter }) {
     setPaymentStatus(paymentStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, paymentType, donationType, paymentStatus });
   };
   return (
     <div className="max-height max-width">

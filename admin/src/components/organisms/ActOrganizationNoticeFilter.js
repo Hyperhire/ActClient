@@ -1,44 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 
-export default function ActOperationFilter({ filter, handleFilter }) {
-  const displayStateOptions = [
-    { label: '노출', value: 'show' },
-    { label: '비노출', value: 'hide' },
+export default function ActOrganizationNoticeFilter({ type, filter, handleFilter }) {
+  const approvalStatusOptions = [
+    { label: '전체', value: 'all' },
+    { label: '대기', value: 'pending' },
+    { label: '승인', value: 'approved' },
+    { label: '불가', value: 'rejected' },
   ];
-
+  console.log('ActOrganizationNoticeFilter', filter);
   const current = new Date();
   const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
   const [endDate, setEndDate] = useState(filter?.endDate || new Date());
   const [search, setSearch] = useState(filter?.search || '');
-  const [displayState, setDisplayState] = useState(filter?.displayState || displayStateOptions[0].value);
+  const [approvalStatus, setApprovalStatus] = useState(filter?.approvalStatus || approvalStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '등록일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
 
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, displayState });
-  }, [startDate, endDate, search, displayState, handleFilter]);
-
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
     setEndDate(new Date());
     setSearch('');
-    setDisplayState(displayStateOptions[0].value);
+    setApprovalStatus(approvalStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, approvalStatus });
   };
   return (
     <div className="max-height max-width">
       <ActFilter data={baseFilterData} handleInit={onHandleInit} handleConfirm={onHandleConfirm}>
         <div className="row align-center ">
           <div className="flex-1 align-center justify-start row gap-16">
-            <div>회원상태</div>
-            <ActRadioGroup options={displayStateOptions} state={displayState} setState={setDisplayState} />
+            <div>승인상태</div>
+            <ActRadioGroup options={approvalStatusOptions} state={approvalStatus} setState={setApprovalStatus} />
           </div>
         </div>
       </ActFilter>

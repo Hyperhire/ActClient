@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ActTable from 'components/atoms/ActTable';
-import { MEMBER_TYPE, OPERATION_MENU_TYPE, PAYMENT_MENU_TYPE } from 'constants/constant';
+import { DONATION_MENU_TYPE, MEMBER_TYPE, OPERATION_MENU_TYPE, PAYMENT_MENU_TYPE } from 'constants/constant';
 import ActPaymentFilter from 'components/organisms/ActPaymentFilter';
 import ActSettlementFilter from 'components/organisms/ActSettlementFilter';
 import { api } from '../../repository';
@@ -15,8 +15,18 @@ const PaymentList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
   const [list, setList] = useState([]);
-  const [filter, setFilter] = useState();
-  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+  const [paymentFilter, setPaymentFilter] = useState();
+  const [withdrawFilter, setWithdrawFilter] = useState();
+  //PAYMENT donationType,paymentStatus, paymentType
+  //WITHDRAW settlementStatus,
+  const query =
+    paymentMenuType === PAYMENT_MENU_TYPE.PAYMENT
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${paymentFilter ? dayjs(paymentFilter?.startDate).format('YYYYMMDD') : ''}&to=${
+          paymentFilter ? dayjs(paymentFilter?.endDate).format('YYYYMMDD') : ''
+        }&status=${paymentFilter?.donationStatus || ''}&keyword=${paymentFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${withdrawFilter ? dayjs(withdrawFilter?.startDate).format('YYYYMMDD') : ''}&to=${
+          withdrawFilter ? dayjs(withdrawFilter?.endDate).format('YYYYMMDD') : ''
+        }&keyword=${withdrawFilter?.search || ''}`;
   const url = `${paymentMenuType === PAYMENT_MENU_TYPE.PAYMENT ? api.order.list : api.withdraw.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${paymentMenuType}-list`, currentPage], url, {
     refetchOnWindowFocus: false,
@@ -32,11 +42,7 @@ const PaymentList = () => {
 
   useEffect(() => {
     refetch();
-  }, [paymentMenuType, id, refetch]);
-
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
+  }, [paymentMenuType, id, refetch, paymentFilter, withdrawFilter]);
 
   const parseOrderData = () => {
     const data = { rows: [], headers: [] };
@@ -198,7 +204,7 @@ const PaymentList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActPaymentFilter type={paymentMenuType} handleFilter={setFilter} />
+              <ActPaymentFilter type={paymentMenuType} filter={paymentFilter} handleFilter={setPaymentFilter} />
             </div>
             <ActTable data={parseOrderData()} handleClickItem={onHandleClickItem} />
           </div>
@@ -208,7 +214,7 @@ const PaymentList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActSettlementFilter type={paymentMenuType} handleFilter={setFilter} />
+              <ActSettlementFilter type={paymentMenuType} filter={withdrawFilter} handleFilter={setWithdrawFilter} />
             </div>
             <ActTable data={parseWithdrawData()} handleClickItem={onHandleClickItem} />
           </div>

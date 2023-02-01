@@ -89,7 +89,7 @@ const OperationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActOperationFilter type={type} handleFilter={setFilter} />
+              <ActOperationFilter filter={filter} handleFilter={setFilter} />
             </div>
             <ActTable data={parseData()} handleClickItem={onHandleClickItem} />
           </div>
