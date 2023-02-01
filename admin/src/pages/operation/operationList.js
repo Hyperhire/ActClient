@@ -5,6 +5,7 @@ import { MEMBER_TYPE, OPERATION_MENU_TYPE } from 'constants/constant';
 import ActOperationFilter from '../../components/organisms/ActOperationFilter';
 import { api } from '../../repository';
 import { useReactQuery } from '../../hooks/useReactQuery';
+import ActBannerManager from '../../components/organisms/ActBannerManager';
 
 const OperationList = () => {
   const operationType = useOutletContext();
@@ -97,7 +98,7 @@ const OperationList = () => {
       case OPERATION_MENU_TYPE.BANNER:
         return (
           <div className="max-height">
-            <div>배너관리</div>
+            <ActBannerManager />
           </div>
         );
     }

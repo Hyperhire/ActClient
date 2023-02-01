@@ -7,6 +7,7 @@ import { MEMBER_TYPE, OPERATION_MENU_TYPE } from '../../constants/constant';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { downloadFile } from '../../utils/downloadFile';
+import ActButton from '../../components/atoms/ActButton';
 const OperationDetail = () => {
   const navigate = useNavigate();
   const { type = undefined, id = undefined } = useParams();
@@ -73,47 +74,52 @@ const OperationDetail = () => {
     return (
       <div className="col">
         <div className="bordered">
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">등록일시</div>
-              <div className="flex-1">2020</div>
+          <div className="row border-bottom">
+            <div className="flex-1 row padding-16 align-center background-box justify-center">등록일시</div>
+            <div className="flex-1 row padding-16">2022</div>
+            <div className="flex-1 padding-16 row align-center background-box justify-center">노출상태</div>
+            <div className="flex-1 row padding-16">노출 비노출</div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">제목</div>
+            <div className="flex-3 row -16">
+              <div className="padding-16">제목</div>
             </div>
-            <div className="flex-1">
-              <div className="flex-1">노출상태</div>
-              <div className="flex-1">노출상태 콘</div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">내용</div>
+            <div className="flex-3 row">
+              <ActEditor
+                onInit={(evt, editor) => (shortDescriptionEditorRef.current = editor)}
+                initialValue={data?.shortDescription || ''}
+                init={{
+                  height: 400,
+                  menubar: false,
+                  plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
+                  toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                }}
+              />
             </div>
           </div>
-          <div className="row">
-            <div className="flex-1">제목</div>
-            <div className="flex-1">제목</div>
-          </div>
-          <div className="row">
-            <div>내용</div>
-            <ActEditor
-              onInit={(evt, editor) => (shortDescriptionEditorRef.current = editor)}
-              initialValue={data?.shortDescription || ''}
-              init={{
-                height: 500,
-                menubar: false,
-                plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
-                toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-              }}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="flex-1 link" onClick={handleDelete}>
-            삭제
-          </div>
-          <div className="flex-1 row align-center justify-center link" onClick={handleConfirm}>
-            확인
-          </div>
-          <div className="flex-1" />
         </div>
       </div>
     );
   };
-  return <div className="col">{renderColumn(type)}</div>;
+  return (
+    <div className="col gap-16">
+      {renderColumn(type)}
+      <div className="divider-thick-primary-4" />
+      <div className="row">
+        <div className="flex-1 align-center justify-start">
+          <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete()} />
+        </div>
+        <div className="flex-1 align-center justify-center">
+          <ActButton label={<div className="padding-row-24">확인</div>} handleOnClick={() => handleConfirm(type)} />
+        </div>
+        <div className="flex-1" />
+      </div>
+    </div>
+  );
 };
 export default OperationDetail;
