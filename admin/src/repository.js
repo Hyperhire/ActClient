@@ -47,14 +47,15 @@ export const api = {
   donationOrg: {
     list: '/api/admin/v1/donation/org',
     detail: id => `/api/admin/v1/donation/org/${id}`,
-    patch: id => `/api/admin/v1/donation/org/${id}`,
+    patch: id => `/api/admin/v1/donation/${id}`,
   },
   donationCampaign: {
     list: '/api/admin/v1/donation/campaign',
     detail: id => `/api/admin/v1/donation/campaign/${id}`,
-    patch: id => `/api/admin/v1/donation/campaign/${id}`,
+    patch: id => `/api/admin/v1/donation/${id}`,
   },
   faq: {
+    post: '/api/admin/v1/faq',
     list: '/api/admin/v1/faq',
     detail: id => `/api/admin/v1/faq/${id}`,
     patch: id => `/api/admin/v1/faq/${id}`,

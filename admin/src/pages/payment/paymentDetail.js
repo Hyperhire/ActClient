@@ -15,7 +15,7 @@ const PaymentDetail = () => {
   const navigate = useNavigate();
   const { type = undefined, id = undefined } = useParams();
   if (type === undefined || id === undefined) navigate(-1);
-  const { isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(
     `${type === PAYMENT_MENU_TYPE.PAYMENT ? 'order-detail-' : 'withdraw-detail-'}${id}`,
     type === PAYMENT_MENU_TYPE.PAYMENT ? api.order.detail(id) : api.withdraw.detail(id),
     {
@@ -24,22 +24,31 @@ const PaymentDetail = () => {
     },
   );
   const { showModal } = useModal();
-  const [orderType, setOrderType] = useState(data.isRecurring);
-  const [withdrawRequestStatus, setWithdrawRequestStatus] = useState(data.withdrawRequestStatus);
+  const [orderType, setOrderType] = useState(data?.targetType);
+  const [withdrawRequestStatus, setWithdrawRequestStatus] = useState(data?.withdrawRequestStatus);
 
   const orderTypeOptions = [
-    { label: '일시후원', value: false },
-    { label: '정기후원', value: true },
+    { label: '단체후원', value: 'ORG' },
+    { label: '캠페인후원', value: 'CAMPAIGN' },
   ];
   const withdrawRequestStatusOptions = [
     { label: '정산요청대기', value: 'notyet' },
     { label: '정산요청완료', value: 'requested' },
   ];
-  const [withdrawStatus, setWithdrawStatus] = useState(data.status);
+  const [withdrawStatus, setWithdrawStatus] = useState(data?.status);
   const withdrawStatusOptions = [
     { label: '지급대기', value: 'PENDING' },
     { label: '지급완료', value: 'COMPLETE' },
   ];
+
+  useEffect(() => {
+    if (type === PAYMENT_MENU_TYPE.PAYMENT) {
+      setWithdrawRequestStatus(data?.withdrawRequestStatus);
+    } else {
+      setWithdrawStatus(data?.status);
+    }
+  }, [data]);
+
   const handleConfirm = type => {
     request({
       url: type === PAYMENT_MENU_TYPE.PAYMENT ? api.order.patch(id) : api.withdraw.patch(id),
@@ -47,7 +56,6 @@ const PaymentDetail = () => {
       data:
         type === PAYMENT_MENU_TYPE.PAYMENT
           ? {
-              ...data,
               withdrawRequestStatus,
             }
           : {
@@ -147,16 +155,16 @@ const PaymentDetail = () => {
       <div className="col">
         <div className="bordered">
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '정산요청일시', content: data.createdAt })}</div>
-            <div className="flex-1">{renderItem({ title: '단체명', content: data.org.name })}</div>
+            <div className="flex-1">{renderItem({ title: '정산요청일시', content: data?.createdAt })}</div>
+            <div className="flex-1">{renderItem({ title: '단체명', content: data?.org.name })}</div>
           </div>
           <div className="row border-bottom">
             <div className="flex-1">{renderItem({ title: '단체회원ID(단체회원)', content: data.org.email, link: true, onClickHandler: () => navigate(`/member/organization/${data.org._id}`) })}</div>
-            <div className="flex-1">{renderItem({ title: '정산요청금액', content: data.amount || '' })}</div>
+            <div className="flex-1">{renderItem({ title: '정산요청금액', content: data?.amount || '' })}</div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '은행', content: data.org.bankDetail.bankName })}</div>
-            <div className="flex-1">{renderItem({ title: '계좌번호', content: data.org.bankDetail.accountNumber })}</div>
+            <div className="flex-1">{renderItem({ title: '은행', content: data?.org.bankDetail.bankName })}</div>
+            <div className="flex-1">{renderItem({ title: '계좌번호', content: data?.org.bankDetail.accountNumber })}</div>
           </div>
           <div className="row border-bottom">
             <div className="flex-1">
@@ -165,13 +173,15 @@ const PaymentDetail = () => {
                 <ActRadioGroup options={withdrawStatusOptions} state={withdrawStatus} setState={setWithdrawStatus} />
               </div>
             </div>
-            <div className="flex-1">{renderItem({ title: '계좌주', content: data.org.bankDetail.accountHolder })}</div>
+            <div className="flex-1">{renderItem({ title: '계좌주', content: data?.org.bankDetail.accountHolder })}</div>
           </div>
         </div>
       </div>
     );
   };
-  return (
+  return isFetching || isLoading ? (
+    <div>loading...</div>
+  ) : (
     <div className="col gap-16">
       {renderColumn(type)}
       <div className="divider-thick-primary-4" />

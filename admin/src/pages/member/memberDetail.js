@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ActEditor from 'components/organisms/Editor';
@@ -9,6 +9,7 @@ import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { downloadFile } from '../../utils/downloadFile';
 import ActButton from '../../components/atoms/ActButton';
+import ActRadioGroup from '../../components/atoms/ActRadioGroup';
 
 const MemberDetail = () => {
   const navigate = useNavigate();
@@ -26,6 +27,19 @@ const MemberDetail = () => {
 
   const shortDescriptionEditorRef = useRef(null);
   const longDescriptionEditorRef = useRef(null);
+  const [orgMemberState, setOrgMemberState] = useState(data.status);
+  const orgMemberStateOptions = [
+    { label: '전체', value: 'all' },
+    { label: '대기', value: 'PENDING' },
+    { label: '승인', value: 'AUTHORIZED' },
+    { label: '불가', value: 'UNAVAILABLE' },
+    { label: '탈퇴', value: 'DELETED' },
+  ];
+  useEffect(() => {
+    if (type === MEMBER_TYPE.ORGANIZATION) {
+      setOrgMemberState(data.status);
+    }
+  }, [data]);
   const handleConfirm = type => {
     const params = {
       ...data,
@@ -229,7 +243,7 @@ const MemberDetail = () => {
           <div className="row border-bottom">
             <div className="flex-1">
               <div className="flex-1 padding-16 row align-center background-box justify-center">은행명</div>
-              <div className="flex-1 padding-16 row">{data.status}</div>
+              <div className="flex-1 padding-16 row">{data.bankDetail?.bankName || ''}</div>
             </div>
             <div className="flex-1">
               <div className="flex-1 padding-16 row align-center background-box justify-center">담당자 성함</div>
@@ -241,11 +255,11 @@ const MemberDetail = () => {
             <div className="flex-1">{renderItem({ title: '담당자 연락처', content: data.manager?.mobile || '' })}</div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '통장번호', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '통장번호', content: data.bankDetail?.bankaccount })}</div>
             <div className="flex-1">{renderItem({ title: '단체홈페이지', content: data.homepageUrl || '' })}</div>
           </div>
           <div className="row">
-            <div className="flex-1">{renderItem({ title: '예금주', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '예금주', content: data.bankDetail?.accountHolder })}</div>
             <div className="flex-1">{renderItem({ title: '탈퇴일', content: data.manager?.mobile || '' })}</div>
           </div>
         </div>
@@ -283,6 +297,7 @@ const MemberDetail = () => {
                   toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
+                disabled={true}
               />
             </div>
           </div>
@@ -299,7 +314,14 @@ const MemberDetail = () => {
                   toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
+                disabled={true}
               />
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">회원상태</div>
+            <div className="flex-3 row">
+              <ActRadioGroup options={orgMemberStateOptions} state={orgMemberState} setState={setOrgMemberState} />
             </div>
           </div>
         </div>
@@ -315,7 +337,7 @@ const MemberDetail = () => {
           <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete(type)} />
         </div>
         <div className="flex-1 align-center justify-center">
-          <ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />
+          {/*<ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />*/}
         </div>
         <div className="flex-1" />
       </div>

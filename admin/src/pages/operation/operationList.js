@@ -6,6 +6,7 @@ import ActOperationFilter from '../../components/organisms/ActOperationFilter';
 import { api } from '../../repository';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import ActBannerManager from '../../components/organisms/ActBannerManager';
+import ActButton from '../../components/atoms/ActButton';
 
 const OperationList = () => {
   const operationType = useOutletContext();
@@ -97,13 +98,16 @@ const OperationList = () => {
               <ActOperationFilter filter={filter} handleFilter={setFilter} />
             </div>
             <ActTable data={parseData()} handleClickItem={onHandleClickItem} />
+            <div className="row align-center justify-end">
+              <ActButton label={<div className="padding-row-4">추가</div>} handleOnClick={() => navigate('post')} />
+            </div>
           </div>
         );
 
       case OPERATION_MENU_TYPE.BANNER:
         return (
           <div className="max-height">
-            <ActBannerManager data={data} />
+            <ActBannerManager data={data} onFinish={() => refetch()} />
           </div>
         );
     }

@@ -9,3 +9,8 @@ export const bannerYup = yup.object().shape({
   image: yup.string().required(''),
   visible: yup.boolean().required(''),
 });
+
+export const faqYup = yup.object().shape({
+  question: yup.string().required(''),
+  answer: yup.string().required(''),
+});

@@ -7,8 +7,10 @@ import ActButton from '../atoms/ActButton';
 import ActRadioGroup from '../atoms/ActRadioGroup';
 import BannerImageViewer from './BannerImageViewer';
 import { urlToFile } from '../../utils/downloadFile';
+import { request } from '../../utils/axiosClient';
+import { api } from '../../repository';
 
-const BannerControl = ({ data }) => {
+const BannerControl = ({ data, onFinish }) => {
   const visibleStatusOptions = [
     { label: '노출중', value: true },
     { label: '비노출', value: false },
@@ -30,19 +32,33 @@ const BannerControl = ({ data }) => {
 
   const [visibleStatus, setVisibleStatus] = useState(visibleStatusOptions[0].value);
   const [image, setImage] = useState([]);
-  useEffect(() => {
-    setValue('visible', visibleStatus, { shouldValidate: true });
-  }, [visibleStatus]);
 
   useEffect(() => {
     if (!data.imageUrl) return;
     urlToFile(data.imageUrl).then(file => {
       setImage([file]);
     });
-  }, [data.imageUrl]);
+    setVisibleStatus(data.show);
+  }, [data]);
 
-  const onSubmit = async formData => {
-    console.log('onSubmit', formData);
+  useEffect(() => {
+    setValue('visible', visibleStatus, { shouldValidate: true });
+  }, [visibleStatus]);
+  const onSubmit = async submitData => {
+    const formData = new FormData();
+    formData.append('image', image[0]);
+    const params = {
+      clickUrl: submitData.url,
+      show: submitData.visible,
+    };
+    formData.append('data', JSON.stringify(params));
+    request({
+      url: api.banner.patch(data._id),
+      method: 'patch',
+      data: formData,
+    }).then(res => {
+      if (res.status === 200) onFinish();
+    });
   };
 
   return (
