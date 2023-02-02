@@ -29,7 +29,6 @@ const MemberDetail = () => {
   const longDescriptionEditorRef = useRef(null);
   const [orgMemberState, setOrgMemberState] = useState(data.status);
   const orgMemberStateOptions = [
-    { label: '전체', value: 'all' },
     { label: '대기', value: 'PENDING' },
     { label: '승인', value: 'AUTHORIZED' },
     { label: '불가', value: 'UNAVAILABLE' },
@@ -53,11 +52,9 @@ const MemberDetail = () => {
           url: api.organization.patch(id),
           method: 'patch',
           data: {
-            ...data,
-            shortDescription: shortDescriptionEditorRef.current.getContent().length > 0 ? shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
-            longDescription: longDescriptionEditorRef.current.getContent().length > 0 ? longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+            status: orgMemberState,
           },
-        });
+        }).then(() => navigate(-1));
   };
   const handleDelete = type => {
     showModal({
@@ -251,7 +248,21 @@ const MemberDetail = () => {
             </div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '은행통장사본', content: data.status })}</div>
+            <div className="flex-1">
+              <div className="flex-1 row align-center background-box justify-center">통장사본</div>
+              <div className="flex-1 row align-center justify-around">
+                {data?.logoUrl ? (
+                  <div className="flex-1 row align-center justify-around">
+                    <div className="width-120 height-60 link" onClick={() => showImageModal(data.logoUrl)}>
+                      <img className="display-block object-fit-contain width-120 height-60" src={data.logoUrl} />
+                    </div>
+                    <ActButton label="다운로드" handleOnClick={() => onHandleClickDownload(data.logoUrl)} />
+                  </div>
+                ) : (
+                  <div>등록된 사진이 없습니다.</div>
+                )}
+              </div>
+            </div>
             <div className="flex-1">{renderItem({ title: '담당자 연락처', content: data.manager?.mobile || '' })}</div>
           </div>
           <div className="row border-bottom">
@@ -337,7 +348,7 @@ const MemberDetail = () => {
           <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete(type)} />
         </div>
         <div className="flex-1 align-center justify-center">
-          {/*<ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />*/}
+          <ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />
         </div>
         <div className="flex-1" />
       </div>
