@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 import ActEditor from 'components/organisms/Editor';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
@@ -17,6 +18,7 @@ const MemberDetail = () => {
     `${type === MEMBER_TYPE.INDIVIDUAL ? 'user-detail-' : 'org-detail-'}${id}`,
     type === MEMBER_TYPE.INDIVIDUAL ? api.user.detail(id) : api.organization.detail(id),
     {
+      refetchOnWindowFocus: false,
       staleTime: 2000,
     },
   );
@@ -25,6 +27,12 @@ const MemberDetail = () => {
   const shortDescriptionEditorRef = useRef(null);
   const longDescriptionEditorRef = useRef(null);
   const handleConfirm = type => {
+    const params = {
+      ...data,
+      shortDescription: shortDescriptionEditorRef.current.getContent().length > 0 ? shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+      longDescription: longDescriptionEditorRef.current.getContent().length > 0 ? longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+    };
+    console.log('params', params);
     type === MEMBER_TYPE.INDIVIDUAL
       ? navigate(-1)
       : request({
@@ -32,8 +40,8 @@ const MemberDetail = () => {
           method: 'patch',
           data: {
             ...data,
-            shortDescription: shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
-            longDescription: longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
+            shortDescription: shortDescriptionEditorRef.current.getContent().length > 0 ? shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+            longDescription: longDescriptionEditorRef.current.getContent().length > 0 ? longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
           },
         });
   };
@@ -73,6 +81,15 @@ const MemberDetail = () => {
   const onHandleClickDownload = async url => {
     await downloadFile(url);
   };
+
+  const renderItem = ({ title, content }) => {
+    return (
+      <div className="flex-1">
+        <div className="flex-1 padding-16 row align-center background-box justify-center">{title}</div>
+        <div className="flex-1 padding-16 row">{content}</div>
+      </div>
+    );
+  };
   const renderColumn = memberType => {
     return memberType === MEMBER_TYPE.INDIVIDUAL ? (
       <div className="col">
@@ -100,7 +117,7 @@ const MemberDetail = () => {
             <div className="flex-1 col">
               <div className="row border-bottom">
                 <div className="flex-1 row padding-16 align-center background-box justify-center">가입일시</div>
-                <div className="flex-1 row padding-16">{data.createdAt}</div>
+                <div className="flex-1 row padding-16">{dayjs(data.createdAt).format('YYYY.MM.DD')}</div>
               </div>
               <div className="row">
                 <div className="flex-1 row padding-16 align-center background-box justify-center">닉네임</div>
@@ -166,159 +183,125 @@ const MemberDetail = () => {
         <div className="bordered">
           <div className="row max-width">
             <div className="flex-1">
-              <div className="row align-center">단체로고</div>
-              <div
-                className="width-120 height-60 link background-test1"
-                onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
-              >
-                <img
-                  className="display-block object-fit-contain width-120 height-60"
-                  src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
-                  alt="member-image"
-                />
+              <div className="flex-1">
+                <div className="flex-1 row align-center background-box justify-center">단체로고</div>
+                <div className="flex-1 row align-center justify-around">
+                  {data?.logoUrl ? (
+                    <div className="flex-1 row align-center justify-around">
+                      <div className="width-120 height-60 link" onClick={() => showImageModal(data.logoUrl)}>
+                        <img className="display-block object-fit-contain width-120 height-60" src={data.logoUrl} />
+                      </div>
+                      <ActButton label="다운로드" handleOnClick={() => onHandleClickDownload(data.logoUrl)} />
+                    </div>
+                  ) : (
+                    <div>등록된 로고가 없습니다.</div>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex-1">
-              <div className="flex-1">가입일시</div>
-              <div className="flex-1">{data.createdAt}</div>
+            <div className="flex-1 col">
+              <div className="row border-bottom">
+                <div className="flex-1 row padding-16 align-center background-box justify-center">가입일</div>
+                <div className="flex-1 row padding-16">{dayjs(data.createdAt).format('YYYY.MM.DD')}</div>
+              </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row border-bottom">
             <div className="flex-1">
-              <div className="flex-1">ID</div>
-              <div className="flex-1">{data._id}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">ID</div>
+              <div className="flex-1 padding-16 row">{data._id}</div>
             </div>
             <div className="flex-1">
-              <div className="flex-1">닉네임</div>
-              <div className="flex-1">{data.indInfo?.name || ''}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">이메일</div>
-              <div className="flex-1">{data.email}</div>
-            </div>
-            <div className="flex-1">
-              <div className="flex-1">단체정보</div>
-              <div className="flex-1">{data.name || ''}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">닉네임</div>
+              <div className="flex-1 padding-16 row">{data.indInfo?.name || ''}</div>
             </div>
           </div>
-          <div className="row">
+          <div className="row border-bottom">
             <div className="flex-1">
-              <div className="flex-1">은행명</div>
-              <div className="flex-1">{data.email}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">이메일</div>
+              <div className="flex-1 padding-16 row">{data.email}</div>
             </div>
             <div className="flex-1">
-              <div className="flex-1">담당자 성함</div>
-              <div className="flex-1">{data.manager?.name || ''}</div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">은행통장사본</div>
-              <div className="flex-1">{data.status}</div>
-            </div>
-            <div className="flex-1">
-              <div className="flex-1">담당자 연락처</div>
-              <div className="flex-1">{data.manager?.mobile || ''}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">단체정보</div>
+              <div className="flex-1 padding-16 row">{data.name || ''}</div>
             </div>
           </div>
-          <div className="row">
+          <div className="row border-bottom">
             <div className="flex-1">
-              <div className="flex-1">통장번호</div>
-              <div className="flex-1">{data.status}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">은행명</div>
+              <div className="flex-1 padding-16 row">{data.status}</div>
             </div>
             <div className="flex-1">
-              <div className="flex-1">단체홈페이지</div>
-              <div className="flex-1">{data.homepageUrl || ''}</div>
+              <div className="flex-1 padding-16 row align-center background-box justify-center">담당자 성함</div>
+              <div className="flex-1 padding-16 row">{data.name || ''}</div>
             </div>
           </div>
+          <div className="row border-bottom">
+            <div className="flex-1">{renderItem({ title: '은행통장사본', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '담당자 연락처', content: data.manager?.mobile || '' })}</div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1">{renderItem({ title: '통장번호', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '단체홈페이지', content: data.homepageUrl || '' })}</div>
+          </div>
           <div className="row">
-            <div className="flex-1">
-              <div className="flex-1">예금주</div>
-              <div className="flex-1">{data.status}</div>
-            </div>
-            <div className="flex-1">
-              <div className="flex-1">탈퇴일</div>
-              <div className="flex-1">{data.manager?.mobile || ''}</div>
-            </div>
+            <div className="flex-1">{renderItem({ title: '예금주', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '탈퇴일', content: data.manager?.mobile || '' })}</div>
           </div>
         </div>
         <div>단체정보</div>
-        <div className="row">
-          <div>단체 이미지</div>
-          <div className="row">
-            <div className="col">
-              <div
-                className="width-120 height-120 link"
-                onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
-              >
-                <img
-                  className="display-block object-fit-cover width-120 height-120"
-                  src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
-                />
-              </div>
-              <div className="link" onClick={() => onHandleClickDownload('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}>
-                다운로드
-              </div>
-            </div>
-            <div className="col">
-              <div
-                className="width-120 height-120 link"
-                onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
-              >
-                <img
-                  className="display-block object-fit-cover width-120 height-120"
-                  src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
-                />
-              </div>
-              <div className="link" onClick={() => onHandleClickDownload('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}>
-                다운로드
-              </div>
-            </div>
-            <div className="col">
-              <div
-                className="width-120 height-120 link"
-                onClick={() => showImageModal('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}
-              >
-                <img
-                  className="display-block object-fit-cover width-120 height-120"
-                  src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK"
-                />
-              </div>
-              <div className="link" onClick={() => onHandleClickDownload('http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcSLO4eV_Mv3f5PZ5-SH-P6QKGQMnqE9rIypVQFC5jYjJVx92Jml9t-8iay3Vq-eDCrK')}>
-                다운로드
-              </div>
+        <div className="bordered">
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">단체 이미지</div>
+            <div className="flex-3 row">
+              {data.imageUrls.length ? (
+                data.imageUrls.map((imageUrl, index) => {
+                  return (
+                    <div key={index} className="col padding-16">
+                      <div className="width-120 height-120 link bordered" onClick={() => showImageModal(imageUrl)}>
+                        <img className="display-block object-fit-cover width-120 height-120" src={imageUrl} />
+                      </div>
+                      <ActButton label={<div className="padding-row-24">다운로드</div>} handleOnClick={() => onHandleClickDownload(imageUrl)} />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="row padding-16 align-center">등록된 이미지가 없습니다.</div>
+              )}
             </div>
           </div>
-        </div>
-        <div className="row">
-          <div>단체 간략소개</div>
-          <ActEditor
-            onInit={(evt, editor) => (shortDescriptionEditorRef.current = editor)}
-            initialValue={data.shortDescription}
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
-              toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
-              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-            }}
-          />
-        </div>
-        <div className="row">
-          <div>단체 상세소개</div>
-          <ActEditor
-            onInit={(evt, editor) => (longDescriptionEditorRef.current = editor)}
-            initialValue={data.longDescription}
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
-              toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
-              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-            }}
-          />
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">단체 간략 소개</div>
+            <div className="flex-3 row">
+              <ActEditor
+                onInit={(evt, editor) => (shortDescriptionEditorRef.current = editor)}
+                initialValue={data?.shortDescription || ''}
+                init={{
+                  height: 400,
+                  menubar: false,
+                  plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
+                  toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                }}
+              />
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">단체 상세 소개</div>
+            <div className="flex-3 row">
+              <ActEditor
+                onInit={(evt, editor) => (longDescriptionEditorRef.current = editor)}
+                initialValue={data?.shortDescription || ''}
+                init={{
+                  height: 400,
+                  menubar: false,
+                  plugins: ['advlist', 'anchor', 'autolink', 'help', 'image', 'link', 'lists', 'searchreplace', 'table', 'wordcount'],
+                  toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
+                  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -329,7 +312,7 @@ const MemberDetail = () => {
       <div className="divider-thick-primary-4" />
       <div className="row">
         <div className="flex-1 align-center justify-start">
-          <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete()} />
+          <ActButton label={<div className="padding-row-24">삭제</div>} handleOnClick={() => handleDelete(type)} />
         </div>
         <div className="flex-1 align-center justify-center">
           <ActButton label={<div className="padding-row-24">{type === MEMBER_TYPE.INDIVIDUAL ? '확인' : '저장'}</div>} handleOnClick={() => handleConfirm(type)} />

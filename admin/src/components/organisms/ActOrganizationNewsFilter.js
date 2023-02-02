@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 
-export default function ActOrganizationFilter({ type, handleFilter }) {
+export default function ActOrganizationNewsFilter({ type, filter, handleFilter }) {
   const approvalStatusOptions = [
     { label: '전체', value: 'all' },
-    { label: '대기', value: 'pending' },
-    { label: '승인', value: 'approved' },
-    { label: '불가', value: 'rejected' },
+    { label: '대기', value: 'PENDING_APPROVAL' },
+    { label: '승인', value: 'APPROVED' },
+    { label: '불가', value: 'DECLINED' },
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [search, setSearch] = useState('');
-  const [approvalStatus, setApprovalStatus] = useState(approvalStatusOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [search, setSearch] = useState(filter?.search || '');
+  const [approvalStatus, setApprovalStatus] = useState(filter?.approvalStatus || approvalStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '등록일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
-
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, approvalStatus });
-  }, [startDate, endDate, search, approvalStatus, handleFilter]);
-
-  useEffect(() => {
-    onHandleInit();
-  }, [type]);
 
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
@@ -36,7 +28,7 @@ export default function ActOrganizationFilter({ type, handleFilter }) {
     setApprovalStatus(approvalStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, approvalStatus });
   };
   return (
     <div className="max-height max-width">

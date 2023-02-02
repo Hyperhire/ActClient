@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
-import ActOrganizationFilter from 'components/organisms/ActOrganizationFilter';
+import dayjs from 'dayjs';
+import ActOrganizationCampaignFilter from 'components/organisms/ActOrganizationCampaignFilter';
 import ActTable from 'components/atoms/ActTable';
-import { MEMBER_TYPE, ORGANIZATION_MENU_TYPE } from 'constants/constant';
+import { MEMBER_TYPE, ORGANIZATION_MENU_TYPE, PAYMENT_MENU_TYPE } from 'constants/constant';
 import { api } from '../../repository';
 import { useReactQuery } from '../../hooks/useReactQuery';
+import ActOrganizationNoticeFilter from '../../components/organisms/ActOrganizationNoticeFilter';
+import ActOrganizationNewsFilter from '../../components/organisms/ActOrganizationNewsFilter';
 
 const OrganizationList = () => {
   const postType = useOutletContext();
-  const [filter, setFilter] = useState();
+  const [noticeFilter, setNoticeFilter] = useState();
+  const [newsFilter, setNewsFilter] = useState();
+  const [campaignFilter, setCampaignFilter] = useState();
   const { id = undefined } = useParams();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
   const [list, setList] = useState([]);
-  const query = `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}`;
+
+  const query =
+    postType === ORGANIZATION_MENU_TYPE.NOTICE
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${noticeFilter ? noticeFilter?.startDate : ''}&to=${noticeFilter ? noticeFilter?.endDate : ''}&status=${
+          noticeFilter?.approvalStatus === 'all' ? '' : noticeFilter?.approvalStatus || ''
+        }&keyword=${noticeFilter?.search || ''}`
+      : postType === ORGANIZATION_MENU_TYPE.NEWS
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${newsFilter ? newsFilter?.startDate : ''}&to=${newsFilter ? newsFilter?.endDate : ''}&status=${
+          newsFilter?.approvalStatus === 'all' ? '' : newsFilter?.approvalStatus || ''
+        }&keyword=${newsFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? campaignFilter?.startDate : ''}&to=${campaignFilter ? campaignFilter?.endDate : ''}&status=${
+          campaignFilter?.approvalStatus === 'all' ? '' : campaignFilter?.approvalStatus || ''
+        }&keyword=${campaignFilter?.search || ''}`;
+
   const url = `${postType === ORGANIZATION_MENU_TYPE.NOTICE ? api.notice.list : postType === ORGANIZATION_MENU_TYPE.NEWS ? api.news.list : api.campaign.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`${postType}-list`, currentPage], url, {
     refetchOnWindowFocus: false,
@@ -31,11 +49,7 @@ const OrganizationList = () => {
 
   useEffect(() => {
     refetch();
-  }, [postType, id, refetch]);
-
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
+  }, [postType, id, refetch, noticeFilter, newsFilter, campaignFilter]);
 
   const parseData = type => {
     const data = { rows: [], headers: [] };
@@ -44,7 +58,7 @@ const OrganizationList = () => {
         data.rows.push({
           index: i,
           id: v._id,
-          registrationDate: v.createdAt,
+          registrationDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
           orgName: v.org.name,
           title: v.title,
           state: v.status,
@@ -103,7 +117,7 @@ const OrganizationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActOrganizationFilter type={type} handleFilter={setFilter} />
+              <ActOrganizationNoticeFilter type={type} filter={noticeFilter} handleFilter={setNoticeFilter} />
             </div>
             <ActTable data={parseData(type)} handleClickItem={onHandleClickItem} />
           </div>
@@ -113,7 +127,7 @@ const OrganizationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActOrganizationFilter type={type} handleFilter={setFilter} />
+              <ActOrganizationNewsFilter type={type} filter={newsFilter} handleFilter={setNewsFilter} />
             </div>
             <ActTable data={parseData(type)} handleClickItem={onHandleClickItem} />
           </div>
@@ -123,7 +137,7 @@ const OrganizationList = () => {
         return (
           <div className="col max-height ">
             <div className="max-height flex-1">
-              <ActOrganizationFilter type={type} handleFilter={setFilter} />
+              <ActOrganizationCampaignFilter type={type} filter={campaignFilter} handleFilter={setCampaignFilter} />
             </div>
             <ActTable data={parseData(type)} handleClickItem={onHandleClickItem} />
           </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import VerticalTabs from 'components/atoms/ActVerticalTab';
-import { MEMBER_MENU, MEMBER_TYPE } from '../../constants/constant';
+import { MEMBER_TYPE, MEMBER_MENU } from '../../constants/constant';
 
 const MemberBase = () => {
-  const { type, id = undefined } = useParams();
+  const { type, id = '' } = useParams();
   return (
     <div className="row max-width max-height">
       <VerticalTabs options={MEMBER_MENU} defaultValue={MEMBER_MENU[0].value} />

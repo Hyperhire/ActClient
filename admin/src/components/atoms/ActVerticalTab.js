@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useNavigate } from 'react-router-dom';
-import { MEMBER_TYPE } from '../../constants/constant';
 
 export default function VerticalTabs({ options, defaultValue }) {
   const [value, setValue] = useState(defaultValue);
   const navigate = useNavigate();
+
   useEffect(() => {
-    navigate(defaultValue);
-  }, [defaultValue]);
+    if (value) navigate(`${value}`);
+  }, [value]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    navigate(newValue);
   };
 
   return (

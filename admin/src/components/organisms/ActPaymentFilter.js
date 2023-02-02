@@ -3,50 +3,56 @@ import ActFilter from 'components/atoms/ActFilter';
 import ActRadioGroup from 'components/atoms/ActRadioGroup';
 import { DONATION_PAYMENT_TYPE, DONATION_TYPE } from '../../constants/constant';
 
-export default function ActPaymentFilter({ handleFilter }) {
+export default function ActPaymentFilter({ filter, handleFilter }) {
+  const paidStatusOptions = [
+    { label: '전체', value: 'all' },
+    { label: '대기', value: 'notyet' },
+    { label: '취소', value: 'cancel' },
+    { label: '실패', value: 'fail' },
+    { label: '승인', value: 'approved' },
+  ];
+  const targetTypeOptions = [
+    { label: '전체', value: 'all' },
+    { label: '단체후원', value: DONATION_TYPE.ORGANIZATION },
+    { label: '캠페인후원', value: DONATION_TYPE.CAMPAIGN },
+  ];
+
   const paymentTypeOptions = [
     { label: '전체', value: 'all' },
     { label: '정기', value: DONATION_PAYMENT_TYPE.SUBSCRIPTION },
     { label: '일시', value: DONATION_PAYMENT_TYPE.SINGLE },
   ];
-  const donationTypeOptions = [
+  const withdrawRequestStatusOptions = [
     { label: '전체', value: 'all' },
-    { label: '단체후원', value: DONATION_TYPE.ORGANIZATION },
-    { label: '캠페인후원', value: DONATION_TYPE.CAMPAIGN },
-  ];
-  const paymentStatusOptions = [
-    { label: '전체', value: 'all' },
-    { label: '정산요청대기', value: 'pending' },
+    { label: '정산요청대기', value: 'notyet' },
     { label: '정산요청완료', value: 'requested' },
   ];
 
   const current = new Date();
-  const [startDate, setStartDate] = useState(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
-  const [endDate, setEndDate] = useState(new Date());
-  const [search, setSearch] = useState('');
-  const [paymentType, setPaymentType] = useState(paymentTypeOptions[0].value);
-  const [donationType, setDonationType] = useState(donationTypeOptions[0].value);
-  const [paymentStatus, setPaymentStatus] = useState(paymentStatusOptions[0].value);
+  const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
+  const [endDate, setEndDate] = useState(filter?.endDate || new Date());
+  const [search, setSearch] = useState(filter?.search || '');
+  const [targetType, setTargetType] = useState(filter?.targetType || targetTypeOptions[0].value);
+  const [paidStatus, setPaidStatus] = useState(filter?.paidStatus || paidStatusOptions[0].value);
+  const [paymentType, setPaymentType] = useState(filter?.paymentType || paymentTypeOptions[0].value);
+  const [withdrawRequestStatus, setWithdrawRequestStatus] = useState(filter?.withdrawRequestStatus || withdrawRequestStatusOptions[0].value);
 
   const baseFilterData = {
     date: { label: '결제일', state: { startDateState: { value: startDate, setValue: setStartDate }, endDateState: { value: endDate, setValue: setEndDate } } },
     search: { label: '검색', state: { value: search, setValue: setSearch } },
   };
 
-  useEffect(() => {
-    handleFilter({ startDate, endDate, search, paymentType, donationType, paymentStatus });
-  }, [startDate, endDate, search, paymentType, donationType, paymentStatus, handleFilter]);
-
   const onHandleInit = () => {
     setStartDate(new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));
     setEndDate(new Date());
     setSearch('');
+    setTargetType(targetTypeOptions[0].value);
+    setPaidStatus(paidStatusOptions[0].value);
     setPaymentType(paymentTypeOptions[0].value);
-    setDonationType(donationTypeOptions[0].value);
-    setPaymentStatus(paymentStatusOptions[0].value);
+    setWithdrawRequestStatus(withdrawRequestStatusOptions[0].value);
   };
   const onHandleConfirm = () => {
-    console.log('확인');
+    handleFilter({ startDate, endDate, search, targetType, paidStatus, paymentType, withdrawRequestStatus });
   };
   return (
     <div className="max-height max-width">
@@ -58,13 +64,17 @@ export default function ActPaymentFilter({ handleFilter }) {
           </div>
           <div className="flex-1 align-center justify-start row gap-16">
             <div>후원형태</div>
-            <ActRadioGroup options={donationTypeOptions} state={donationType} setState={setDonationType} />
+            <ActRadioGroup options={targetTypeOptions} state={targetType} setState={setTargetType} />
           </div>
         </div>
-        <div className="row align-center justify-start half-width">
+        <div className="row align-center">
           <div className="flex-1 align-center justify-start row gap-16">
             <div>결제상태</div>
-            <ActRadioGroup options={paymentStatusOptions} state={paymentStatus} setState={setPaymentStatus} />
+            <ActRadioGroup options={withdrawRequestStatusOptions} state={withdrawRequestStatus} setState={setWithdrawRequestStatus} />
+          </div>
+          <div className="flex-1 align-center justify-start row gap-16">
+            <div>결제상태</div>
+            <ActRadioGroup options={paidStatusOptions} state={paidStatus} setState={setPaidStatus} />
           </div>
         </div>
       </ActFilter>
