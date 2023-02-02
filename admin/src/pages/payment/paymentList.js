@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import Pagination from '@mui/material/Pagination';
 import ActTable from 'components/atoms/ActTable';
 import { DONATION_MENU_TYPE, MEMBER_TYPE, OPERATION_MENU_TYPE, PAYMENT_MENU_TYPE } from 'constants/constant';
 import ActPaymentFilter from 'components/organisms/ActPaymentFilter';
@@ -196,7 +197,9 @@ const PaymentList = () => {
   const onHandleClickItem = item => {
     console.log('onHandleClickItem', item);
     navigate(item.id);
-    // navigate(`/organization/${postType}/${item.id}`);
+  };
+  const onHandleChangePage = (e, page) => {
+    setCurrentPage(page);
   };
   const getList = type => {
     // eslint-disable-next-line default-case
@@ -208,6 +211,9 @@ const PaymentList = () => {
               <ActPaymentFilter type={paymentMenuType} filter={paymentFilter} handleFilter={setPaymentFilter} />
             </div>
             <ActTable data={parseOrderData()} handleClickItem={onHandleClickItem} />
+            <div className="row align-center justify-center">
+              <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+            </div>
           </div>
         );
 
@@ -218,6 +224,9 @@ const PaymentList = () => {
               <ActSettlementFilter type={paymentMenuType} filter={withdrawFilter} handleFilter={setWithdrawFilter} />
             </div>
             <ActTable data={parseWithdrawData()} handleClickItem={onHandleClickItem} />
+            <div className="row align-center justify-center">
+              <Pagination count={Math.ceil(pagination?.totalCount / 10) || 0} defaultPage={1} page={currentPage} variant="outlined" shape="rounded" onChange={onHandleChangePage} />
+            </div>
           </div>
         );
     }

@@ -11,7 +11,8 @@ import { api } from '../../repository';
 // limit, lastIndex, from, to, status, loginType, keyword
 const MemberList = () => {
   const memberType = useOutletContext();
-  const [filter, setFilter] = useState();
+  const [userFilter, setUserFilter] = useState();
+  const [orgFilter, setOrgFilter] = useState();
   const navigate = useNavigate();
   const { id = undefined } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,12 +20,12 @@ const MemberList = () => {
   const [list, setList] = useState([]);
   const query =
     memberType === MEMBER_TYPE.INDIVIDUAL
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${
-          (filter?.memberState === 'all' ? '' : filter?.memberState) || ''
-        }&loginType=${(filter?.memberType === 'all' ? '' : filter?.memberType) || ''}&keyword=${filter?.memberSearch || ''}`
-      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${
-          filter?.memberState === 'all' ? '' : filter?.memberState || ''
-        }&keyword=${filter?.memberSearch || ''}`;
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${userFilter ? userFilter?.startDate : ''}&to=${userFilter ? userFilter?.endDate : ''}&status=${
+          (userFilter?.memberState === 'all' ? '' : userFilter?.memberState) || ''
+        }&loginType=${(userFilter?.memberType === 'all' ? '' : userFilter?.memberType) || ''}&keyword=${userFilter?.memberSearch || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${orgFilter ? orgFilter?.startDate : ''}&to=${orgFilter ? orgFilter?.endDate : ''}&status=${
+          orgFilter?.memberState === 'all' ? '' : orgFilter?.memberState || ''
+        }&keyword=${orgFilter?.memberSearch || ''}`;
 
   const url = `${memberType === MEMBER_TYPE.INDIVIDUAL ? api.user.list : api.organization.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`user-list`, currentPage], url, {
@@ -41,7 +42,7 @@ const MemberList = () => {
 
   useEffect(() => {
     refetch();
-  }, [memberType, id, refetch, filter]);
+  }, [memberType, id, refetch, userFilter, orgFilter]);
 
   const indData = () => {
     const data = { rows: [], headers: [] };
@@ -200,7 +201,7 @@ const MemberList = () => {
       ) : memberType === MEMBER_TYPE.INDIVIDUAL ? (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberIndFilter type={memberType} filter={filter} handleFilter={setFilter} />
+            <ActMemberIndFilter type={memberType} filter={userFilter} handleFilter={setUserFilter} />
           </div>
           <ActTable data={indData()} handleClickItem={onHandleClickItem} />
           <div className="row align-center justify-center">
@@ -210,7 +211,7 @@ const MemberList = () => {
       ) : (
         <div className="col max-height ">
           <div className="max-height flex-1">
-            <ActMemberOrgFilter type={memberType} filter={filter} handleFilter={setFilter} />
+            <ActMemberOrgFilter type={memberType} filter={orgFilter} handleFilter={setOrgFilter} />
           </div>
           <ActTable data={orgList()} handleClickItem={onHandleClickItem} />
           <div className="row align-center justify-center">
