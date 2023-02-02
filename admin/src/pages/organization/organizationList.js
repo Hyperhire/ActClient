@@ -20,19 +20,19 @@ const OrganizationList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState({});
   const [list, setList] = useState([]);
-  //approvalStatus
+
   const query =
     postType === ORGANIZATION_MENU_TYPE.NOTICE
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${noticeFilter ? dayjs(noticeFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          noticeFilter ? dayjs(noticeFilter?.endDate).format('YYYYMMDD') : ''
-        }&status=${noticeFilter?.approvalStatus || ''}&keyword=${noticeFilter?.search || ''}`
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${noticeFilter ? noticeFilter?.startDate : ''}&to=${noticeFilter ? noticeFilter?.endDate : ''}&status=${
+          noticeFilter?.approvalStatus === 'all' ? '' : noticeFilter?.approvalStatus || ''
+        }&keyword=${noticeFilter?.search || ''}`
       : postType === ORGANIZATION_MENU_TYPE.NEWS
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${newsFilter ? dayjs(newsFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          newsFilter ? dayjs(newsFilter?.endDate).format('YYYYMMDD') : ''
-        }&status=${newsFilter?.approvalStatus || ''}&keyword=${newsFilter?.search || ''}`
-      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? dayjs(campaignFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          campaignFilter ? dayjs(campaignFilter?.endDate).format('YYYYMMDD') : ''
-        }&status=${campaignFilter?.approvalStatus || ''}&keyword=${campaignFilter?.search || ''}`;
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${newsFilter ? newsFilter?.startDate : ''}&to=${newsFilter ? newsFilter?.endDate : ''}&status=${
+          newsFilter?.approvalStatus === 'all' ? '' : newsFilter?.approvalStatus || ''
+        }&keyword=${newsFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? campaignFilter?.startDate : ''}&to=${campaignFilter ? campaignFilter?.endDate : ''}&status=${
+          campaignFilter?.approvalStatus === 'all' ? '' : campaignFilter?.approvalStatus || ''
+        }&keyword=${campaignFilter?.search || ''}`;
 
   const url = `${postType === ORGANIZATION_MENU_TYPE.NOTICE ? api.notice.list : postType === ORGANIZATION_MENU_TYPE.NEWS ? api.news.list : api.campaign.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`${postType}-list`, currentPage], url, {

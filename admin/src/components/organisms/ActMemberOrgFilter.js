@@ -5,10 +5,10 @@ import ActRadioGroup from 'components/atoms/ActRadioGroup';
 export default function ActMemberOrgFilter({ filter, handleFilter }) {
   const memberStateOptions = [
     { label: '전체', value: 'all' },
-    { label: '대기', value: 'pending' },
-    { label: '승인', value: 'approved' },
-    { label: '불가', value: 'rejected' },
-    { label: '탈퇴', value: 'resigned' },
+    { label: '대기', value: 'PENDING' },
+    { label: '승인', value: 'AUTHORIZED' },
+    { label: '불가', value: 'UNAVAILABLE' },
+    { label: '탈퇴', value: 'DELETED' },
   ];
 
   const current = new Date();

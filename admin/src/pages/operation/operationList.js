@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import ActTable from 'components/atoms/ActTable';
-import { MEMBER_TYPE, OPERATION_MENU_TYPE } from 'constants/constant';
+import { DONATION_MENU_TYPE, MEMBER_TYPE, OPERATION_MENU_TYPE } from 'constants/constant';
 import ActOperationFilter from '../../components/organisms/ActOperationFilter';
 import { api } from '../../repository';
 import { useReactQuery } from '../../hooks/useReactQuery';
@@ -12,8 +12,16 @@ const OperationList = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState();
   const { id = undefined } = useParams();
+  const [pagination, setPagination] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState([]);
-  const query = `?keyword=${filter?.search || ''}`;
+
+  const query =
+    operationType === OPERATION_MENU_TYPE.FAQ
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&show=${
+          filter?.show === 'all' ? '' : filter?.show || ''
+        }&keyword=${filter?.search || ''}`
+      : '';
   const url = `${operationType === OPERATION_MENU_TYPE.FAQ ? api.faq.list : api.banner.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(`${operationType}-list`, url, {
     refetchOnWindowFocus: false,
@@ -27,10 +35,7 @@ const OperationList = () => {
 
   useEffect(() => {
     refetch();
-  }, [operationType, id, refetch]);
-  useEffect(() => {
-    console.log('filter', filter);
-  }, [filter]);
+  }, [operationType, id, refetch, filter]);
 
   const parseData = () => {
     const data = { rows: [], headers: [] };

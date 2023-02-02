@@ -19,12 +19,12 @@ const MemberList = () => {
   const [list, setList] = useState([]);
   const query =
     memberType === MEMBER_TYPE.INDIVIDUAL
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${filter?.memberState || ''}&loginType=${
-          filter?.memberType || ''
-        }&keyword=${filter?.memberSearch || ''}`
-      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${filter?.memberState || ''}&keyword=${
-          filter?.memberSearch || ''
-        }`;
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${
+          (filter?.memberState === 'all' ? '' : filter?.memberState) || ''
+        }&loginType=${(filter?.memberType === 'all' ? '' : filter?.memberType) || ''}&keyword=${filter?.memberSearch || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${filter ? filter?.startDate : ''}&to=${filter ? filter?.endDate : ''}&status=${
+          filter?.memberState === 'all' ? '' : filter?.memberState || ''
+        }&keyword=${filter?.memberSearch || ''}`;
 
   const url = `${memberType === MEMBER_TYPE.INDIVIDUAL ? api.user.list : api.organization.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`user-list`, currentPage], url, {
@@ -53,7 +53,7 @@ const MemberList = () => {
         type: v.loginType,
         email: v.email,
         nickname: v.nickname,
-        name: v.nickname,
+        name: v.indInfo?.name || '',
         mobile: v.indInfo?.mobile || '',
         state: v.status,
       });

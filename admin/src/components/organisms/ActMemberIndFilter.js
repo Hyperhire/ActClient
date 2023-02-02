@@ -5,13 +5,16 @@ import ActRadioGroup from 'components/atoms/ActRadioGroup';
 export default function ActMemberIndFilter({ filter, handleFilter }) {
   const memberStateOptions = [
     { label: '전체', value: 'all' },
-    { label: '정상', value: 'normal' },
-    { label: '탈퇴', value: 'resign' },
+    { label: '정상', value: 'NORMAL' },
+    { label: '탈퇴', value: 'DELETED' },
   ];
   const memberTypeOptions = [
     { label: '전체', value: 'all' },
-    { label: '이메일', value: 'email' },
-    { label: '카카오', value: 'kakao' },
+    { label: '이메일', value: 'EMAIL' },
+    { label: '카카오', value: 'KAKAO' },
+    { label: '네이버', value: 'NAVER' },
+    { label: '구글', value: 'GOOGLE' },
+    { label: '애플', value: 'APPLE' },
   ];
 
   const current = new Date();

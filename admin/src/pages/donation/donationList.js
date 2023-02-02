@@ -21,12 +21,12 @@ const DonationList = () => {
 
   const query =
     donationType === DONATION_MENU_TYPE.ORG
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${orgFilter ? dayjs(orgFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          orgFilter ? dayjs(orgFilter?.endDate).format('YYYYMMDD') : ''
-        }&status=${orgFilter?.donationStatus || ''}&keyword=${orgFilter?.search || ''}`
-      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? dayjs(campaignFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          campaignFilter ? dayjs(campaignFilter?.endDate).format('YYYYMMDD') : ''
-        }&keyword=${campaignFilter?.search || ''}`;
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${orgFilter ? orgFilter?.startDate : ''}&to=${orgFilter ? orgFilter?.endDate : ''}&paymentType=${
+          orgFilter?.paymentType === 'all' ? '' : orgFilter?.paymentType || ''
+        }&active=${orgFilter?.active === 'all' ? '' : orgFilter?.active || ''}&keyword=${orgFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${campaignFilter ? campaignFilter?.startDate : ''}&to=${campaignFilter ? campaignFilter?.endDate : ''}&keyword=${
+          campaignFilter?.search || ''
+        }`;
   const url = `${donationType === DONATION_MENU_TYPE.ORG ? api.donationOrg.list : api.donationCampaign.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${donationType}-list`, currentPage], url, {
     refetchOnWindowFocus: false,
@@ -57,7 +57,7 @@ const DonationList = () => {
         donationType: v.isRecurring ? '정기후원' : '일시후원',
         amount: v.amount.toLocaleString(),
         donationStatus: v.isRecurring ? (v.isTerminated ? '종료' : '진행중') : '-',
-        nftId: v.nftId || ``,
+        nftId: v.orders[0]?.nft || ``,
       });
     });
     data.headers = [
@@ -136,7 +136,7 @@ const DonationList = () => {
         orgName: v.org?.name,
         campaignTitle: v.campaign?.title,
         amount: v.amount.toLocaleString(),
-        nftId: v.nftId || '',
+        nftId: v.orders[0]?.nft || ``,
       });
     });
 

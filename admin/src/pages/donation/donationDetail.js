@@ -25,8 +25,8 @@ const DonationDetail = () => {
   );
   const { showModal } = useModal();
   const [subscriptionOn, setSubscriptionOn] = useState(data.subscriptionOn || 1);
-  const [orderType, setOrderType] = useState(data.active);
-  const [donationStatus, setDonationStatus] = useState(data.active && !data.inactivatedAt);
+  const [orderType, setOrderType] = useState(data.isRecurring);
+  const [donationStatus, setDonationStatus] = useState(data.isRecurring && !data.isTerminated);
 
   useEffect(() => {
     console.log('subscriptionOn', subscriptionOn);
@@ -46,20 +46,19 @@ const DonationDetail = () => {
     { label: '종료', value: false },
   ];
 
-  const [withdrawStatus, setWithdrawStatus] = useState(data.status);
-  const withdrawStatusOptions = [
-    { label: '지급대기', value: 'PENDING' },
-    { label: '지급완료', value: 'COMPLETE' },
-  ];
   const handleConfirm = type => {
-    request({
-      url: type === DONATION_MENU_TYPE.ORG ? api.donationOrg.patch(id) : api.donationCampaign.patch(id),
-      method: 'patch',
-      data: {
-        ...data,
-        status: withdrawStatus,
-      },
-    }).then(() => navigate(-1));
+    type === DONATION_MENU_TYPE.ORG
+      ? data.isRecurring
+        ? request({
+            url: type === DONATION_MENU_TYPE.ORG ? api.donationOrg.patch(id) : api.donationCampaign.patch(id),
+            method: 'patch',
+            data: {
+              ...data,
+              isTerminated: !donationStatus,
+            },
+          }).then(() => navigate(-1))
+        : navigate(-1)
+      : navigate(-1);
   };
   const handleDelete = type => {
     showModal({
@@ -123,7 +122,7 @@ const DonationDetail = () => {
           </div>
           <div className="row border-bottom">
             <div className="flex-1">{renderItem({ title: '단체명', content: data.org?.name })}</div>
-            <div className="flex-1">{renderItem({ title: 'NFT ID', content: '' })}</div>
+            <div className="flex-1">{renderItem({ title: 'NFT ID', content: data.orders[0]?.nft || `` })}</div>
           </div>
           <div className="row border-bottom">
             <div className="flex-1">{renderItem({ title: '결제금액', content: data.amount.toLocaleString() })}</div>
@@ -139,7 +138,7 @@ const DonationDetail = () => {
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">후원형태</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={orderTypeOptions} state={orderType} setState={setOrderType} disabled={true} />
+                <ActRadioGroup options={orderTypeOptions} state={orderType} setState={setOrderType} disabled={!(data.isRecurring && !data.isTerminated)} />
               </div>
             </div>
           </div>
@@ -148,7 +147,7 @@ const DonationDetail = () => {
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">정기후원상태</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={donationStatusOptions} state={donationStatus} setState={setDonationStatus} disabled={!data.isRecurring} />
+                <ActRadioGroup options={donationStatusOptions} state={donationStatus} setState={setDonationStatus} disabled={!(data.isRecurring && !data.isTerminated)} />
               </div>
             </div>
           </div>
@@ -163,7 +162,7 @@ const DonationDetail = () => {
           </div>
           <div className="row border-bottom">
             <div className="flex-1">{renderItem({ title: '후원종료일시', content: dayjs(data.startedAt).format('YYYY.MM.DD') })}</div>
-            <div className="flex-1">{renderItem({ title: 'NFT ID', content: '' })}</div>
+            <div className="flex-1">{renderItem({ title: 'NFT ID', content: data.orders[0]?.nft || `` })}</div>
           </div>
           <div className="row border-bottom">
             <div className="flex-1">{renderItem({ title: '단체명', content: data.org?.name })}</div>

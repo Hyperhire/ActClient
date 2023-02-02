@@ -5,11 +5,10 @@ import ActRadioGroup from 'components/atoms/ActRadioGroup';
 export default function ActOrganizationNewsFilter({ type, filter, handleFilter }) {
   const approvalStatusOptions = [
     { label: '전체', value: 'all' },
-    { label: '대기', value: 'pending' },
-    { label: '승인', value: 'approved' },
-    { label: '불가', value: 'rejected' },
+    { label: '대기', value: 'PENDING_APPROVAL' },
+    { label: '승인', value: 'APPROVED' },
+    { label: '불가', value: 'DECLINED' },
   ];
-  console.log('ActOrganizationNewsFilter', filter);
 
   const current = new Date();
   const [startDate, setStartDate] = useState(filter?.startDate || new Date(current.getFullYear(), current.getMonth() - 1, current.getDate()));

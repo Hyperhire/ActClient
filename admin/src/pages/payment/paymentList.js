@@ -17,15 +17,16 @@ const PaymentList = () => {
   const [list, setList] = useState([]);
   const [paymentFilter, setPaymentFilter] = useState();
   const [withdrawFilter, setWithdrawFilter] = useState();
-  //PAYMENT donationType,paymentStatus, paymentType
-  //WITHDRAW settlementStatus,
+
   const query =
     paymentMenuType === PAYMENT_MENU_TYPE.PAYMENT
-      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${paymentFilter ? dayjs(paymentFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          paymentFilter ? dayjs(paymentFilter?.endDate).format('YYYYMMDD') : ''
-        }&status=${paymentFilter?.donationStatus || ''}&keyword=${paymentFilter?.search || ''}`
-      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${withdrawFilter ? dayjs(withdrawFilter?.startDate).format('YYYYMMDD') : ''}&to=${
-          withdrawFilter ? dayjs(withdrawFilter?.endDate).format('YYYYMMDD') : ''
+      ? `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${paymentFilter ? paymentFilter?.startDate : ''}&to=${paymentFilter ? paymentFilter?.endDate : ''}&targetType=${
+          paymentFilter?.targetType === 'all' ? '' : paymentFilter?.targetType || ''
+        }&paidStatus=${paymentFilter?.paidStatus === 'all' ? '' : paymentFilter?.paidStatus || ''}&paymentType=${
+          paymentFilter?.paymentType === 'all' ? '' : paymentFilter?.paymentType || ''
+        }&withdrawRequestStatus=${paymentFilter?.withdrawRequestStatus === 'all' ? '' : paymentFilter?.withdrawRequestStatus || ''}&keyword=${paymentFilter?.search || ''}`
+      : `?limit=10&lastIndex=${(currentPage - 1) * 10 || 0}&from=${withdrawFilter ? withdrawFilter?.startDate : ''}&to=${withdrawFilter ? withdrawFilter?.endDate : ''}&status=${
+          withdrawFilter?.status === 'all' ? '' : withdrawFilter?.status || ''
         }&keyword=${withdrawFilter?.search || ''}`;
   const url = `${paymentMenuType === PAYMENT_MENU_TYPE.PAYMENT ? api.order.list : api.withdraw.list}${query}`;
   const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery([`{${paymentMenuType}-list`, currentPage], url, {
@@ -53,7 +54,7 @@ const PaymentList = () => {
         paymentDate: dayjs(v.createdAt).format('YYYY.MM.DD'),
         name: v.user?.indInfo?.name || '',
         donorId: v.user?.email || '',
-        orgName: '',
+        orgName: v.org.name,
         donationId: v._id,
         paymentType: v.pg,
         donationType: v.isRecurring ? '정기후원' : '일시후원',
