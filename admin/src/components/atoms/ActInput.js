@@ -18,7 +18,7 @@ const ActInput = (props, ref) => {
     maxLength,
     handleChange,
     style,
-    hideErrorMessage = false,
+    hideBorder = false,
     actInputRef,
     disabled = false,
     multiline = false,
@@ -59,12 +59,12 @@ const ActInput = (props, ref) => {
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       border: 'none',
-                      borderBottom: 'solid 1px black',
+                      borderBottom: hideBorder ? '' : 'solid 1px black',
                       padding: 0,
                     },
                     '&.Mui-focused fieldset': {
                       border: 'none',
-                      borderBottom: 'solid 1px black',
+                      borderBottom: hideBorder ? '' : 'solid 1px black',
                       padding: 0,
                     },
                   },
@@ -118,9 +118,6 @@ const ActInput = (props, ref) => {
           )}
         />
       </div>
-      {/*{!hideErrorMessage && (*/}
-      {/*  <div className="height-24">{isError && <ErrorMessage errors={errors} name={id} render={({ message: validMessage }) => <div className="error-text">{validMessage}</div>} />}</div>*/}
-      {/*)}*/}
     </div>
   );
 };

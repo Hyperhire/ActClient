@@ -3,7 +3,7 @@ import BannerManagerTabs from '../atoms/BannerManagerTabs';
 import { OPERATION_MENU_TYPE } from '../../constants/constant';
 import { api } from '../../repository';
 import { useReactQuery } from '../../hooks/useReactQuery';
-const ActBannerManager = ({ data }) => {
+const ActBannerManager = ({ data, onFinish }) => {
   console.log('ActBannerManager', data);
   const MENU = [
     { label: '메인배너1', value: 'banner1' },
@@ -12,7 +12,7 @@ const ActBannerManager = ({ data }) => {
   ];
   return (
     <div>
-      <BannerManagerTabs data={data} />
+      <BannerManagerTabs data={data} onFinish={() => onFinish()} />
     </div>
   );
 };

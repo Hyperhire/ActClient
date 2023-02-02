@@ -61,10 +61,7 @@ const OrganizationDetail = () => {
       data:
         type === ORGANIZATION_MENU_TYPE.CAMPAIGN
           ? {
-              ...data,
               status: postState,
-              campaignStatus: campaignState,
-              description: descriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, ''),
             }
           : {
               ...data,

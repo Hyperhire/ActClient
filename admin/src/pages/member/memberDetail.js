@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import ActEditor from 'components/organisms/Editor';
@@ -9,6 +9,7 @@ import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { downloadFile } from '../../utils/downloadFile';
 import ActButton from '../../components/atoms/ActButton';
+import ActRadioGroup from '../../components/atoms/ActRadioGroup';
 
 const MemberDetail = () => {
   const navigate = useNavigate();
@@ -26,6 +27,18 @@ const MemberDetail = () => {
 
   const shortDescriptionEditorRef = useRef(null);
   const longDescriptionEditorRef = useRef(null);
+  const [orgMemberState, setOrgMemberState] = useState(data.status);
+  const orgMemberStateOptions = [
+    { label: '대기', value: 'PENDING' },
+    { label: '승인', value: 'AUTHORIZED' },
+    { label: '불가', value: 'UNAVAILABLE' },
+    { label: '탈퇴', value: 'DELETED' },
+  ];
+  useEffect(() => {
+    if (type === MEMBER_TYPE.ORGANIZATION) {
+      setOrgMemberState(data.status);
+    }
+  }, [data]);
   const handleConfirm = type => {
     const params = {
       ...data,
@@ -39,11 +52,9 @@ const MemberDetail = () => {
           url: api.organization.patch(id),
           method: 'patch',
           data: {
-            ...data,
-            shortDescription: shortDescriptionEditorRef.current.getContent().length > 0 ? shortDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
-            longDescription: longDescriptionEditorRef.current.getContent().length > 0 ? longDescriptionEditorRef.current.getContent().replace(/<[^>]*>?/g, '') : '',
+            status: orgMemberState,
           },
-        });
+        }).then(() => navigate(-1));
   };
   const handleDelete = type => {
     showModal({
@@ -229,7 +240,7 @@ const MemberDetail = () => {
           <div className="row border-bottom">
             <div className="flex-1">
               <div className="flex-1 padding-16 row align-center background-box justify-center">은행명</div>
-              <div className="flex-1 padding-16 row">{data.status}</div>
+              <div className="flex-1 padding-16 row">{data.bankDetail?.bankName || ''}</div>
             </div>
             <div className="flex-1">
               <div className="flex-1 padding-16 row align-center background-box justify-center">담당자 성함</div>
@@ -237,15 +248,29 @@ const MemberDetail = () => {
             </div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '은행통장사본', content: data.status })}</div>
+            <div className="flex-1">
+              <div className="flex-1 row align-center background-box justify-center">통장사본</div>
+              <div className="flex-1 row align-center justify-around">
+                {data?.logoUrl ? (
+                  <div className="flex-1 row align-center justify-around">
+                    <div className="width-120 height-60 link" onClick={() => showImageModal(data.logoUrl)}>
+                      <img className="display-block object-fit-contain width-120 height-60" src={data.logoUrl} />
+                    </div>
+                    <ActButton label="다운로드" handleOnClick={() => onHandleClickDownload(data.logoUrl)} />
+                  </div>
+                ) : (
+                  <div>등록된 사진이 없습니다.</div>
+                )}
+              </div>
+            </div>
             <div className="flex-1">{renderItem({ title: '담당자 연락처', content: data.manager?.mobile || '' })}</div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '통장번호', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '통장번호', content: data.bankDetail?.bankaccount })}</div>
             <div className="flex-1">{renderItem({ title: '단체홈페이지', content: data.homepageUrl || '' })}</div>
           </div>
           <div className="row">
-            <div className="flex-1">{renderItem({ title: '예금주', content: data.status })}</div>
+            <div className="flex-1">{renderItem({ title: '예금주', content: data.bankDetail?.accountHolder })}</div>
             <div className="flex-1">{renderItem({ title: '탈퇴일', content: data.manager?.mobile || '' })}</div>
           </div>
         </div>
@@ -283,6 +308,7 @@ const MemberDetail = () => {
                   toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
+                disabled={true}
               />
             </div>
           </div>
@@ -299,7 +325,14 @@ const MemberDetail = () => {
                   toolbar: 'undo redo | blocks | ' + 'bold italic forecolor | alignleft aligncenter ' + 'alignright alignjustify | bullist numlist outdent indent | ' + 'removeformat | help',
                   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
+                disabled={true}
               />
+            </div>
+          </div>
+          <div className="row border-bottom">
+            <div className="flex-1 row align-center background-box justify-center">회원상태</div>
+            <div className="flex-3 row">
+              <ActRadioGroup options={orgMemberStateOptions} state={orgMemberState} setState={setOrgMemberState} />
             </div>
           </div>
         </div>

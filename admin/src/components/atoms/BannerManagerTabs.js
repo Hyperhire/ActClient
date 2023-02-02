@@ -6,7 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import BannerControl from '../organisms/BannerControl';
 
-export default function BannerManagerTabs({ data }) {
+export default function BannerManagerTabs({ data, onFinish }) {
   const [value, setValue] = useState(data[0]._id);
 
   const handleChange = (event, newValue) => {
@@ -26,7 +26,7 @@ export default function BannerManagerTabs({ data }) {
         {data.map((banner, index) => {
           return (
             <TabPanel key={index} value={banner._id}>
-              <BannerControl data={banner} />
+              <BannerControl data={banner} onFinish={() => onFinish()} />
             </TabPanel>
           );
         })}

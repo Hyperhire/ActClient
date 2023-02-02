@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import ActEditor from 'components/organisms/Editor';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
-import { DONATION_MENU_TYPE, MEMBER_TYPE, PAYMENT_MENU_TYPE } from '../../constants/constant';
+import { DONATION_MENU_TYPE, MEMBER_TYPE, ORGANIZATION_MENU_TYPE, PAYMENT_MENU_TYPE } from '../../constants/constant';
 import useModal from '../../hooks/useModal';
 import { request } from '../../utils/axiosClient';
 import { downloadFile } from '../../utils/downloadFile';
@@ -15,7 +15,7 @@ const DonationDetail = () => {
   const navigate = useNavigate();
   const { type = undefined, id = undefined } = useParams();
   if (type === undefined || id === undefined) navigate(-1);
-  const { isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(
+  const { isFetching, isLoading, isSuccess, data, isError, error, refetch } = useReactQuery(
     `${type === DONATION_MENU_TYPE.ORG ? 'donation-org-detail-' : 'donation-campaign-detail-'}${id}`,
     type === DONATION_MENU_TYPE.ORG ? api.donationOrg.detail(id) : api.donationCampaign.detail(id),
     {
@@ -25,21 +25,26 @@ const DonationDetail = () => {
   );
   const { showModal } = useModal();
   const [subscriptionOn, setSubscriptionOn] = useState(data.subscriptionOn || 1);
-  const [orderType, setOrderType] = useState(data.isRecurring);
-  const [donationStatus, setDonationStatus] = useState(data.isRecurring && !data.isTerminated);
+  const [paymentType, setPaymentType] = useState(data.paymentType);
+  const [donationStatus, setDonationStatus] = useState(data.active);
 
   useEffect(() => {
-    console.log('subscriptionOn', subscriptionOn);
-  }, [subscriptionOn]);
+    if (type === DONATION_MENU_TYPE.ORG) {
+      setSubscriptionOn(data.subscriptionOn || 1);
+      setPaymentType(data.paymentType);
+      setDonationStatus(data.active);
+    }
+  }, [data]);
+
   const subscriptionOnOptions = [
     { label: '1일', value: 1 },
     { label: '10일', value: 10 },
     { label: '20일', value: 20 },
   ];
 
-  const orderTypeOptions = [
-    { label: '일시후원', value: false },
-    { label: '정기후원', value: true },
+  const paymentTypeOptions = [
+    { label: '정기후원', value: 'SUBSCRIPTION' },
+    { label: '일시후원', value: 'SINGLE' },
   ];
   const donationStatusOptions = [
     { label: '진행중', value: true },
@@ -48,13 +53,13 @@ const DonationDetail = () => {
 
   const handleConfirm = type => {
     type === DONATION_MENU_TYPE.ORG
-      ? data.isRecurring
+      ? data.paymentType === 'SUBSCRIPTION'
         ? request({
             url: type === DONATION_MENU_TYPE.ORG ? api.donationOrg.patch(id) : api.donationCampaign.patch(id),
             method: 'patch',
             data: {
-              ...data,
-              isTerminated: !donationStatus,
+              active: donationStatus,
+              subscriptionOn: subscriptionOn,
             },
           }).then(() => navigate(-1))
         : navigate(-1)
@@ -132,22 +137,22 @@ const DonationDetail = () => {
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">정기결제일</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={subscriptionOnOptions} state={subscriptionOn} setState={setSubscriptionOn} disabled={!data.isRecurring} />
+                <ActRadioGroup options={subscriptionOnOptions} state={subscriptionOn} setState={setSubscriptionOn} disabled={data.paymentType !== 'SUBSCRIPTION'} />
               </div>
             </div>
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">후원형태</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={orderTypeOptions} state={orderType} setState={setOrderType} disabled={!(data.isRecurring && !data.isTerminated)} />
+                <ActRadioGroup options={paymentTypeOptions} state={paymentType} setState={setPaymentType} disabled={true} />
               </div>
             </div>
           </div>
           <div className="row border-bottom">
-            <div className="flex-1">{renderItem({ title: '정기후원횟수', content: data.recurringCount })}</div>
+            <div className="flex-1">{renderItem({ title: '정기후원횟수', content: data.orders?.length || 1 })}</div>
             <div className="flex-1">
               <div className="flex-1 row padding-16 align-center background-box justify-center">정기후원상태</div>
               <div className="flex-1 row padding-16">
-                <ActRadioGroup options={donationStatusOptions} state={donationStatus} setState={setDonationStatus} disabled={!(data.isRecurring && !data.isTerminated)} />
+                <ActRadioGroup options={donationStatusOptions} state={donationStatus} setState={setDonationStatus} disabled={data.paymentType !== 'SUBSCRIPTION'} />
               </div>
             </div>
           </div>
@@ -180,7 +185,9 @@ const DonationDetail = () => {
       </div>
     );
   };
-  return (
+  return isFetching || isLoading ? (
+    <div>loading...</div>
+  ) : (
     <div className="col gap-16">
       {renderColumn(type)}
       <div className="divider-thick-primary-4" />
