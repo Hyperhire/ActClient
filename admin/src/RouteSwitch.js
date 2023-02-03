@@ -1,6 +1,7 @@
 import React, { lazy, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from 'components/organisms/PrivateRoute';
+
 const Login = lazy(() => import('pages/login'));
 const MemberBase = lazy(() => import('pages/member'));
 const MemberList = lazy(() => import('pages/member/memberList'));
@@ -17,6 +18,8 @@ const DonationDetail = lazy(() => import('pages/donation/donationDetail'));
 const OperationBase = lazy(() => import('pages/operation'));
 const OperationList = lazy(() => import('pages/operation/operationList'));
 const OperationDetail = lazy(() => import('pages/operation/operationDetail'));
+const OperationPost = lazy(() => import('pages/operation/operationPost'));
+
 const RouteSwitch = () => {
   return (
     <div className="col max-height max-width">
@@ -41,7 +44,8 @@ const RouteSwitch = () => {
         </Route>
         <Route path="/operation" element={<PrivateRoute outlet={<OperationBase />} path="/" />}>
           <Route path=":type" element={<OperationList />} />
-          <Route path=":type/:id" element={<OperationDetail />} />
+          <Route path=":type/detail/:id" element={<OperationDetail />} />
+          <Route path=":type/post" element={<OperationPost />} />
         </Route>
       </Routes>
     </div>

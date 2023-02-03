@@ -85,9 +85,7 @@ const OperationList = () => {
     return data;
   };
   const onHandleClickItem = item => {
-    console.log('onHandleClickItem', item);
-    navigate(item.id);
-    // navigate(`/organization/${postType}/${item.id}`);
+    navigate(`detail/${item.id}`);
   };
   const onHandleChangePage = (e, page) => {
     setCurrentPage(page);
