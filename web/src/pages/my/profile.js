@@ -27,6 +27,7 @@ import { api } from '../../repository';
 import { urlToFile } from 'utils/downloadFile';
 import { ReactComponent as Calendar } from '../../styles/assets/icons/cal.svg';
 import ActUploadLicenseButton from '../../components/organisms/ActUploadLicenseButton';
+import ActSpinner from '../../components/atoms/ActSpinner';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Profile = ({ setOption }) => {
     });
   }, [setOption]);
 
-  const { data, mutate: editProfile, isSuccess } = useEditProfile('edit-profile');
+  const { data, mutate: editProfile, isSuccess, isLoading } = useEditProfile('edit-profile');
 
   useEffect(() => {
     if (isSuccess && data?.status) {
@@ -216,7 +217,9 @@ const Profile = ({ setOption }) => {
         console.log('getLoginTypeIcon unknown login type');
     }
   };
-  return (
+  return isLoading ? (
+    <ActSpinner />
+  ) : (
     <div className="profile-wrapper">
       {user.userType === MEMBER_TYPE.INDIVIDUAL && (
         <div className="profile-image-wrapper">

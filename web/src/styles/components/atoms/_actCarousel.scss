@@ -18,9 +18,10 @@
 }
 .act-carousel-main-image {
   width: 100%;
+  @extend .height-vh-50;
   img {
     display: block;
     width: 100%;
-    height: auto;
+    @extend .height-vh-50;
   }
 }
