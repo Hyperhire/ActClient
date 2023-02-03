@@ -3,13 +3,12 @@ import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import org.devio.rn.splashscreen.SplashScreen;
-import com.cboy.rn.splashscreen.SplashScreen;
+import org.devio.rn.splashscreen.SplashScreen; // here
 
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this, R.style.SplashScreenTheme);
+    SplashScreen.show(this);
     super.onCreate(savedInstanceState);
   }
 

@@ -14,16 +14,16 @@ const ContentContainer = styled(SafeAreaView)`
 `;
 
 const App = () => {
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   return (
     <FullScreenContainer>
       <StatusBar backgroundColor={'#fdd22c'} />
       <ContentContainer>
         <WebView
-          source={{ uri: 'http://127.0.0.1:3000/' }}
+          source={{ uri: 'https://dev.doact.co.kr/' }}
           onLoad={syntheticEvent => {
             const { nativeEvent } = syntheticEvent;
             console.log('onLoad', nativeEvent);
