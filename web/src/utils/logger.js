@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 class Logger {
   static _printLog() {
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'production') return;
+    if (process.env.REACT_APP_ENVIRONMENT === 'production') return;
     const args = Array.from(arguments);
     const type = args.shift();
 
