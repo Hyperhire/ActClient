@@ -8,6 +8,8 @@ import ActCheckBox from 'components/atoms/ActCheckBox';
 import { resignMembershipYup } from '../../utils/yupSchema';
 import ActButton from 'components/atoms/ActButton';
 import { usersAtom } from '../../state';
+import Logger from 'utils/logger';
+
 const ResignMembership = ({ setOption }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(usersAtom);
@@ -41,7 +43,7 @@ const ResignMembership = ({ setOption }) => {
   } = useForm(formOptions);
 
   const onSubmit = data => {
-    console.log('onSubmit', data);
+    Logger.log('onSubmit', data);
   };
 
   return (

@@ -10,6 +10,7 @@ import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import useModal from 'hooks/useModal';
 import { usersAtom } from 'state';
+import Logger from 'utils/logger';
 
 const Verify = ({ setOption }) => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Verify = ({ setOption }) => {
         return data[`verify${item}`];
       })
       .join('');
-    console.log('verifyNumber', verifyNumber);
+    Logger.log('verifyNumber', verifyNumber);
     const res = await request({ url: api.auth.verifyEmail, method: 'post', data: { code: verifyNumber } });
     if (res.status === 200) {
       showModal({

@@ -8,6 +8,8 @@ import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import 'dayjs/locale/ko';
 import { downloadFile } from '../../utils/downloadFile';
+import Logger from 'utils/logger';
+
 const NFT_ATTRIBUTES = {
   DONATION_TYPE: 0,
   AMOUNT: 2,
@@ -40,7 +42,7 @@ const NftDetail = ({ setOption }) => {
   };
   const onHandleClickShare = e => {
     e.stopPropagation();
-    console.log('onHandleClickShare');
+    Logger.log('onHandleClickShare');
   };
   return (
     <div className="nft-detail-wrapper">

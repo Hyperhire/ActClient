@@ -17,6 +17,7 @@ import useModal from '../../hooks/useModal';
 import { ORGANIZATION_NEWS_TYPE } from '../../constants/constant';
 import ActDatePicker from '../../components/atoms/ActDatePicker';
 import { ReactComponent as Calendar } from 'styles/assets/icons/cal.svg';
+import Logger from 'utils/logger';
 
 const CampaignPost = ({ setOption }) => {
   const user = useRecoilValue(usersAtom);
@@ -77,7 +78,7 @@ const CampaignPost = ({ setOption }) => {
     setValue('campaignImages', campaignImageFiles, { shouldValidate: true });
   }, [campaignImageFiles]);
   const onSubmit = data => {
-    console.log('onSubmit', data);
+    Logger.log('onSubmit', data);
     const formData = new FormData();
 
     campaignImageFiles.forEach(image => {

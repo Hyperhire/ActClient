@@ -5,7 +5,7 @@ import { api } from 'repository';
 import useModal from './useModal';
 import { LOGIN_TYPE, MEMBER_TYPE, ORGANIZATION_NEWS_TYPE } from 'constants/constant';
 import { TokenContext } from '../utils/TokenContext';
-
+import Logger from 'utils/logger';
 export const useLogin = queryKey => {
   const queryClient = useQueryClient();
   const { showModal } = useModal();
@@ -28,10 +28,10 @@ export const useLogin = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled login');
+      Logger.log('onSettled login');
     },
   });
 };
@@ -69,10 +69,10 @@ export const useRegisterByEmail = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useRegisterByEmail');
+      Logger.log('onSettled useRegisterByEmail');
     },
   });
 };
@@ -97,10 +97,10 @@ export const useEditProfile = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useEditProfile');
+      Logger.log('onSettled useEditProfile');
     },
   });
 };
@@ -125,10 +125,10 @@ export const useEditOrgInformation = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useEditOrgInformation');
+      Logger.log('onSettled useEditOrgInformation');
     },
   });
 };
@@ -153,10 +153,10 @@ export const useNewsPost = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useNewsPost');
+      Logger.log('onSettled useNewsPost');
     },
   });
 };
@@ -181,10 +181,10 @@ export const useCampaignPost = queryKey => {
       }
     },
     onError: (error, variable, context) => {
-      console.log('onError', error, variable, context);
+      Logger.error('onError', error, variable, context);
     },
     onSettled: () => {
-      console.log('onSettled useCampaignPost');
+      Logger.log('onSettled useCampaignPost');
     },
   });
 };

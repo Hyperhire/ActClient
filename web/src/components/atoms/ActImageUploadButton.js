@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-
 import { Controller } from 'react-hook-form';
+import Logger from 'utils/logger';
 
 const imageTypeRegex = /image\/(png|jpg|jpeg)/gm;
-
 const UPLOAD_LIMIT = 3;
 
 const ActImageUploadButton = ({ children, register, id, control, inputRef, imageFiles, setImageFiles, setImages, multiple = false }) => {
@@ -39,7 +38,7 @@ const ActImageUploadButton = ({ children, register, id, control, inputRef, image
           }
         })
         .catch(reason => {
-          console.log(reason);
+          Logger.log(reason);
         });
     } else {
       setImages([]);

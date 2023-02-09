@@ -11,6 +11,7 @@ import { ReactComponent as DotGray } from 'styles/assets/icons/dots/gray.svg';
 import { ReactComponent as SubscriptionIcon } from 'styles/assets/icons/label/regular_scheduled.svg';
 import { ReactComponent as SingleIcon } from 'styles/assets/icons/label/temp.svg';
 import ActSpinner from '../../components/atoms/ActSpinner';
+import Logger from 'utils/logger';
 
 const DonationPayment = ({ setOption }) => {
   const location = useLocation();
@@ -56,7 +57,7 @@ const DonationPayment = ({ setOption }) => {
     formState: { isValid, isSubmitting, errors },
   } = useForm(formOptions);
   const onSubmit = data => {
-    console.log('onSubmit', data);
+    Logger.log('onSubmit', data);
   };
 
   const getNote = () => {
@@ -69,7 +70,7 @@ const DonationPayment = ({ setOption }) => {
   };
 
   const onNoteClickHandler = () => {
-    console.log('onNoteClickHandler');
+    Logger.log('onNoteClickHandler');
   };
   return (
     <div className="donation-payment-wrapper">

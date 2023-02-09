@@ -10,6 +10,8 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import ActSpinner from '../../components/atoms/ActSpinner';
 import { usersAtom } from '../../state';
 import ActButton from '../../components/atoms/ActButton';
+import Logger from 'utils/logger';
+
 const CampaignList = ({ setOption }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const loadMoreRef = useRef();
@@ -25,7 +27,7 @@ const CampaignList = ({ setOption }) => {
   };
 
   const onSearchResultData = data => {
-    console.log('onSearchResultData', data);
+    Logger.log('onSearchResultData', data);
     setSearchKeyword(data.search);
   };
 
@@ -39,7 +41,7 @@ const CampaignList = ({ setOption }) => {
     navigate('post');
   };
 
-  console.log('data', data);
+  Logger.log('data', data);
   return (
     <div className="campaign-list-wrapper">
       {user?.userType === MEMBER_TYPE.INDIVIDUAL ? (

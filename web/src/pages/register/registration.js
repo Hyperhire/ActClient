@@ -23,6 +23,8 @@ import { request } from '../../utils/axiosClient';
 import { api } from '../../repository';
 import { TokenContext } from '../../utils/TokenContext';
 
+import Logger from 'utils/logger';
+
 const Registration = ({ setOption }) => {
   const { type } = useParams();
   const navigate = useNavigate();
@@ -151,12 +153,12 @@ const Registration = ({ setOption }) => {
       };
     }
     if (locationState.loginType !== LOGIN_TYPE.EMAIL) {
-      console.log('1', params);
+      Logger.log('1', params);
       params = {
         ...defaultParams,
         socialProfile: { clientId: locationState.clientId },
       };
-      console.log('2', params);
+      Logger.log('2', params);
     }
     formData.append('data', JSON.stringify(params));
     doRegister({ loginType: locationState.loginType, type, data: formData });

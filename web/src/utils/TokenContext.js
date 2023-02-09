@@ -7,7 +7,7 @@ import { getCookie, removeCookie, setCookie } from './cookie';
 import { request, setAuthorization } from './axiosClient';
 import { api } from 'repository';
 import { COOKIES } from 'constants/constant';
-
+import Logger from 'utils/logger';
 const TokenContext = createContext(undefined);
 const TokenProvider = ({ children }) => {
   const setAuth = useSetRecoilState(authAtom);
@@ -46,7 +46,7 @@ const TokenProvider = ({ children }) => {
         }, Math.round(expires.diff(now)) - 60000);
         resolve();
       } catch (e) {
-        console.log('e', e);
+        Logger.error('e', e);
         reject();
       }
     });
@@ -60,7 +60,7 @@ const TokenProvider = ({ children }) => {
         removeCookie(COOKIES.REFRESH_TOKEN);
         resolve();
       } catch (e) {
-        console.log('e', e);
+        Logger.error('e', e);
         reject();
       }
     });

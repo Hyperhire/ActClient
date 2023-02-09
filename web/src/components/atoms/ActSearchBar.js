@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { ReactComponent as SearchIcon } from 'styles/assets/icons/search.svg';
 import ActInput from 'components/atoms/ActInput';
 import { searchYup } from 'utils/yupSchema';
-
+import Logger from 'utils/logger';
 const ActSearchBar = ({ type, searchResultData }) => {
   const searchDefaultForm = {
     search: '',
@@ -27,7 +27,7 @@ const ActSearchBar = ({ type, searchResultData }) => {
   }, [searchWatch]);
 
   const onSubmit = data => {
-    console.log('onSubmit', type, data);
+    Logger.log('onSubmit', type, data);
     searchResultData(data);
   };
 

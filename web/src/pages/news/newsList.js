@@ -11,6 +11,7 @@ import { useReactInfiniteQuery } from '../../hooks/useReactInfiniteQuery';
 import ActSpinner from '../../components/atoms/ActSpinner';
 import ActButton from '../../components/atoms/ActButton';
 import { usersAtom } from '../../state';
+import Logger from 'utils/logger';
 
 const NewsList = ({ setOption }) => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const NewsList = ({ setOption }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const loadMoreRef = useRef();
   const user = useRecoilValue(usersAtom);
-  console.log('type', type);
+  Logger.log('type', type);
   const { isSuccess, data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } = useReactInfiniteQuery([
     searchKeyword,
     type === ORGANIZATION_NEWS_TYPE.DISCLOSURE ? api.notice.list : api.news.list,

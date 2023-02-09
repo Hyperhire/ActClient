@@ -10,6 +10,7 @@ import SettlementItemCheckbox from '../../components/organisms/SettlementItemChe
 import SettlementPaymentHistory from '../../components/organisms/SettlementPaymentHistory';
 import { request } from '../../utils/axiosClient';
 import useModal from '../../hooks/useModal';
+import Logger from 'utils/logger';
 
 const SettlementHistory = ({ setOption }) => {
   const [buttonName, setButtonName] = useState('전체선택');
@@ -145,7 +146,7 @@ const SettlementHistory = ({ setOption }) => {
           </div>
           <div className="settlement-history-footer-button-wrapper">
             <div className="max-width">
-              <ActButton radius={0} className="primary-button-x-large-outline" label="취소하기" handleOnClick={() => console.log('취소하기')} />
+              <ActButton radius={0} className="primary-button-x-large-outline" label="취소하기" handleOnClick={() => Logger.log('취소하기')} />
             </div>
             <div className="max-width">
               <ActButton radius={0} className="primary-button-x-large" label="정산요청하기" handleOnClick={handleSubmit(requestWithdraw)} />
@@ -201,7 +202,7 @@ const SettlementHistory = ({ setOption }) => {
             return (
               <div key={index}>
                 <div className="settlement-history-list">
-                  <SettlementPaymentHistory item={item} clickHandler={item => console.log('onClick', item)} />
+                  <SettlementPaymentHistory item={item} clickHandler={item => Logger.log('onClick', item)} />
                 </div>
                 {index !== dataPost?.list.PENDING.length && <div className="divider" />}
               </div>
@@ -215,7 +216,7 @@ const SettlementHistory = ({ setOption }) => {
                 return (
                   <div key={index}>
                     <div className="settlement-history-list">
-                      <SettlementPaymentHistory item={item} clickHandler={item => console.log('onClick', item)} />
+                      <SettlementPaymentHistory item={item} clickHandler={item => Logger.log('onClick', item)} />
                     </div>
                     {index !== dataPost?.list.PENDING.length && <div className="divider" />}
                   </div>

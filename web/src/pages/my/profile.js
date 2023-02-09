@@ -28,6 +28,7 @@ import { urlToFile } from 'utils/downloadFile';
 import { ReactComponent as Calendar } from '../../styles/assets/icons/cal.svg';
 import ActUploadLicenseButton from '../../components/organisms/ActUploadLicenseButton';
 import ActSpinner from '../../components/atoms/ActSpinner';
+import Logger from 'utils/logger';
 
 const Profile = ({ setOption }) => {
   const navigate = useNavigate();
@@ -214,7 +215,7 @@ const Profile = ({ setOption }) => {
       case 'APPLE':
         return <AppleIcon width={24} height={24} />;
       default:
-        console.log('getLoginTypeIcon unknown login type');
+        Logger.log('getLoginTypeIcon unknown login type');
     }
   };
   return isLoading ? (

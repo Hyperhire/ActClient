@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import ActImageUploadButton from '../atoms/ActImageUploadButton';
 import { ReactComponent as ProfileIcon } from 'styles/assets/icons/profile/black.svg';
 import { ReactComponent as DeleteIcon } from 'styles/assets/icons/del/oval.svg';
+import Logger from 'utils/logger';
 
 const ActUploadProfileButton = ({ register, id, errors, control, imageFiles, setImageFiles }) => {
   const [images, setImages] = useState();
   useEffect(() => {
-    console.log('images', images);
+    Logger.log('images', images);
   }, [images]);
 
   const inputRef = useRef(null);

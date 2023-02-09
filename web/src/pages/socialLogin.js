@@ -5,7 +5,7 @@ import ActSpinner from 'components/atoms/ActSpinner';
 import { request } from 'utils/axiosClient';
 import { api } from 'repository';
 import { TokenContext } from '../utils/TokenContext';
-import { MEMBER_TYPE } from '../constants/constant';
+import Logger from 'utils/logger';
 
 const SocialLogin = () => {
   const { showModal } = useModal();
@@ -13,14 +13,13 @@ const SocialLogin = () => {
   const { sns } = useParams();
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code');
-  // const code = searchParams.get('code');
   const { onRefreshSuccess } = useContext(TokenContext);
   const location = useLocation();
 
   useEffect(() => {
-    console.log('SocialLogin1', location.host);
-    console.log('SocialLogin2', location.href);
-    console.log('SocialLogin3', location.pathname);
+    Logger.log('SocialLogin1', location.host);
+    Logger.log('SocialLogin2', location.href);
+    Logger.log('SocialLogin3', location.pathname);
     request({
       url: api.auth.socialLogin(sns),
       method: 'post',

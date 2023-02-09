@@ -4,6 +4,7 @@ import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
 import ActSearchBar from '../../components/atoms/ActSearchBar';
 import { SEARCH_TYPE } from '../../constants/constant';
+import Logger from 'utils/logger';
 
 const Faq = ({ setOption }) => {
   const { isSuccess, data } = useReactQuery(`faq-list`, api.faq.list);
@@ -14,7 +15,7 @@ const Faq = ({ setOption }) => {
   }, [setOption]);
 
   const onSearchResultData = data => {
-    console.log('onSearchResultData');
+    Logger.log('onSearchResultData');
   };
 
   return (

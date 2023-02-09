@@ -6,6 +6,7 @@ import ActButton from '../../components/atoms/ActButton';
 import useModal from '../../hooks/useModal';
 import { useReactQuery } from '../../hooks/useReactQuery';
 import { api } from '../../repository';
+import Logger from 'utils/logger';
 
 const PaymentHistory = ({ setOption }) => {
   const { showModal } = useModal();
@@ -46,11 +47,11 @@ const PaymentHistory = ({ setOption }) => {
   };
 
   const onCancelConfirm = () => {
-    console.log('onCancelConfirm');
+    Logger.log('onCancelConfirm');
   };
 
   const deleteItems = items => {
-    console.log('deleteItems', isValid, items);
+    Logger.log('deleteItems', isValid, items);
   };
 
   useEffect(() => {

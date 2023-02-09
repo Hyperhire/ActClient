@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Logger from './logger';
 
 const { REACT_APP_API_SERVER_BASE_URL } = process.env;
 
@@ -6,19 +7,19 @@ const client = axios.create({ baseURL: REACT_APP_API_SERVER_BASE_URL });
 
 const onRequest = config => {
   const { headers, method, url, data } = config;
-  console.log('axios ======================>', headers, method, url, data ?? '');
+  Logger.network('axios ======================>', headers, method, url, data ?? '');
   return config;
 };
 
 const onResponseSuccess = response => {
   const { url } = response.config;
   const { status } = response;
-  console.log('axios <======================', status, url, response.data);
+  Logger.network('axios <======================', status, url, response.data);
   return response;
 };
 
 const onResponseRejected = error => {
-  console.log('axios error', error.config?.url, error, error.response?.data ?? '');
+  Logger.error('axios error', error.config?.url, error, error.response?.data ?? '');
   if (error.config) {
     return Promise.reject(error);
   }
